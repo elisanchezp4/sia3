@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<head>
+	<title>Start Page</title>
+</head>
+<body>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
+
+		<link type="text/css" rel="stylesheet"
+			href="#{resource['css/saces-footer.css']}" />
+
+		<h:panelGrid width="100%">
+
+
+			<p:graphicImage height="80px"
+				value="#{resource['images/blank.png']}" />
+			<h:panelGrid styleClass="footergrid">
+
+				<div class="footerlink">
+					<div>
+						<p>
+							<strong>Este sitio se visualiza mejor con Google Chrome
+								40 (o superiores). Con una resolución mínima de 1024 x 768
+								pixeles. </strong><a href="http://www.mineducacion.gov.co/sac/"><strong>Contáctenos</strong></a>
+							. Línea gratuita fuera de Bogotá: 01 - 8000 - 910122. Línea
+							gratuita Bogotá +57 (1) 2220206. Conmutador: +57 (1) 2222800.
+							Fax: +57 (1) 2224953 . <strong>Línea gratuita nacional
+								para soporte técnico en temas relacionados con sistemas de
+								información</strong> 01-8000-510258 . <strong>Línea Bogotá:</strong>
+							4890400 <a
+								href="mailto:mesadeayuda@tecnologia.mineducacion.gov.co"><strong>Correo
+									electrónico para soporte técnico en temas relacionados con
+									sistemas de información</strong></a> <a
+								href="http://www.mineducacion.gov.co/mesadeayuda"><strong>Aplicación
+									en línea para soporte técnico en temas relacionados con
+									sistemas de información</strong></a> <strong>.</strong> <a
+								href="http://www.mineducacion.gov.co/mesadeayuda"></a><strong><a
+								href="http://www.mineducacion.gov.co/1621/w3-article-233996.html">C</a></strong><a
+								href="http://www.mineducacion.gov.co/1621/w3-article-233996.html"><strong>hat
+									de atención al ciudadano</strong></a> . Lunes a viernes de 8:30 a.m. a 9:30
+							a.m. <strong><a
+								href="http://www.mineducacion.gov.co/1621/w3-article-89256.html">Contacto
+									con Funcionarios</a></strong>. Dirección Ministerio de Educación: Calle 43
+							No. 57 - 14. <a
+								href="http://www.mineducacion.gov.co/1621/article-85245.html"><strong>Centro
+									Administrativo Nacional, CAN,</strong></a> Bogotá. Horario de atención:
+							Lunes a viernes de 8:00 a.m. a 5:00 p.m. <strong><a
+								href="http://www.mineducacion.gov.co/1621/w3-article-308932.html">Buzón
+									de notificaciones judiciales</a></strong>. NIT 899999001-7. <a
+								href="w3-article-233956.html"><strong>Términos y
+									condiciones de uso</strong></a> . Código Postal para la República de
+							Colombia: <strong>111321</strong>
+						</p>
+
+					</div>
+					<div style="display: none"></div>
+
+					<div>
+						<p>
+							<a
+								href="http://www.mineducacion.gov.co/1621/w3-article-336187.html">Políticas
+								de Privacidad y Condiciones de Uso</a> | <a
+								href="http://www.mineducacion.gov.co/1621/w3-propertyvalue-49272.html">Mapa
+								del sitio</a> | <strong>Versión:</strong> #{etq.versionSistema} <strong>Última
+								actualización:</strong> #{etq.fechaActualizacionSistema}
+
+						</p>
+					</div>
+				</div>
+			</h:panelGrid>
+
+		</h:panelGrid>
+
+	</ui:composition>
+</body>
+</html>

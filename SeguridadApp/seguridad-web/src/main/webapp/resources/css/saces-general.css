@@ -1,0 +1,43 @@
+body {
+	padding:0px;
+	margin:0px;
+	
+	font-family: Arial, Helvetica Neue, Helvetica, sans-serif !important;
+	font-size: 12px !important;
+}
+
+.tituloPrincipal {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.labelFormulario {
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.centrarContenido {
+	text-align: center;
+}
+
+.alinearDerechaContenido {
+	text-align: right;
+}
+
+.alinearIzquierdaContenido {
+	text-align: left;
+}
+
+.rowFormulario {
+	margin-top:3px;
+	margin-bottom:3px;
+}
+
+.tablaSinBorde tr, .tablaSinBorde td {
+	border: none;
+}
+
+h1 {
+	font-size: 16px;
+	font-weight: bold;
+}

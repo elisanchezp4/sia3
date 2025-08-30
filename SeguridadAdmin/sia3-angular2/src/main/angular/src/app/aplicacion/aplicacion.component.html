@@ -1,0 +1,51 @@
+<ol class="breadcrumb">
+	<li><a routerLink="/inicio/home">Inicio</a></li>
+	<li class="active">Administración de Aplicaciones</li>
+</ol>
+<div class="container dashboard">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Administración de Aplicaciones
+			</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			<p-messages [value]="msgs"></p-messages>
+			<p-confirmDialog header="Confirmar eliminación" acceptLabel="Si" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+		</div>
+		<div>
+			<p-messages [value]="msgsCargar"></p-messages>
+		</div>
+	</div>
+
+	<div class="row">
+		<p-dataTable [value]="aplicaciones" [rows]="10" [paginator]="true" emptyMessage="No se encontraron datos">
+			<p-column field="nombre" header="Nombre" [filter]="true" [sortable]="true" filterPlaceholder="Filtrar Aplicación" [style]="{'width':'150px'}"></p-column>
+			<p-column field="urlInicioExitoso" header="Url de inicio exitoso" [sortable]="true" [style]="{'width':'415'}"></p-column>
+			<p-column field="nombreEstado" header="Estado" [filter]="true" [sortable]="true" filterPlaceholder="Filtrar Estado" [style]="{'width':'150px'}"></p-column>
+			<p-column field="fechaCreacion" header="Fecha creación" [sortable]="true" [style]="{'width':'150px'}">
+				<template let-val="rowData" pTemplate type="body">
+					<span>{{val.fechaCreacion | date:"dd/MM/yyyy"}}</span>
+				</template>
+			</p-column>
+			<p-column field="ultimaModificacion" header="Fecha modificación" [sortable]="true" [style]="{'width':'150px'}">
+				<template let-val="rowData" pTemplate type="body">
+					<span>{{val.ultimaModificacion | date:"dd/MM/yyyy"}}</span>
+				</template>
+			</p-column>
+			<p-column header="Herramientas" [style]="{'width':'150px'}">
+				<template let-aplicaciones="rowData" pTemplate="body">
+					<td>
+						<a><span  class="fa fa-pencil-square-o" style="2:pointer; color: #3366cc" (click) = "seleccionarAplicacion(aplicaciones.aplicacionId)" data-toggle="tooltip" title="Modificar Aplicación"> </span></a>
+						<a hidden="{{aplicaciones.aplicacionActiva}}"><span  class="fa fa-times" style="cursor:aut o; color: #3366cc" data-toggle="tooltip" (click) = "inactivarAplicacion(aplicaciones.aplicacionId)" title="Inactivar Aplicación"> </span></a>
+					</td>
+				</template>
+			</p-column>
+		</p-dataTable>
+	</div>
+	<div class="col-xs-12 grupo_botones">
+		<button type="button" (click)="nuevo()" class="btn btn-primary">Nueva aplicación</button>
+	</div>
+</div>

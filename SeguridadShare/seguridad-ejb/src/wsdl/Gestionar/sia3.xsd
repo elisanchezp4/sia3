@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://soap.mineducacion.gov.co/11/seguridad/sia3" elementFormDefault="qualified" targetNamespace="http://soap.mineducacion.gov.co/11/seguridad/sia3" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation = "Arrays.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="crearUsuarioExternoRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionRol" nillable="true" type="tns:informacionRol" />
+        <xs:element minOccurs="0" name="informacionUsuario" nillable="true" type="tns:informacionUsuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="informacionRol">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="rol" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="informacionRol" nillable="true" type="tns:informacionRol" />
+  <xs:complexType name="informacionUsuario">
+    <xs:sequence>
+    	<xs:element minOccurs="0" name="NumeroIdentificacion"
+    		type="xs:long" />
+    	<xs:element minOccurs="0" name="TipoIdentificacion"
+    		nillable="true" type="xs:string" />
+    	<xs:element minOccurs="0" name="apellidos" nillable="true"
+    		type="xs:string" />
+    	<xs:element minOccurs="0" name="email" nillable="true"
+    		type="xs:string" />
+    	<xs:element minOccurs="0" name="nombreUsuario" nillable="true"
+    		type="xs:string" />
+    	<xs:element minOccurs="0" name="nombres" nillable="true"
+    		type="xs:string" />
+    	<xs:element minOccurs="0" name="tipo" type="tns:TipoUsuario" />
+    	<xs:element name="userId" type="xs:int" maxOccurs="1" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="informacionUsuario" nillable="true" type="tns:informacionUsuario" />
+  <xs:simpleType name="TipoUsuario">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Interno" />
+      <xs:enumeration value="Externo" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TipoUsuario" nillable="true" type="tns:TipoUsuario" />
+  <xs:complexType name="aplicacion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="apiKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="userId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="aplicacion" nillable="true" type="tns:aplicacion" />
+  <xs:complexType name="encabezadoSeguridad">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fechaPeticion" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ipHost" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="encabezadoSeguridad" nillable="true" type="tns:encabezadoSeguridad" />
+  <xs:element name="encabezadoSeguridadRq" nillable="true" type="tns:encabezadoSeguridad" />
+  <xs:element name="crearUsuarioExternoRs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionUsuario" nillable="true" type="tns:identificadorUsuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="identificadorUsuario">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="identificadorUsuario" nillable="true" type="tns:identificadorUsuario" />
+  <xs:complexType name="mensajeFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="mensaje" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="trace" nillable="true" type="q1:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="mensajeFault" nillable="true" type="tns:mensajeFault" />
+
+  <xs:element name="modificarUsuarioExternoRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionUsuario" nillable="true" type="tns:informacionUsuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="consultarUsuariosRolRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionRol" nillable="true" type="tns:informacionRol" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="consultarUsuariosRolRs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="usuarios" nillable="true" type="tns:ArrayOfinformacionUsuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="desvincularRolesUsuarioRs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="usuarios" nillable="true" type="tns:ArrayOfinformacionUsuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="desvincularRolesUsuarioRq">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="roles" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element minOccurs="0" name="notificarUsuario" nillable="true" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="desvincularRolesUsuarioRq" nillable="true" type="tns:desvincularRolesUsuarioRq" />
+
+  <xs:element name="vincularRolesUsuarioRs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="usuarios" nillable="true" type="tns:ArrayOfinformacionUsuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="vincularRolesUsuarioRq">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="usuarioId" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="roles" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element minOccurs="0" name="notificarUsuario" nillable="true" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="vincularRolesUsuarioRq" nillable="true" type="tns:vincularRolesUsuarioRq" />
+
+  <xs:complexType name="actualizarEmailRq">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="userId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="notificarUsuario" nillable="true" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="actualizarEmailRq" nillable="true" type="tns:actualizarEmailRq" />
+
+  <xs:complexType name="actualizarDatosBasicosRq">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nombres" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="apellidos" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numeroDocumento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rutaDirectorio" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="userId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="notificarUsuario" nillable="true" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="actualizarDatosBasicosRq" nillable="true" type="tns:actualizarDatosBasicosRq" />
+
+  <xs:complexType name="ArrayOfinformacionUsuario">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="informacionUsuario" nillable="true" type="tns:informacionUsuario" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfinformacionUsuario" nillable="true" type="tns:ArrayOfinformacionUsuario" />
+  <xs:element name="inactivarUsuarioRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionUsuario" nillable="true" type="tns:identificadorUsuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

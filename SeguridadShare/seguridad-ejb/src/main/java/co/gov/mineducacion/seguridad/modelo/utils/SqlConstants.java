@@ -1,0 +1,216 @@
+package co.gov.mineducacion.seguridad.modelo.utils;
+
+/**
+ * Agregada por HBT en la parametrizacion de querys en aplicacion seguridad
+ * 
+ * @author jfonseca
+ *
+ */
+public class SqlConstants {
+	private SqlConstants(){/* Recomendacion por sonar */}
+	public static final String GET_USUARIO_X_USERNAME = "Select u From Usuario u where u.logonName = :username";
+	public static final String GET_ALL_USUARIO = "Select u From Usuario u";
+
+	// consultas aplicaciones
+	public static final String CONSULTAR_APLICACIONES = "SELECT a.APLICACION_ID, a.NOMBRE, a.ESTADO, a.URI_INICIO_EXITOSO, "
+			+ " a.MINUTOS_VIGENCIA_CODIGO, a.MINUTOS_VIGENCIA_TOKEN, a.FECHA_CREACION, "
+			+ " a.ULTIMA_MODIFICACION, a.USUARIO_MODIFICACION, a.MIN_VIG_TOKEN_ACT_CONTRASENIA, a.RECIBIR_NOTIFICACION " + "FROM APLICACIONES a " + " WHERE 1=1";
+
+	// Ordenar por fecha de creación en la tabla de aplicaciones
+	public static final String ORDENAR_FECHA_CREACION = " ORDER BY  a.FECHA_CREACION DESC ";
+
+	public static final String CONSULTAR_APLICACION_POR_NOMBRE = "SELECT a.APLICACION_ID, a.NOMBRE, a.ESTADO, a.URI_INICIO_EXITOSO, "
+			+ " a.MINUTOS_VIGENCIA_CODIGO, a.MINUTOS_VIGENCIA_TOKEN, a.FECHA_CREACION, "
+			+ " a.ULTIMA_MODIFICACION, a.USUARIO_MODIFICACION, a.RECIBIR_NOTIFICACION " + "FROM APLICACIONES a"
+			+ " WHERE UPPER(a.nombre) = UPPER(?1)";
+	public static final String CONSULTAR_APLICACION_POR_ID = "SELECT a.APLICACION_ID, a.NOMBRE, a.ESTADO, a.URI_INICIO_EXITOSO, "
+			+ " a.MINUTOS_VIGENCIA_CODIGO, a.MINUTOS_VIGENCIA_TOKEN, a.FECHA_CREACION, "
+			+ " a.ULTIMA_MODIFICACION, a.USUARIO_MODIFICACION, a.RECIBIR_NOTIFICACION " + "FROM APLICACIONES a" + " WHERE a.APLICACION_ID = ?1";
+
+	public static final String Y_NOMBRE = " AND UPPER(a.nombre) LIKE ?2";
+	public static final String Y_APLICACION = " AND a.APLICACION_ID <> ?2";
+	public static final String CONTAR_APLICACIONES = "SELECT COUNT(a.NOMBRE) FROM APLICACIONES a ";
+	public static final String Y_ESTADO_APP = " AND a.ESTADO = ?1";
+
+	public static final String CONSULTAR_APLICACIONES_POR_USUARIO = "SELECT a.APLICACION_ID, a.NOMBRE, a.ESTADO, a.URI_INICIO_EXITOSO, "
+			+ " a.MINUTOS_VIGENCIA_CODIGO, a.MINUTOS_VIGENCIA_TOKEN, a.FECHA_CREACION, "
+			+ " a.ULTIMA_MODIFICACION, a.USUARIO_MODIFICACION " + "FROM APLICACIONES a "
+			+ " JOIN USUARIO_APLICACION UA ON a.APLICACION_ID = UA.APLICACION_ID "
+			+ " WHERE 1=1 AND a.ESTADO =?1 AND UA.USUARIO_ID =?2";
+
+	// consultas mensajes
+	public static final String CONSULTAR_MENSAJES_POR_CODIGO = "SELECT m.ID, m.NOMBRE, m.DESCRIPCION, m.TIPO_MENSAJE, m.ESTADO, m.CODIGO FROM MENSAJE m WHERE m.codigo = ?1";
+	public static final String CONSULTAR_MENSAJES = "SELECT m FROM Mensaje m";
+
+	// consultas catalogo
+	public static final String CONSULTAR_CATALOGO_POR_TIPO = " SELECT c.CATALOGO_ID, c.TIPO_CATALOGO, c.DESCRIPCION, c.TEXTO_AYUDA "
+			+ " FROM CATALOGOS c" + " WHERE UPPER(c.TIPO_CATALOGO)=UPPER(?1)";
+	
+	public static final String FILTRO_CATALOGO_SEGURIDAD= " AND c.CATALOGO_ID IN"
+					+ "(SELECT a.TIPO_EVENTO"
+					+ " FROM BITACORA_AUDITORIA a "
+					+ " WHERE a.APLICACION_ID=?2) "
+					+ " ORDER BY c.DESCRIPCION";
+
+	// consultas roles
+	public static final String CONSULTAR_ROLES = " SELECT r.ROL_ID, r.NOMBRE, r.ESTADO, r.APLICACION_ID, r.FECHA_CREACION, r.ULTIMA_MODIFICACION, r.USUARIO_MODIFICACION, r.RUTA_DIRECTORIO_ACTIVO "
+			+ "FROM ROLES r";
+	public static final String CONSULTAR_ROLES_POR_APP = "SELECT r.ROL_ID, r.NOMBRE, r.ESTADO, r.APLICACION_ID, r.FECHA_CREACION, r.ULTIMA_MODIFICACION, r.USUARIO_MODIFICACION, r.RUTA_DIRECTORIO_ACTIVO "
+			+ " FROM ROLES r" + " JOIN APLICACIONES a ON r.APLICACION_ID=a.APLICACION_ID" + " AND a.APLICACION_ID = ?1";
+	public static final String CONSULTAR_ROL_POR_NOMBRE = "SELECT r.ROL_ID, r.NOMBRE, r.ESTADO, r.APLICACION_ID, r.FECHA_CREACION, r.ULTIMA_MODIFICACION, r.USUARIO_MODIFICACION, r.RUTA_DIRECTORIO_ACTIVO "
+			+ "FROM ROLES r" + " WHERE UPPER(r.nombre) = UPPER(?1)";
+
+	public static final String CONSULTAR_ROL_POR_ID = "SELECT r.ROL_ID, r.NOMBRE, r.ESTADO, r.APLICACION_ID, r.FECHA_CREACION, r.ULTIMA_MODIFICACION, r.USUARIO_MODIFICACION, r.RUTA_DIRECTORIO_ACTIVO "
+			+ "FROM ROLES r" + " WHERE r.ROL_ID = ?1";
+
+	public static final String CONSULTAR_ROLES_POR_USUARIO = "SELECT r.ROL_ID, r.NOMBRE, CASE ur.ESTADO_VINCULACION WHEN 'Vinculado' THEN 1 ELSE 0 END ESTADO, r.APLICACION_ID, r.FECHA_CREACION, r.ULTIMA_MODIFICACION, r.USUARIO_MODIFICACION, r.RUTA_DIRECTORIO_ACTIVO   "
+			+ " FROM ROLES r " + " JOIN USUARIOS_ROL ur ON ur.ROL_ID=r.ROL_ID " + " WHERE ur.USUARIO_ID=? ORDER BY r.ROL_ID";
+
+	public static final String CONSULTAR_ROLES_POR_USUARIO_APLICACION = " SELECT r.ROL_ID, r.NOMBRE, CASE ur.ESTADO_VINCULACION WHEN 'Vinculado' THEN 1 ELSE 0 END ESTADO, r.APLICACION_ID, r.FECHA_CREACION, r.ULTIMA_MODIFICACION, r.USUARIO_MODIFICACION, r.RUTA_DIRECTORIO_ACTIVO \n" +
+			"FROM ROLES r JOIN USUARIOS_ROL ur ON ur.ROL_ID=r.ROL_ID  WHERE ur.USUARIO_ID=? AND r.APLICACION_ID=? ORDER BY r.ROL_ID";
+
+	public static final String CONSULTAR_ROLES_USUARIO = "SELECT r.ROL_ID, r.APLICACION_ID, r.NOMBRE, ur.ESTADO_VINCULACION "
+			+ "FROM ROLES r JOIN USUARIOS_ROL ur ON ur.ROL_ID=r.ROL_ID WHERE ur.USUARIO_ID=? ORDER BY r.ROL_ID";
+
+	public static final String CONSULTAR_USUARIO_ROLES = "SELECT ur.ROL_ID, ur.USUARIO_ID, ur.ESTADO_VINCULACION, ur.FECHA_DESVINCULACION, ur.FECHA_VINCULACION FROM  USUARIOS_ROL ur WHERE ur.USUARIO_ID=? ORDER BY ur.ROL_ID";
+
+	// consultas operaciones
+	public static final String CONSULTAR_OPERACIONES = " SELECT o.OPCION_ID, o.APLICACION_ID, o.DESCRIPCION, o.NOMBRE_OBJETO, o.OPCION_PADRE, o.TIPO, o.ESTADO, o.FECHA_CREACION, o.ULTIMA_MODIFICACION, o.USUARIO_MODIFICACION "
+			+ " FROM OPERACIONES o " + " WHERE 1=1 ";
+	public static final String Y_APLICACION_ID = " AND o.APLICACION_ID = ?1 ";
+	public static final String Y_NOMBRE_OBJETO = " AND UPPER(o.NOMBRE_OBJETO) LIKE UPPER(?2) ";
+
+	public static final String CONSULTAR_OPERACIONES_PADRES_HIJOS = ""
+			+ " SELECT DISTINCT e1.opcion_id, e1.aplicacion_id, e1.descripcion, e1.nombre_objeto, e1.opcion_padre, e1.tipo, e1.estado, e1.fecha_creacion, e1.ultima_modificacion, e1.usuario_modificacion, e1.orden_visualizacion "
+			+ " FROM operaciones e1 " + " START WITH opcion_id IN (" + " 	SELECT i1.opcion_id "
+			+ " 	FROM operaciones i1 " + " 	WHERE i1.opcion_id=e1.opcion_id " + " 	AND e1.aplicacion_id = ?1 "
+			+ " 	AND UPPER(i1.nombre_objeto) LIKE UPPER(?2) " + " 	)"
+			+ " CONNECT BY e1.opcion_id =  PRIOR e1.opcion_padre " + " UNION "
+			+ " SELECT DISTINCT e2.opcion_id, e2.aplicacion_id, e2.descripcion, e2.nombre_objeto, e2.opcion_padre, e2.tipo, e2.estado, e2.fecha_creacion, e2.ultima_modificacion, e2.usuario_modificacion, e2.orden_visualizacion "
+			+ " FROM operaciones e2 " + " START WITH opcion_id IN (" + " 	SELECT i2.opcion_id "
+			+ " 	FROM operaciones i2 " + " 	WHERE i2.opcion_id=e2.opcion_id " + " 	AND e2.aplicacion_id = ?1 "
+			+ " 	AND UPPER(i2.nombre_objeto) LIKE UPPER(?2) " + " 	)"
+			+ " CONNECT BY PRIOR e2.opcion_id = e2.opcion_padre ORDER BY ORDEN_VISUALIZACION";
+
+	public static final String CONSULTAR_OPERACIONES_HIJAS = ""
+			+ " SELECT DISTINCT e.opcion_id, e.aplicacion_id, e.descripcion, e.nombre_objeto, e.opcion_padre, e.tipo, e.estado, e.fecha_creacion, e.ultima_modificacion, e.usuario_modificacion, e.orden_visualizacion "
+			+ " FROM operaciones e " + " START WITH e.opcion_id IN (" + " 	SELECT i.opcion_id "
+			+ " 	FROM operaciones i " + " 	WHERE i.opcion_id=e.opcion_id " + " 	AND e.opcion_id = ?1 " + " 	)"
+			+ " CONNECT BY PRIOR e.opcion_id = e.opcion_padre " + " ORDER BY ORDEN_VISUALIZACION";
+
+	public static final String CONSULTAR_OPERACIONES_PADRES = ""
+			+ " SELECT DISTINCT e1.opcion_id, e1.aplicacion_id, e1.descripcion, e1.nombre_objeto, e1.opcion_padre, e1.tipo, e1.estado, e1.fecha_creacion, e1.ultima_modificacion, e1.usuario_modificacion, e1.orden_visualizacion "
+			+ " FROM operaciones e1 " + " START WITH opcion_id IN (" + " 	SELECT i1.opcion_id "
+			+ " 	FROM operaciones i1 " + " 	WHERE i1.opcion_id=e1.opcion_id " + " 	AND e1.opcion_id = ?1 "
+			+ " 	)" + " CONNECT BY e1.opcion_id =  PRIOR e1.opcion_padre ORDER BY ORDEN_VISUALIZACION ";
+
+	public static final String CONSULTAR_OPERACIONES_POR_ROL = "SELECT op.* FROM OPERACIONES_ROL opr  "
+			+ " INNER JOIN OPERACIONES op ON op.OPCION_ID=opr.OPCION_ID " + " WHERE opr.ROL_ID = ?1";
+
+	public static final String CONSULTAR_OPERACIONES_POR_OPCION_Y_ROL = "SELECT OPCION_ID, ROL_ID "
+			+ " FROM OPERACIONES_ROL  " + " WHERE OPCION_ID = ?1 " + " AND ROL_ID = ?2";
+
+	public static final String CONSULTAR_OPERACION_POR_ID = "SELECT o.OPCION_ID, o.APLICACION_ID, o.DESCRIPCION, o.NOMBRE_OBJETO, o.OPCION_PADRE, o.TIPO, o.ESTADO, o.FECHA_CREACION, o.ULTIMA_MODIFICACION, o.USUARIO_MODIFICACION "
+			+ " FROM OPERACIONES o  " + " WHERE o.OPCION_ID = ?1";
+
+	public static final String CONSULTAR_OPERACION_POR_NOMBRE_OBJETO = "SELECT o.OPCION_ID, o.APLICACION_ID, o.DESCRIPCION, o.NOMBRE_OBJETO, o.OPCION_PADRE, o.TIPO, o.ESTADO, o.FECHA_CREACION, o.ULTIMA_MODIFICACION, o.USUARIO_MODIFICACION "
+			+ " FROM OPERACIONES o  " + " WHERE UPPER(o.NOMBRE_OBJETO) = UPPER(?1)";
+
+	public static final String Y_OP_APLICACION_ID = " AND o.APLICACION_ID = ?2 ";
+
+	public static final String Y_OPERACION_APLICACION_ID = " AND op.APLICACION_ID = ?2 ";
+
+	public static final String CONSULTAR_OPERACION_POR_APLICACION = "SELECT o.OPCION_ID, o.APLICACION_ID, o.DESCRIPCION, o.NOMBRE_OBJETO, o.OPCION_PADRE, o.TIPO, o.ESTADO, o.FECHA_CREACION, o.ULTIMA_MODIFICACION, o.USUARIO_MODIFICACION "
+			+ " FROM OPERACIONES o  " + " WHERE o.APLICACION_ID = ?1" + " ORDER BY o.OPCION_ID DESC";
+
+	// consultas usuarios
+	public static final String CONSULTAR_USUARIO_POR_NOMBRE = "SELECT u.USUARIO_ID, u.RUTA, u.TIPO, u.ESTADO, u.FECHA_CREACION, u.ULTIMA_MODIFICACION, u.USUARIO_MODIFICACION, u.LOGON_NAME, u.NUEVO_PASSWORD "
+			+ " FROM USUARIOS u " + " WHERE UPPER(u.LOGON_NAME) = UPPER(?1)";
+
+	public static final String CONSULTAR_USUARIO_POR_ID = "SELECT u.USUARIO_ID, u.RUTA, u.TIPO, u.ESTADO, u.FECHA_CREACION, u.ULTIMA_MODIFICACION, u.USUARIO_MODIFICACION, u.LOGON_NAME, u.NUEVO_PASSWORD "
+			+ " FROM USUARIOS u " + " WHERE u.USUARIO_ID = ?1";
+
+	public static final String CONSULTAR_USUARIO_POR_APP_Y_ROL = "SELECT DISTINCT u.USUARIO_ID, u.RUTA, u.TIPO, u.ESTADO, u.FECHA_CREACION, u.ULTIMA_MODIFICACION, u.USUARIO_MODIFICACION, u.LOGON_NAME, u.NUEVO_PASSWORD,"
+			+ " ur.FECHA_VINCULACION,  ur.ESTADO_VINCULACION " + " FROM USUARIOS u "
+			+ " JOIN USUARIOS_ROL ur ON ur.USUARIO_ID=u.USUARIO_ID "
+			+ " JOIN OPERACIONES_ROL opr ON opr.ROL_ID=ur.ROL_ID " + " JOIN OPERACIONES o ON opr.OPCION_ID=o.OPCION_ID "
+			+ " WHERE o.APLICACION_ID = ?1" + " AND ur.ROL_ID = ?2" + " AND ur.ESTADO_VINCULACION = ?3";
+
+	public static final String CONSULTAR_USUARIO_POR_APP = "SELECT DISTINCT US.USUARIO_ID, US.RUTA, US.TIPO, US.ESTADO, US.FECHA_CREACION, US.ULTIMA_MODIFICACION, US.USUARIO_MODIFICACION, US.LOGON_NAME, US.NUEVO_PASSWORD "
+			+ " FROM USUARIOS_ROL UR, USUARIOS US "
+			+ " WHERE UR.ROL_ID IN (select RL.ROL_ID from ROLES RL where RL.APLICACION_ID=?1 AND RL.ROL_ID != 47 AND  RL.ROL_ID != 48 )"
+			+ " AND US.USUARIO_ID=UR.USUARIO_ID";
+
+	public static final String CONSULTAR_USUARIO_POR_APP_EXISTE = "SELECT DISTINCT US.USUARIO_ID, US.RUTA, US.TIPO, US.ESTADO, US.FECHA_CREACION, US.ULTIMA_MODIFICACION, US.USUARIO_MODIFICACION, US.LOGON_NAME, US.NUEVO_PASSWORD \n" +
+			"FROM USUARIOS_ROL UR, USUARIOS US \n" +
+			"WHERE UR.ROL_ID IN (select RL.ROL_ID from ROLES RL where RL.APLICACION_ID=?1 AND RL.ROL_ID != 47 AND  RL.ROL_ID != 48 )\n" +
+			"AND US.USUARIO_ID =?2 " +
+			"AND US.USUARIO_ID=UR.USUARIO_ID " +
+			"AND UR.ESTADO_VINCULACION = 'Vinculado'";
+
+	public static final String CONSULTAR_USUARIO_APLICACION = "SELECT UA.USUARIO_ID FROM USUARIO_APLICACION UA WHERE UA.APLICACION_ID = ?1";
+
+	public static final String CONSULTAR_USUARIO_POR_APP_SEGURIDAD = "SELECT DISTINCT US.USUARIO_ID, US.RUTA, US.TIPO, US.ESTADO, US.FECHA_CREACION, US.ULTIMA_MODIFICACION, US.USUARIO_MODIFICACION, US.LOGON_NAME, US.NUEVO_PASSWORD "
+			+ " FROM USUARIOS_ROL UR, USUARIOS US " + " JOIN USUARIO_APLICACION UA ON US.USUARIO_ID = UA.USUARIO_ID"
+			+ " WHERE UR.ROL_ID IN (select RL.ROL_ID from ROLES RL where RL.APLICACION_ID=?1 )"
+			+ " AND US.USUARIO_ID=UR.USUARIO_ID AND UA.APLICACION_ID=?2 ";
+
+	public static final String CONSULTAR_USUARIOS_ALL = "SELECT u.USUARIO_ID, u.RUTA, u.TIPO, u.ESTADO, "
+			+ " u.FECHA_CREACION, u.ULTIMA_MODIFICACION, u.USUARIO_MODIFICACION, u.LOGON_NAME " + " FROM USUARIOS u "
+			+ " WHERE 1=1";
+	public static final String FILTRO_USUARIOS_SEGURIDAD =" AND u.USUARIO_ID IN"
+			+ "(SELECT ur.USUARIO_ID"
+			+ " FROM USUARIOS_ROL ur"
+			+ " JOIN ROLES r on ur.ROL_ID=r.ROL_ID"
+			+ " WHERE r.APLICACION_ID=?2)";
+	public static final String Y_ESTADO_USER = " AND u.ESTADO = ?1";
+	public static final String Y_USUARIO_AUDITORIA = " AND u.USUARIO_ID IN" + "(SELECT a.USUARIO_ID"
+			+ " FROM BITACORA_AUDITORIA a)";
+	public static final String ORDEN_USUARIO = " ORDER BY u.LOGON_NAME";
+	// consultas auditoria
+	public static final String CONTAR_FILTROS_AUDITORIA = "SELECT count(a.BITACORA_ID) " + " FROM BITACORA_AUDITORIA a "
+			+ " JOIN USUARIOS u ON a.USUARIO_ID=u.USUARIO_ID " + " JOIN CATALOGOS c ON a.TIPO_EVENTO=c.CATALOGO_ID "
+			+ " JOIN APLICACIONES p ON a.APLICACION_ID=p.APLICACION_ID " + " WHERE 1=1 ";
+	public static final String CONSULTAR_FILTROS_AUDITORIA = "SELECT a.BITACORA_ID, a.FECHA_EVENTO, a.TIPO_EVENTO, a.USUARIO_ID, a.APLICACION_ID, u.LOGON_NAME, a.DETALLE, a.CAMPO_DIRECTORIO "
+			+ " FROM BITACORA_AUDITORIA a " + " JOIN USUARIOS u ON a.USUARIO_ID=u.USUARIO_ID "
+			+ " JOIN CATALOGOS c ON a.TIPO_EVENTO=c.CATALOGO_ID "
+			+ " JOIN APLICACIONES p ON a.APLICACION_ID=p.APLICACION_ID " + " WHERE 1=1 ";
+	public static final String Y_AUDITORIA_APLICACION_ID = " AND a.APLICACION_ID=?1";
+	public static final String Y_AUDITORIA_TIPO_EVENTO = " AND a.TIPO_EVENTO=?2";
+	public static final String Y_AUDITORIA_FECHAS = " AND TRUNC(a.FECHA_EVENTO) BETWEEN TO_DATE(?3,'DD/MM/YY') AND TO_DATE(?4,'DD/MM/YY')";
+	public static final String Y_AUDITORIA_USUARIO = " AND u.USUARIO_ID=?5";
+	public static final String LIMIT_RESULTADOS = " AND ROWNUM <= 100";
+	public static final String ORDEN_AUDITORIA = " ORDER BY a.FECHA_EVENTO DESC";
+	
+	public static final String CONSULTAR_USUARIO_POR_APP_Y_NOMBRE_ROL = "SELECT DISTINCT u.USUARIO_ID, u.RUTA, u.TIPO, u.ESTADO,u.FECHA_CREACION,"
+			+ " u.ULTIMA_MODIFICACION, u.USUARIO_MODIFICACION, u.LOGON_NAME, u.NUEVO_PASSWORD, ur.FECHA_VINCULACION, "
+			+ " ur.ESTADO_VINCULACION  FROM USUARIOS u  JOIN USUARIOS_ROL ur ON ur.USUARIO_ID=u.USUARIO_ID JOIN ROLES r ON r.ROL_ID = ur.ROL_ID "
+			+ "JOIN OPERACIONES_ROL opr ON opr.ROL_ID=ur.ROL_ID  JOIN OPERACIONES o ON opr.OPCION_ID=o.OPCION_ID "
+			+ "WHERE o.APLICACION_ID = ?1 AND  r.NOMBRE = ?2 ";
+	
+	public static final String COUNT_USUARIO_POR_APP_Y_NOMBRE_ROL = "SELECT COUNT(DISTINCT(u.USUARIO_ID)) FROM USUARIOS u  JOIN USUARIOS_ROL ur ON ur.USUARIO_ID=u.USUARIO_ID JOIN ROLES r ON r.ROL_ID = ur.ROL_ID "
+			+ "JOIN OPERACIONES_ROL opr ON opr.ROL_ID=ur.ROL_ID  JOIN OPERACIONES o ON opr.OPCION_ID=o.OPCION_ID "
+			+ "WHERE o.APLICACION_ID = ?1 AND  r.NOMBRE = ?2 ";
+	
+	public static final String Y_ID_USUARIO = " AND u.USUARIO_ID = ?3";
+	public static final String Y_ESTADO_USUARIO = " AND u.ESTADO = ?4";
+
+
+	public static final String DELETE_OPERACIONES_POR_PADRE_ID = "DELETE FROM OPERACIONES WHERE OPCION_PADRE = ?1";
+
+	public static final String Y_AUDITORIA_CAMPO_ACTIVO = " AND a.CAMPO_DIRECTORIO=?6";
+
+   public static final String USUARIOS_POR_APLICACION_Y_NOMBRE = "SELECT DISTINCT u.USUARIO_ID, u.LOGON_NAME FROM USUARIOS u \n" +
+		   "    INNER JOIN USUARIOS_ROL ur ON ur.USUARIO_ID = u.USUARIO_ID \n" +
+		   "    INNER JOIN ROLES r ON r.ROL_ID = ur.ROL_ID \n" +
+		   "    INNER JOIN APLICACIONES a ON a.APLICACION_ID = r.APLICACION_ID \n" +
+		   "    WHERE a.APLICACION_ID = ?1 AND u.LOGON_NAME LIKE CONCAT('%',CONCAT( ?2, '%'))\n" +
+		   "    ORDER BY u.USUARIO_ID DESC";
+
+
+	public static final String CONSULTAR_APLICACIONES_NOTIFICACIONES = "SELECT a.APLICACION_ID, a.NOMBRE, a.ESTADO, a.URI_INICIO_EXITOSO, \n" +
+			"       a.MINUTOS_VIGENCIA_CODIGO, a.MINUTOS_VIGENCIA_TOKEN, a.FECHA_CREACION, \n" +
+			"       a.ULTIMA_MODIFICACION, a.USUARIO_MODIFICACION, a.MIN_VIG_TOKEN_ACT_CONTRASENIA, a.RECIBIR_NOTIFICACION \n" +
+			"FROM APLICACIONES a \n" +
+			"WHERE a.RECIBIR_NOTIFICACION = 1";
+}

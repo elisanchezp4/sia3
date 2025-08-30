@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<head>
+	<title>Start Page</title>
+</head>
+<h:body>
+	<ui:composition template="/template/common_siacet/publicLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="form1">
+				<br />
+				<div class="ui-grid ui-grid-responsive">
+					<div class="ui-grid-row">
+			    		<div class="ui-grid-col-3"></div>
+			    		<div class="ui-grid-col-6" style="padding-top: 80px;">
+							<p:fieldset legend="Cambio de contraseña">
+							
+								<div class="ui-grid-row rowFormulario">
+									<div class="ui-grid-col-4">
+										<p:outputLabel for="usuarioUpdate" 
+											value="#{msg['usuarioUpdate']}" />
+									</div>
+									<div class="ui-grid-col-6">
+										<p:inputText id="usuarioUpdate" 
+											value="#{gestionContraseniaBean.usuarioUpdate" />
+										<p:message for="usuarioUpdate" />
+									</div>
+								</div>
+							
+								<div class="ui-grid-row rowFormulario">
+									<div class="ui-grid-col-4">
+										<p:outputLabel for="contraseniaAnterior" value="#{msg['contraseniaAnterior']}" />
+									</div>
+									<div class="ui-grid-col-6">
+										<p:password id="contraseniaAnterior"
+											value="#{gestionContraseniaBean.contraseniaAnterior}" />
+										<p:message for="contraseniaAnterior" />
+									</div>
+								</div>
+								
+								<div class="ui-grid-row rowFormulario">
+									<div class="ui-grid-col-4">
+										<p:outputLabel for="contraseniaNueva" value="#{msg['contraseniaNuevaLabel']}" />
+									</div>
+									<div class="ui-grid-col-6">
+										<p:password id="contraseniaNueva"
+											value="#{gestionContraseniaBean.contraseniaNueva}"/>
+										<p:message for="contraseniaNueva" />
+									</div>
+								</div>
+								
+							
+								<br />
+								<div class="ui-grid-row rowFormulario">
+									<div class="ui-grid-col-4"></div>
+									<div class="ui-grid-col-4 centrarContenido">
+										<p:commandButton id="btnGuardar" styleClass="ui-button"
+											value="#{msg['actualizar']}"
+											action="#{gestionContraseniaBean.cambiarContrasenia}"
+											update=":#{p:component('form1')}" />
+									</div>
+								</div>
+							</p:fieldset>
+						</div>
+    					<div class="ui-grid-col-3"></div>
+    				</div>
+				</div>
+				<div id="mensajes_container" class="ui-growl ui-widget" style="z-index: 1001;"><div class="ui-growl-item-container ui-state-highlight ui-corner-all ui-helper-hidden ui-shadow" aria-live="polite" style="display: block;"><div class="ui-growl-item"><div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display: block;" onclick="ocultarMensaje()"></div><span class="ui-growl-image ui-growl-image-info"></span><div class="ui-growl-message"><span class="ui-growl-title"></span><p>Su contraseña ha sido modificada, ingrese una nueva para continuar.</p></div><div style="clear: both;"></div></div></div></div>
+				<h:outputScript>
+					validarMostrarMensaje();
+				</h:outputScript>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

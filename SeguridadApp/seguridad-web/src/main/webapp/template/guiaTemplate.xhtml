@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<head>
+	<title>Start Page</title>
+</head>
+<h:body>
+	<ui:composition template="/template/common/layout.xhtml">
+		<ui:define name="content">
+			<style type="text/css">
+.form-comp tr, .form-comp td {
+	border: none;
+}
+</style>
+
+			<br />
+			<br />
+			<h:form id="ejemploTabla-frm">
+				<p:dataTable id="ejemploTabla-comp" var="objetoEjemplo"
+					emptyMessage="#{msg['noSeEncontraronRegistros']}" paginator="true"
+					rows="10" paginatorPosition="bottom"
+					rowsPerPageTemplate="10,50,100">
+					<f:facet name="header">Tabla ejemplo</f:facet>
+					<p:column style="width:2%;">
+						<p:commandButton id="selectButtonSancion"
+							oncomplete="consultaDatos.show()" icon="ui-icon-search"
+							title="View" />
+					</p:column>
+					<p:column headerText="Columna 1">
+						<h:outputText value="--" />
+					</p:column>
+					<p:column headerText="Columna 2">
+						<h:outputText value="--" />
+					</p:column>
+					<p:column headerText="Columna 3">
+						<h:outputText value="--" />
+					</p:column>
+					<p:column headerText="Columna 4">
+						<h:outputText value="--" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			<br />
+			<br />
+			<h:form id="ejemploPanel-frm">
+				<p:panel id="ejemploPanel-comp" header="Ejemplo Panel"
+					toggleable="true" toggleSpeed="500" closeSpeed="500"
+					widgetVar="ejemploPanel-comp">
+					<h:panelGrid columns="2" cellpadding="10">
+						<h:outputText value="Stories" />
+						<h:outputText value="The story begins as Don Vito Corleone..." />
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+
+			<br />
+			<br />
+			<h:form id="ejemploFormulario-frm">
+				<p:panel id="ejemploFormulario-comp" header="Ejemplo Formulario"
+					toggleable="true" toggleSpeed="500" closeSpeed="500"
+					widgetVar="ejemploFormulario-comp">
+					<p:panelGrid columns="2" cellpadding="30" style="margin: 0 auto;"
+						styleClass="form-comp">
+						<p:outputLabel value="InputText:" />
+						<p:inputText style="width:260px;" />
+
+						<p:outputLabel value="Password:" />
+						<p:password style="width:260px;" />
+
+						<p:outputLabel value="selectOneMenu:" />
+						<p:selectOneMenu style="width:270px">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
+							<f:selectItem itemLabel="PS4" itemValue="PS4" />
+							<f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Calendar:" />
+						<p:calendar showOn="button" inputStyle="width:200px" pattern="yyyy/MM/dd"
+							navigator="true" mask="true" placeholder="aaaa/MM/dd"
+							yearRange="c-100:c+100" />
+
+						<p:outputLabel value="OneRadio:" />
+						<p:selectOneRadio>
+							<f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
+							<f:selectItem itemLabel="PS4" itemValue="PS+" />
+							<f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+						</p:selectOneRadio>
+
+						<p:outputLabel value="InputTextarea:" />
+						<p:inputTextarea rows="10" cols="40" />
+
+						<h:outputText value="BooleanCheckbox: " />
+						<p:selectBooleanCheckbox />
+					</p:panelGrid>
+
+					<p:panelGrid columns="2" cellpadding="30" style="margin: 0 auto;"
+						styleClass="form-comp">
+						<p:commandButton value="Enviar" />
+						<p:commandButton value="Resetear" />
+					</p:panelGrid>
+				</p:panel>
+			</h:form>
+
+			<br />
+			<br />
+			<h:form id="ejemploTabs-frm">
+				<p:tabView scrollable="true" style="width:400px; margin: 0 auto;">
+					<p:tab title="Tab 1">
+						<h:panelGrid columns="2" cellpadding="10">
+							<h:outputText value="Stories" />
+							<h:outputText value="The story begins as Don Vito Corleone..." />
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Tab 2">
+						<h:panelGrid columns="2" cellpadding="10">
+							<h:outputText value="Stories" />
+							<h:outputText value="The story begins as Don Vito Corleone..." />
+						</h:panelGrid>
+					</p:tab>
+					<p:tab title="Tab 3">
+						<h:panelGrid columns="2" cellpadding="10">
+							<h:outputText value="Stories" />
+							<h:outputText value="The story begins as Don Vito Corleone..." />
+						</h:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

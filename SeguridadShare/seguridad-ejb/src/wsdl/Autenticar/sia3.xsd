@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://soap.mineducacion.gov.co/11/seguridad/sia3" elementFormDefault="qualified" targetNamespace="http://soap.mineducacion.gov.co/11/seguridad/sia3" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation = "Arrays.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="obtenerTokenRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoAutorizacion" nillable="true" type="tns:autorizacion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="autorizacion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigoAutorizacion" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="autorizacion" nillable="true" type="tns:autorizacion" />
+  <xs:complexType name="aplicacion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="apiKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="userId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="aplicacion" nillable="true" type="tns:aplicacion" />
+  <xs:complexType name="encabezadoSeguridad">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fechaPeticion" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ipHost" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="encabezadoSeguridad" nillable="true" type="tns:encabezadoSeguridad" />
+  <xs:element name="encabezadoSeguridadRq" nillable="true" type="tns:encabezadoSeguridad" />
+  <xs:element name="obtenerTokenRs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="tokenAcceso" nillable="true" type="tns:informacionToken" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="informacionToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fechaExpriracion" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="tokenAcceso" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="informacionToken" nillable="true" type="tns:informacionToken" />
+  <xs:complexType name="mensajeFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="mensaje" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="trace" nillable="true" type="q1:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="mensajeFault" nillable="true" type="tns:mensajeFault" />
+  <xs:element name="finalizarSesionRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionSesion" nillable="true" type="tns:informacionSesion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="informacionSesion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="tokenAcceso" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="informacionSesion" nillable="true" type="tns:informacionSesion" />
+  <xs:element name="modificarPasswordRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionSesion" nillable="true" type="tns:informacionNuevaClave" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="informacionNuevaClave">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nuevaClave" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="tokenAcceso" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="informacionNuevaClave" nillable="true" type="tns:informacionNuevaClave" />
+  <xs:element name="obtenerRolesPermisosRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionSesion" nillable="true" type="tns:informacionSesion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="obtenerRolesPermisosRs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="permisos" nillable="true" type="tns:informacionPermisos" />
+        <xs:element minOccurs="0" name="usuario" nillable="true" type="tns:usuario" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="informacionPermisos">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="permisos" nillable="true" type="tns:ArrayOfOpcion" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="roles" nillable="true" type="q2:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="informacionPermisos" nillable="true" type="tns:informacionPermisos" />
+  <xs:complexType name="ArrayOfOpcion">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Opcion" nillable="true" type="tns:Opcion" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOpcion" nillable="true" type="tns:ArrayOfOpcion" />
+  <xs:complexType name="Opcion">
+    <xs:sequence>
+    	<xs:element minOccurs="0" name="descripcion" nillable="true"
+    		type="xs:string" />
+    	<xs:element minOccurs="0" name="hijosOpcion" nillable="true"
+    		type="tns:ArrayOfOpcion" />
+    	<xs:element minOccurs="0" name="nombreObjeto" nillable="true"
+    		type="xs:string" />
+    	<xs:element minOccurs="0" name="opcionId" type="xs:int" />
+    	<xs:element minOccurs="0" name="tipo" type="tns:TipoOpcion" />
+    	<xs:element name="nombreRolAsociado" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Opcion" nillable="true" type="tns:Opcion" />
+  <xs:simpleType name="TipoOpcion">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Menu" />
+      <xs:enumeration value="Pestaña" />
+      <xs:enumeration value="Boton" />
+      <xs:enumeration value="Vinculo" />
+      <xs:enumeration value="Submenu" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TipoOpcion" nillable="true" type="tns:TipoOpcion" />
+  <xs:complexType name="usuario">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="apellidos" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nombres" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="userId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="usuario" nillable="true" type="tns:usuario" />
+  <xs:element name="actualizarFechaVencimientoTokenRq">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionToken" nillable="true" type="tns:informacionSesion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="actualizarFechaVencimientoTokenRs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="informacionToken" nillable="true" type="tns:informacionToken" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

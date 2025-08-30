@@ -1,0 +1,148 @@
+<ol class="breadcrumb">
+	<li><a routerLink="/inicio/home">Inicio</a></li>
+	<li class="active">Administración de Roles</li>
+</ol>
+<div class="container dashboard">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Administración de Roles
+			</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			<p-messages [value]="msgs"></p-messages>
+			<p-confirmDialog header="Confirmar eliminación" acceptLabel="Si" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+		</div>
+		<div>
+			<p-messages [value]="msgsCargar"></p-messages>
+		</div>
+	</div>
+	<div class="row">
+		<form>
+			<div class="form-group col-md-12">
+				<label for="txNombre">Aplicación*</label>
+				<select class="form-control" name="aplicacion" id="aplicacion" [ngClass]="{'campo-requerido':campoError == true &&(idAplicacion == 0)}"
+					[(ngModel)]="idAplicacion">
+					 <option value="0">Seleccione Aplicación</option>
+					 <option *ngFor="let aplicacion of aplicaciones" value="{{aplicacion.aplicacionId}}">{{aplicacion.nombre}}</option>
+				</select>
+			</div>
+			<div class="col-xs-12 grupo_botones">
+				<button type="button" class="btn btn-primary" (click)="consultarRoles()">Filtrar</button>
+			</div>
+		</form>
+	</div>
+
+
+	<div class="row">
+		<p-dataTable [value]="roles" [rows]="10" [paginator]="true" emptyMessage="No se encontraron datos">
+			<p-column header="Nombre">
+				<template let-roles="rowData" pTemplate="body">
+					<span>{{roles.nombre}}</span>
+				</template>
+			</p-column>
+
+			<p-column header="Ruta Directorio Activo">
+				<template let-roles="rowData" pTemplate="body">
+					<span>{{roles.path}}</span>
+				</template>
+			</p-column>
+
+			<p-column header="Estado">
+				<template let-roles="rowData" pTemplate="body">
+					<span>{{roles.nombreEstado}}</span>
+				</template>
+			</p-column>
+			<p-column header="Herramientas">
+				<template let-roles="rowData" pTemplate="body">
+					<td>
+						<a><span  class="fa fa-pencil-square-o" style="cursor:pointer; color: #3366cc" (click) = "seleccionarRol(roles.rolId)" data-toggle="tooltip" title="Modificar Rol"> </span></a>
+						<a><span  class="fa fa-sitemap" style="cursor:pointer; color: #3366cc" (click) = "agregarOperaciones(roles.rolId)" data-toggle="tooltip" title="Añadir operaciones"> </span></a>
+						<a hidden="{{roles.rolActivo}}"><span  class="fa fa-times" style="cursor:pointer; color: #3366cc" data-toggle="tooltip" (click) = "inactivarRol(roles.rolId)" title="Eliminar Rol"> </span></a>
+						<a><span (click)="abrirDialogoExportar(roles.rolId); selectItem(roles)" class="fa fa-external-link" style="cursor:pointer; color: #3366cc" data-toggle="tooltip" title="Exportar Rol"> </span></a>
+					</td>
+				</template>
+			</p-column>
+		</p-dataTable>
+	</div>
+	<div class="col-xs-12 grupo_botones">
+		<button type="button" (click)="abrirDialogoImportar()" class="btn btn-default">Importar rol</button>
+		<button type="button" (click)="nuevo()" class="btn btn-primary">Nuevo rol</button>
+	</div>
+</div>
+
+
+<p-dialog id="modal_aplicacion"  header="Exportar Rol" [(visible)]="display" modal="modal"
+ width="600" responsive="true" class="modal_aplicacion">
+
+	<div class="col-xs-12">
+		<div class="panel">
+
+			<div class="panel-body">
+				<form [formGroup]="formGroup">
+					<div class="form-group col-md-12">
+						<label>Nombre Rol*</label>
+						<input type="text" maxlength="100"
+							formControlName="nombre" class="form-control"
+							[ngClass]="{ 'campo-requerido': submitted && controls.nombre.errors }"
+							required placeholder="Nombre del rol"
+						 	title="Escriba el nombre del rol tal y como se maneja en la aplicación seleccionada, tenga en cuenta que si el nombre no corresponde a un rol valido en la aplicación no funcionara la aplicación de manera correcta.">
+					</div>
+					<div class="form-group col-md-12">
+						<label>ID aplicación*</label>
+						<input type="number"
+							formControlName="idAplicacion" class="form-control"
+							[ngClass]="{ 'campo-requerido': submitted && controls.idAplicacion.errors }"
+							required placeholder="ID aplicación"
+						 	title="ID aplicación.">
+					</div>
+					<div class="form-group col-md-12">
+						<label>Ruta directorio Activo*</label>
+						<input type="text" maxlength="150"
+							formControlName="rutaDirectorioActivo" class="form-control"
+							[ngClass]="{ 'campo-requerido': submitted && controls.rutaDirectorioActivo.errors }"
+						  	required placeholder="Path del rol"
+						 	title="Ingrese la ruta del directorio activo, en caso de ser un rol para usuarios internos del Ministerio por favor coloque la siguiente ruta: DC=minedu,DC=gov,DC=co, en caso de ser un rol usado para los usuarios externos del ministerio por favor coloque la siguiente ruta: OU=Usuarios Externos, DC=minedu,DC=gov,DC=co">
+					</div>
+				</form>
+				<div class="col-xs-12">
+                    <h4>Se exportarán las operaciones de esta aplicación</h4>
+                </div>
+			</div>
+		</div>
+	</div>
+    <p-footer>
+        <div class="col-xs-12 grupo_botones">
+            <button type="button" class="btn btn-default" (click)="cancelarDialog()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="exportar()">Exportar</button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog id="modal_aplicacion"  header="Importar Rol" [(visible)]="displayImportar" modal="modal"
+ width="600" responsive="true" class="modal_aplicacion">
+	<div class="col-xs-12">
+		<div class="panel">
+			<div class="panel-body">
+				<div class="col-xs-12">
+					<div class="input-group mb-3" style="padding:15px 0px">
+						<div class="custom-file">
+						<input type="file" (change)="fileChange($event)" class="custom-file-input" id="inputGroupFile03" accept=".json">
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<h4>Se creará un nuevo rol junto con las operaciones</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+	<p-footer>
+        <div class="col-xs-12 grupo_botones">
+            <button type="button" class="btn btn-default" (click)="cancelarDialogImportar()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="importar()">Importar</button>
+        </div>
+    </p-footer>
+</p-dialog>

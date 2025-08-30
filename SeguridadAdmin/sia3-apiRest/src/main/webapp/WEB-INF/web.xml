@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  
+    <servlet>
+        <servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>co.gov.mineducacion.seguridad.rest,com.jersey.jaxb,com.fasterxml.jackson.jaxrs.json</param-value>
+            
+        </init-param>
+		<init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+		<filter-name>FiltroSeguridad</filter-name>
+		<filter-class>co.gov.mineducacion.sdk.filter.TokenFilterAngular</filter-class>
+		<init-param>
+		<param-name>rutaArchivoConfiguracion</param-name>
+            <!--<param-value>C:\\aplicaciones\sia3\configuracion\configuracionServicio.properties</param-value>-->
+            <param-value>E:\\aplicaciones\sia3\configuracion\configuracionServicio.properties</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>FiltroSeguridad</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+        <filter-name>DatosInicialesFront</filter-name>
+        <filter-class>co.gov.mineducacion.seguridad.rest.config.DatosIniciaslesFront</filter-class>
+        <init-param>
+        <param-name>rutaArchivoConfiguracion</param-name>
+            <!-- <param-value>C:\\aplicaciones\sia3\configuracion\initFront.properties</param-value>--><!--NOSONAR-->
+            <param-value>E:\\aplicaciones\sia3\configuracion\initFront.properties</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>DatosInicialesFront</filter-name>
+        <url-pattern>co.gov.mineducacion.seguridad.rest.config.DatosIniciaslesFront</url-pattern>
+    </filter-mapping>
+    
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>

@@ -1,0 +1,270 @@
+<ol class="breadcrumb">
+	<li>
+		<a routerLink="/inicio/home">Inicio</a>
+	</li>
+	<li class="active">Administrar Parámetros</li>
+</ol>
+<div class="row text-left">
+	<h3>Administrar Parámetros</h3>
+</div>
+<hr/>
+<div class="row">
+	<div>
+		<p-messages [value]="msgs"></p-messages>
+	</div>
+	<div>
+		<p-messages [value]="msgsCargar"></p-messages>
+	</div>
+</div>
+
+<!--FILTRO, UNIVALOR Y TABLA PRINCIPAL-->
+<div class="row">
+	<div class="form-group col-md-12">
+		<div class="form-group col-md-6">
+			<label for="txNombre">Aplicación*</label>
+			<select class="form-control" name="aplicacion" id="aplicacion" (change)="msgs=[]" (change)="actualizarApp()" (change)="consultaListaTipoParametro($event.target.value)"
+			 [ngClass]="{'campo-requerido':campoError == true &&(nombreAppFiltro == 0)}" [(ngModel)]="nombreAppFiltro">
+				<option value="0">Seleccione Aplicación</option>
+				<option *ngFor="let aplicacion of aplicaciones" value="{{aplicacion.aplicacion}}">{{aplicacion.aplicacion}}</option>
+			</select>
+		</div>
+		<div class="form-group col-md-6">
+			<label>Tipo Parámetro*</label>
+			<select class="form-control" name="param" id="param" (change)="msgs=[]" (change)="estadoFiltro=0" (change)="dominioFiltro=0"
+			 (change)="parametros = []" (change)="consultaListaDominios(nombreAppFiltro, $event.target.value)" [ngClass]="{'campo-requerido':campoError == true &&(tipoParametroFiltro == 0)}"
+			 [(ngModel)]="tipoParametroFiltro">
+				<option value="0">Seleccione Tipo Parámetro</option>
+				<option *ngFor="let param of tipoParametros" value="{{param.tipoParametro}}">{{param.tipoParametro}}</option>
+			</select>
+		</div>
+		<div class="form-group col-md-6">
+			<label>Dominio</label>
+			<select class="form-control" name="dominio" id="dominio" (change)="msgs=[]" [(ngModel)]="dominioFiltro" (change)="parametros = []">
+				<option value="0">Seleccione Dominio</option>
+				<option *ngFor="let dominio of dominios" value="{{dominio.dominio}}" data-toggle="tooltip" title="{{dominio.descripcion}}">{{dominio.dominio}}</option>
+			</select>
+		</div>
+		<div class="form-group col-md-6">
+			<label for="txEstado">Estado</label>
+			<select class="form-control" name="estado" id="estado" (change)="msgs=[]" [(ngModel)]="estadoFiltro" (ngModelChange)="estadoFiltro = $event">
+				<option value="0">Seleccione Estado</option>
+				<option *ngFor="let estado of estados" value="{{estado.catalogoId}}">{{estado.descripcion}}</option>
+			</select>
+		</div>
+		<div class="col-xs-12 grupo_botones">
+			<button [disabled]="verFormularioUnivalor" type="button" (click)="limpiarFormulario()" class="btn btn-default">Limpiar</button>
+			<button [disabled]="verFormularioUnivalor" type="button" (click)="consultarParametros()" class="btn btn-primary">Filtrar</button>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="tabla_min table_responsive">
+		<p-dataTable [value]="parametros" [rows]="10" [paginator]="true" [responsive]="true" emptyMessage="No se encontraron datos">
+			<p-column field="aplicacion" header="Aplicación"></p-column>
+			<p-column field="dominio" header="Dominio"></p-column>
+			<p-column header="Estado">
+				<template let-param="rowData" pTemplate type="body">
+					<span>{{nombreEstados[param.estado]}}</span>
+				</template>
+			</p-column>
+			<p-column field="tipoParametro" header="Tipo Parámetro"></p-column>
+			<p-column styleClass="col-button" field="acciones" header="Acciones">
+				<template let-param="rowData" pTemplate type="body">
+					<td class="color_glyphicon">
+						<a>
+							<span style="cursor:pointer" class="glyphicon glyphicon-pencil" (click)="cargarDatosParametros(param)" data-toggle="tooltip"
+							 title="Modificar Parametro"></span>
+						</a>
+					</td>
+				</template>
+			</p-column>
+		</p-dataTable>
+		<p-confirmDialog header="Confirmación" acceptLabel="Si" icon="fa fa-question-circle" width="500"></p-confirmDialog>
+	</div>
+</div>
+
+<hr>
+<div class="row" [hidden]="!verFormularioUnivalor">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Parámetros</h3>
+		</div>
+		<div class="panel-body">
+			<div class="form-group col-md-12">
+				<div *ngIf="!agregando" class="form-group col-md-6">
+					<label>Dominio</label>
+					<input id="nombre" name="nombre" type="text" class="form-control" maxlength="100" [(ngModel)]="dominio" disabled required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="txEstado">Estado*</label>
+					<select id="estado" class="form-control" name="estado" [ngClass]="{'campo-requerido':campoError == true && (estado == 0)}"
+					 [(ngModel)]="estado" (ngModelChange)="estado = $event">
+						<option value="0">Seleccione Estado</option>
+						<option *ngFor="let estado of estados" value="{{estado.catalogoId}}">{{estado.descripcion}}</option>
+					</select>
+				</div>
+				<div class="form-group col-md-12">
+					<label>Valor Parámetro*</label>
+					<input name="nombre" id="nombre" type="text" required class="form-control" maxlength="500" [ngClass]="{'campo-requerido':campoError == true && validarCampoVacio(valorParametro)}"
+					 [(ngModel)]="valorParametro">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 grupo_botones">
+		<button type="button" (click)="cancelar()" class="btn btn-default">Cancelar</button>
+		<button type="button" (click)="editarParametros()" class="btn btn-primary">Guardar</button>
+	</div>
+</div>
+
+<!--DIALOG MULTIVALOR-->
+
+<p-dialog header="Editar Parámetros" (onAfterHide)="cancelar()" [(visible)]="verFormularioMultivalor" [closeOnEscape]="true"
+ [dismissableMask]="true" [responsive]="true" [resizable]="true" showEffect="fade" [modal]="true" scrollable="true" scrollHeight="200px"
+ width="980" class="modal_aplicacion">
+
+	<div>
+		<p-messages [value]="msgsDialog"></p-messages>
+	</div>
+
+	<div class="row">
+		<div class="tabla_min table_responsive">
+			<p-dataTable [value]="parametrosMultivalor" [rows]="3" [paginator]="true" [resizableColumns]="true" [responsive]="true" emptyMessage="No se encontraron datos">
+				<p-column field="aplicacion" header="Aplicación"></p-column>
+				<p-column field="dominio" header="Dominio"></p-column>
+				<p-column header="Estado">
+					<template let-param="rowData" pTemplate type="body">
+						<span>{{nombreEstados[param.estado]}}</span>
+					</template>
+				</p-column>
+				<p-column field="modificable" header="Modificable"></p-column>
+				<p-column field="nombre" header="Valor Parámetro"></p-column>
+				<p-column field="tipoParametro" header="Tipo Parámetro"></p-column>
+				<p-column styleClass="col-button" field="acciones" header="Acciones">
+					<template let-multiParam="rowData" pTemplate type="body">
+						<td class="color_glyphicon">
+							<a>
+								<span style="cursor:pointer" class="glyphicon glyphicon-pencil" (click)="cargarMultivalor(multiParam)" data-toggle="tooltip"
+								 title="Modificar Parametro"></span>
+							</a>
+						</td>
+					</template>
+				</p-column>
+			</p-dataTable>
+			<p-confirmDialog header="Confirmación" acceptLabel="Si" icon="fa fa-question-circle" width="500"></p-confirmDialog>
+		</div>
+		<div class="col-xs-12 grupo_botones">
+			<button [disabled]="verFormularioEditar" type="button" (click)="salir()" class="btn btn-default">Salir</button>
+			<button [disabled]="verFormularioEditar" type="button" (click)="adicionar()" class="btn btn-primary">Adicionar</button>
+		</div>
+	</div>
+	<hr>
+
+	<div class="row" [hidden]="!verFormularioEditar">
+		<div class="form-group col-md-12">
+			<div *ngIf="!agregando" class="form-group col-md-6">
+				<label>Dominio</label>
+				<input id="nombre" name="nombre" type="text" required class="form-control" disabled maxlength="100" [(ngModel)]="dominio">
+			</div>
+			<div class="form-group col-md-6">
+				<label for="txEstado">Estado*</label>
+				<select class="form-control" name="estado" id="estado" [ngClass]="{'campo-requerido':campoError == true && (estado == 0)}"
+				 [(ngModel)]="estado" (ngModelChange)="estado = $event">
+					<option value="0">Seleccione Estado</option>
+					<option *ngFor="let estado of estados" value="{{estado.catalogoId}}">{{estado.descripcion}}</option>
+				</select>
+			</div>
+			<div class="form-group col-md-12">
+				<label>Valor Parámetro*</label>
+				<input name="nombre" id="nombre" type="text" required class="form-control" maxlength="500" [ngClass]="{'campo-requerido':campoError == true && validarCampoVacio(valorParametro)}"
+				 [(ngModel)]="valorParametro">
+			</div>
+			<div class="col-xs-12 grupo_botones">
+				<button type="button" (click)="cancelarEditar()" class="btn btn-default">Cancelar</button>
+				<button *ngIf="dominio != null" type="button" (click)="editarParametrosMultivalor()" class="btn btn-primary">Guardar</button>
+				<button *ngIf="dominio == null" type="button" (click)="adicionarParametrosMultivalor()" class="btn btn-primary">Guardar</button>
+			</div>
+		</div>
+	</div>
+</p-dialog>
+
+<!--DIALOG DEPENDIENTE-->
+
+<p-dialog header="Editar Parámetros" (onAfterHide)="cancelar()" [(visible)]="verFormularioDependiente" [closeOnEscape]="true"
+ [dismissableMask]="true" width="970" responsive="true" class="modal_aplicacion" scrollable="true" scrollHeight="300px">
+
+	<div>
+		<p-messages [value]="msgsDialog"></p-messages>
+	</div>
+
+	<div class="row">
+		<div class="tabla_min table_responsive">
+			<p-dataTable [value]="parametrosDependientes" [rows]="10" [paginator]="true" [responsive]="true" emptyMessage="No se encontraron datos">
+				<p-column field="aplicacion" header="Aplicación"></p-column>
+				<p-column field="dominio" header="Dominio"></p-column>
+				<p-column header="Estado">
+					<template let-param="rowData" pTemplate type="body">
+						<span>{{nombreEstados[param.estado]}}</span>
+					</template>
+				</p-column>
+				<p-column field="modificable" header="Modificable"></p-column>
+				<p-column field="dominioPadre" header="Dominio Padre"></p-column>
+				<p-column field="codigoPadre" [filter]="true" header="Valor Padre"></p-column>
+				<p-column field="nombre" [filter]="true" header="Valor Parámetro"></p-column>
+				<p-column field="tipoParametro" header="Tipo Parámetro"></p-column>
+				<p-column styleClass="col-button" field="acciones" header="Acciones">
+					<template let-param="rowData" pTemplate type="body">
+						<td class="color_glyphicon">
+							<a>
+								<span style="cursor:pointer" class="glyphicon glyphicon-pencil" (click)="cargarDependiente(param)" data-toggle="tooltip"
+								 title="Modificar Parametro"></span>
+							</a>
+						</td>
+					</template>
+				</p-column>
+			</p-dataTable>
+			<p-confirmDialog header="Confirmación" acceptLabel="Si" icon="fa fa-question-circle" width="500"></p-confirmDialog>
+		</div>
+		<div class="col-xs-12 grupo_botones">
+			<button [disabled]="verFormularioEditarDependiente" type="button" (click)="salir()" class="btn btn-default">Salir</button>
+			<button [disabled]="verFormularioEditarDependiente" type="button" (click)="adicionarParametroDependiente()" class="btn btn-primary">Adicionar</button>
+		</div>
+	</div>
+	<hr>
+
+	<div class="row" [hidden]="!verFormularioEditarDependiente">
+		<div class="form-group col-md-12">
+			<div *ngIf="!agregando" class="form-group col-md-6">
+				<label>Dominio</label>
+				<input name="nombre" id="nombre" type="text" required class="form-control" disabled maxlength="100" [(ngModel)]="dominio">
+			</div>
+			<div class="form-group col-md-6">
+				<label for="txEstado">Estado*</label>
+				<select class="form-control" name="estado" id="estado" [ngClass]="{'campo-requerido':campoError == true && (estado == 0)}"
+				 [(ngModel)]="estado" (ngModelChange)="estado = $event">
+					<option value="0">Seleccione Estado</option>
+					<option *ngFor="let estado of estados" value="{{estado.catalogoId}}">{{estado.descripcion}}</option>
+				</select>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="txEstado">Departamento*</label>
+				<select class="form-control" name="estado" id="estado" [ngClass]="{'campo-requerido':campoError == true && (departamento == 0)}"
+				 [(ngModel)]="departamento">
+					<option value="0">Seleccione Departamento</option>
+					<option *ngFor="let dep of departamentos" value="{{dep.codigo}}">{{dep.nombre}}</option>
+				</select>
+			</div>
+			<div class="form-group col-md-12">
+				<label>Valor Parámetro*</label>
+				<input name="nombre" id="nombre" type="text" required class="form-control" maxlength="500" [ngClass]="{'campo-requerido':campoError == true && validarCampoVacio(valorParametro)}"
+				 [(ngModel)]="valorParametro">
+			</div>
+			<div class="col-xs-12 grupo_botones">
+				<button type="button" (click)="cancelarEditar()" class="btn btn-default">Cancelar</button>
+				<button *ngIf="dominio != null" type="button" (click)="editarParametrosDependiente()" class="btn btn-primary">Guardar</button>
+				<button *ngIf="dominio == null" type="button" (click)="adicionarNuevoDependiente()" class="btn btn-primary">Guardar</button>
+			</div>
+		</div>
+	</div>
+</p-dialog>

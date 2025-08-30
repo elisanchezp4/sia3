@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://soap.mineducacion.gov.co/11/seguridad/sia3" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="GestionarUsuario" targetNamespace="http://soap.mineducacion.gov.co/11/seguridad/sia3" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://soap.mineducacion.gov.co/11/seguridad/sia3/Imports">
+      <xsd:import schemaLocation = "sia3.xsd" namespace="http://soap.mineducacion.gov.co/11/seguridad/sia3" />
+      <xsd:import schemaLocation = "service.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation = "Arrays.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="crearUsuarioExternoRq">
+    <wsdl:part name="parameters" element="tns:crearUsuarioExternoRq" />
+  </wsdl:message>
+  <wsdl:message name="crearUsuarioExternoRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="crearUsuarioExternoRs">
+    <wsdl:part name="parameters" element="tns:crearUsuarioExternoRs" />
+  </wsdl:message>
+  <wsdl:message name="IGestionarUsuario_crearUsuarioExterno_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+  <wsdl:message name="modificarUsuarioExternoRq">
+    <wsdl:part name="parameters" element="tns:modificarUsuarioExternoRq" />
+  </wsdl:message>
+  <wsdl:message name="modificarUsuarioExternoRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="IGestionarUsuario_modificarUsuarioExterno_OutputMessage" />
+  <wsdl:message name="IGestionarUsuario_modificarUsuarioExterno_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+  <wsdl:message name="consultarUsuariosRolRq">
+    <wsdl:part name="parameters" element="tns:consultarUsuariosRolRq" />
+  </wsdl:message>
+  <wsdl:message name="consultarUsuariosRolRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="consultarUsuariosRolRs">
+    <wsdl:part name="parameters" element="tns:consultarUsuariosRolRs" />
+  </wsdl:message>
+  <wsdl:message name="IGestionarUsuario_consultarUsuariosRol_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+  <wsdl:message name="inactivarUsuarioRq">
+    <wsdl:part name="parameters" element="tns:inactivarUsuarioRq" />
+  </wsdl:message>
+  <wsdl:message name="inactivarUsuarioRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="IGestionarUsuario_inactivarUsuario_OutputMessage" />
+  <wsdl:message name="IGestionarUsuario_inactivarUsuario_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+
+  <wsdl:message name="IGestionarUsuario_desvincularRolesUsuario_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+
+  <wsdl:message name="desvincularRolesUsuarioRq">
+    <wsdl:part name="parameters" element="tns:desvincularRolesUsuarioRq" />
+  </wsdl:message>
+  <wsdl:message name="desvincularRolesUsuarioRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+
+  <wsdl:message name="IGestionarUsuarioVincularRolesUsuarioMensajeFaultFaultFaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+
+  <wsdl:message name="vincularRolesUsuarioRq">
+    <wsdl:part name="parameters" element="tns:vincularRolesUsuarioRq" />
+  </wsdl:message>
+  <wsdl:message name="vincularRolesUsuarioRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+
+  <wsdl:message name="IGestionarUsuarioActualizarEmailMensajeFaultFaultFaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+
+  <wsdl:message name="actualizarEmailRq">
+    <wsdl:part name="parameters" element="tns:actualizarEmailRq" />
+  </wsdl:message>
+  <wsdl:message name="actualizarEmailRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+
+  <wsdl:message name="IGestionarUsuarioActualizarDatosBasicosMensajeFaultFaultFaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+
+  <wsdl:message name="actualizarDatosBasicosRq">
+    <wsdl:part name="parameters" element="tns:actualizarDatosBasicosRq" />
+  </wsdl:message>
+  <wsdl:message name="actualizarDatosBasicosRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+
+  <wsdl:portType name="IGestionarUsuario">
+    <wsdl:operation name="crearUsuarioExterno">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/crearUsuarioExterno" name="crearUsuarioExternoRq" message="tns:crearUsuarioExternoRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/crearUsuarioExternoResponse" name="crearUsuarioExternoRs" message="tns:crearUsuarioExternoRs" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/crearUsuarioExternomensajeFaultFault" name="mensajeFaultFault" message="tns:IGestionarUsuario_crearUsuarioExterno_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="modificarUsuarioExterno">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/modificarUsuarioExterno" name="modificarUsuarioExternoRq" message="tns:modificarUsuarioExternoRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/modificarUsuarioExternoResponse" message="tns:IGestionarUsuario_modificarUsuarioExterno_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/modificarUsuarioExternomensajeFaultFault" name="mensajeFaultFault" message="tns:IGestionarUsuario_modificarUsuarioExterno_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarUsuariosRol">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/consultarUsuariosRol" name="consultarUsuariosRolRq" message="tns:consultarUsuariosRolRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/consultarUsuariosRolResponse" name="consultarUsuariosRolRs" message="tns:consultarUsuariosRolRs" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/consultarUsuariosRolmensajeFaultFault" name="mensajeFaultFault" message="tns:IGestionarUsuario_consultarUsuariosRol_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="inactivarUsuario">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/inactivarUsuario" name="inactivarUsuarioRq" message="tns:inactivarUsuarioRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/inactivarUsuarioResponse" message="tns:IGestionarUsuario_inactivarUsuario_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/inactivarUsuariomensajeFaultFault" name="mensajeFaultFault" message="tns:IGestionarUsuario_inactivarUsuario_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="actualizarEmail">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/actualizarEmail" name="actualizarEmailRq" message="tns:actualizarEmailRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/actualizarEmailResponse" name="actualizarEmailRs" message="tns:actualizarEmailRs" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/actualizarEmailmensajeFaultFault" name="mensajeFaultFault" message="tns:IGestionarUsuario_actualizarEmail_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="vincularRolesUsuario">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/vincularRolesUsuario" name="vincularRolesUsuarioRq" message="tns:vincularRolesUsuarioRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/vincularRolesUsuarioResponse" name="vincularRolesUsuarioRs" message="tns:vincularRolesUsuarioRs" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/vincularRolesUsuariomensajeFaultFault" name="mensajeFaultFault" message="tns:IGestionarUsuario_vincularRolesUsuario_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="desvincularRolesUsuario">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/desvincularRolesUsuario" name="desvincularRolesUsuarioRq" message="tns:desvincularRolesUsuarioRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/desvincularRolesUsuarioResponse" name="desvincularRolesUsuarioRs" message="tns:desvincularRolesUsuarioRs" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/desvincularRolesUsuariomensajeFaultFault" name="mensajeFaultFault" message="tns:IGestionarUsuario_desvincularRolesUsuario_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IGestionarUsuario" type="tns:IGestionarUsuario">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="crearUsuarioExterno">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/crearUsuarioExterno" style="document" />
+      <wsdl:input name="crearUsuarioExternoRq">
+        <soap:header message="tns:crearUsuarioExternoRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:crearUsuarioExternoRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="crearUsuarioExternoRs">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="modificarUsuarioExterno">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/modificarUsuarioExterno" style="document" />
+      <wsdl:input name="modificarUsuarioExternoRq">
+        <soap:header message="tns:modificarUsuarioExternoRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:modificarUsuarioExternoRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarUsuariosRol">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/consultarUsuariosRol" style="document" />
+      <wsdl:input name="consultarUsuariosRolRq">
+        <soap:header message="tns:consultarUsuariosRolRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:consultarUsuariosRolRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="consultarUsuariosRolRs">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="inactivarUsuario">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/inactivarUsuario" style="document" />
+      <wsdl:input name="inactivarUsuarioRq">
+        <soap:header message="tns:inactivarUsuarioRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:inactivarUsuarioRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="actualizarEmail">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/actualizarEmail" style="document" />
+      <wsdl:input name="actualizarEmailRq">
+        <soap:header message="tns:actualizarEmailRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:actualizarEmailRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="actualizarEmailRs">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="vincularRolesUsuario">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/vincularRolesUsuario" style="document" />
+      <wsdl:input name="vincularRolesUsuarioRq">
+        <soap:header message="tns:vincularRolesUsuarioRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:vincularRolesUsuarioRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="vincularRolesUsuarioRs">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="desvincularRolesUsuario">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IGestionarUsuario/desvincularRolesUsuario" style="document" />
+      <wsdl:input name="desvincularRolesUsuarioRq">
+        <soap:header message="tns:desvincularRolesUsuarioRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:desvincularRolesUsuarioRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="desvincularRolesUsuarioRs">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+
+
+  </wsdl:binding>
+  <wsdl:service name="GestionarUsuario">
+    <wsdl:port name="BasicHttpBinding_IGestionarUsuario" binding="tns:BasicHttpBinding_IGestionarUsuario">
+      <soap:address location="http://localhost:8733/WsdlSeguridad/GestionarUsuario/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

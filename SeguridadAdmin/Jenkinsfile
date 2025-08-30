@@ -1,0 +1,189 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven-3.6.3'
+    }
+
+    parameters {
+        choice(
+            choices: ['CERTIFICACION', 'PRODUCCION'],
+            description: 'Seleccione el entorno para compilar',
+            name: 'ENTORNO'
+        )
+
+        // gitParameter branch: '', branchFilter: '.*', defaultValue: '', description: 'Seleccione el branch sobre el que requiere compilar', name: 'BRANCH', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'PT_BRANCH_TAG'
+        gitParameter branch: '', branchFilter: '.*', defaultValue: '', description: 'Seleccione el tag sobre el que requiere compilar', name: 'TAG', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'PT_TAG'
+    }
+
+    stages {
+        stage('Actualizar pom') {
+            when {
+                expression { params.ENTORNO == 'CERTIFICACION' }
+            }
+            steps {
+                script {
+                    dir('Fuentes/Aplicacion/SeguridadAdmin') {
+                        // sh 'git checkout ${BRANCH#*/}'
+                        sh 'git checkout ${params.TAG}'
+                        sh 'git pull'
+                        sh '''
+                        if grep "SNAPSHOT" pom.xml
+                        then 
+                            sed -i s/-SNAPSHOT//g "pom.xml"
+                        else
+                            echo "No se encuentra SNAPSHOT en el pom.xml"
+                        fi
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Actualizar libreria base') {
+            steps {
+                dir('Fuentes/Aplicacion/SeguridadShare') {
+                    sh '''
+                    mvn clean
+                    mvn install
+                    '''
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                dir('Fuentes/Aplicacion/SeguridadAdmin/sia3-angular2/src/main/angular') {
+                    nodejs(nodeJSInstallationName: 'node-v9.6.1') {
+                        sh 'node -v'
+                        sh 'npm install'
+                        sh 'npm install -g @angular/cli@1.0.0-beta.30'
+                        sh './node_modules/.bin/ng build'
+                    }
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('Fuentes/Aplicacion/SeguridadAdmin') {
+                    nodejs(nodeJSInstallationName: 'node-v9.6.1') {
+                        sh 'npm install -g @angular/cli@1.0.0-beta.30'
+                        sh 'mvn clean install'
+                    }
+                }
+            }
+        }
+
+        stage('SonarQube analysis') {
+            environment {
+                JAVA_HOME = '/opt/jdk-11.0.12' // Especificamos Java 11 solo para esta etapa
+            }
+            steps {
+                script {
+                    def sonarCredentialsId = (params.ENTORNO == 'CERTIFICACION') ? 'sonarQ' : 'sonarQprod'
+                    def sonarHostUrl = (params.ENTORNO == 'CERTIFICACION') ? 'https://sonarcert.mineducacion.gov.co/' : 'https://sonar.mineducacion.gov.co/'
+
+                    def mvn = tool 'maven-3.6.3'
+                    withCredentials([string(credentialsId: sonarCredentialsId, variable: 'SONAR_TOKEN')]) {
+                        dir('Fuentes/Aplicacion/SeguridadAdmin') {
+                            sh "${mvn}/bin/mvn sonar:sonar" +
+                            " -pl !sia3-angular2" + // Excluye el módulo sia3-angular2 del análisis
+                            " -Dsonar.projectKey=SIA3-Code-Analysis" +
+			    " -Dsonar.projectName=Sia3-admin-ear" +
+                            " -Dsonar.host.url=${sonarHostUrl}" +
+                            " -Dsonar.login=${SONAR_TOKEN}" + // Utiliza el token de autenticación desde withCredentials
+			    " -Dsonar.exclusions=**/*Test.java,**/*Spec.java" // Excluye los archivos de pruebas del análisis
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('test') {
+            steps {
+                dir('Fuentes/Aplicacion/SeguridadAdmin') {
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Nexus Admin') {
+            steps {
+                script {
+                    dir('Fuentes/Aplicacion/SeguridadAdmin/sia3-admin-ear') {
+                        pom = readMavenPom file: 'pom.xml'
+
+                        def repositorio = (params.ENTORNO == 'PRODUCCION') ? "APP233-releases" : "APP233-snapshots"
+
+                        sh "tar -cvf sia3-admin-ear-${pom.version}.tar target/sia3-admin-ear-${pom.version}.ear"
+
+                        nexusArtifactUploader(
+                            credentialsId: 'nexus',
+                            groupId: 'co.gov.mineducacion.seguridad',
+                            nexusUrl: 'nexus.mineducacion.gov.co',
+                            nexusVersion: 'nexus3',
+                            protocol: 'https',
+                            repository: "${repositorio}",
+                            version: "${pom.version}",
+                            artifacts: [
+                                [artifactId: 'sia3-admin-ear', classifier: '', file: "sia3-admin-ear-${pom.version}.tar", type: 'tar']
+                            ]
+                        )
+
+                        sh "rm -rf sia3-admin-ear-${pom.version}.tar"
+                    }
+                }
+            }
+        }
+
+        stage('Nexus Parametros') {
+            steps {
+                script {
+                    dir('Fuentes/Aplicacion/SeguridadAdmin/parametros/parametros-ear') {
+                        pom = readMavenPom file: 'pom.xml'
+
+                        def repositorio = (params.ENTORNO == 'PRODUCCION') ? "APP233-releases" : "APP233-snapshots"
+
+                        sh "tar -cvf parametros-ear-${pom.version}.tar target/parametros-ear-${pom.version}.ear"
+
+                        nexusArtifactUploader(
+                            credentialsId: 'nexus',
+                            groupId: 'co.gov.heinsohn.men.parametros',
+                            nexusUrl: 'nexus.mineducacion.gov.co',
+                            nexusVersion: 'nexus3',
+                            protocol: 'https',
+                            repository: "${repositorio}",
+                            version: "${pom.version}",
+                            artifacts: [
+                                [artifactId: 'parametros-ear', classifier: '', file: "parametros-ear-${pom.version}.tar", type: 'tar']
+                            ]
+                        )
+
+                        sh "rm -rf parametros-ear-${pom.version}.tar"
+                    }
+                }
+            }
+        }
+		
+		
+		// stage('Tagging') {
+        //     when {
+        //         allOf {
+        //             expression { params.BRANCH == 'origin/desarrollo' }
+        //             expression { params.ENTORNO == 'CERTIFICACION ' }
+        //         }
+        //     }
+        //     steps {
+        //         script {
+        //             dir('Fuentes/Aplicacion/SeguridadAdmin/sia3-admin-ear') {
+        //                 pom = readMavenPom file: 'pom.xml'
+        //                 def tagVersion = "v${pom.version}"
+        //                 sh "git tag -a ${tagVersion} -m 'Release ${tagVersion}'"
+        //                 sh "git push origin ${tagVersion}"
+        //             }
+        //         }
+        //     }
+        // }
+    }
+}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<f:view contentType="text/html" locale="es">
+	<h:head>
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title><ui:insert name="titulo"></ui:insert></title>
+		</f:facet>
+
+		<link type="text/css" rel="stylesheet" href="#{resource['css/saces-general.css']}" />
+		<link type="text/css" rel="stylesheet" href="#{resource['css/saces-layout.css']}" />
+		<link type="text/css" rel="stylesheet" href="#{resource['css/saces-public.css']}" />
+		<link type="text/css" rel="stylesheet" href="#{resource['css/saces-content.css']}" />
+		<link type="text/css" rel="stylesheet" href="#{resource['css/saces-header.css']}" />
+		<script name="jquery/jquery.js" library="primefaces"></script>
+				<script type= "text/javascript">
+		var RecaptchaOptions = {
+			   lang : 'es',
+			};
+	</script>
+	<script  type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=es" async="async" defer="defer"></script>
+		
+	<link rel="icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
+	</h:head>
+	<h:body>
+		
+		<div class="ui-grid-row">
+				<div class="ui-grid-col-12">
+					<ui:include src="/template/header.xhtml" />
+				</div>
+			</div>
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-12 contenido-principal">
+					<p:panel id="pnl-contenido-principal">
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-row">
+								<div class="ui-grid-col-12">
+									<p:growl id="mensajes" sticky="true" autoUpdate="true"
+										globalOnly="true" life="5000" showDetail="true"
+										showSummary="false" closable="true" />
+									<ui:insert name="content"></ui:insert>
+								</div>
+							</div>
+							<div class="ui-grid-row">
+								<div class="ui-grid-col-12">
+									<ui:include src="/template/footer.xhtml" />
+								</div>
+							</div>
+						</div>
+					</p:panel>
+				</div>
+			</div>
+
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog appendTo="@(body)" widgetVar="statusDialog" modal="true"
+			draggable="false" closable="false" resizable="false"
+			showHeader="false">
+			<p:graphicImage value="#{resource['images/ajax-processing.gif']}" />
+		</p:dialog>
+	</h:body>
+</f:view>
+</html>

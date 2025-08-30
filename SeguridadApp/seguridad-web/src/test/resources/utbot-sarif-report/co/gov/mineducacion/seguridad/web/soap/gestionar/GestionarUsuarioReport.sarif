@@ -1,0 +1,167 @@
+{
+  "$schema" : "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version" : "2.1.0",
+  "runs" : [ {
+    "tool" : {
+      "driver" : {
+        "name" : "UnitTestBot",
+        "organization" : "utbot.org",
+        "version" : "1.0",
+        "rules" : [ {
+          "id" : "utbot.exception.ClassCastException",
+          "name" : "ClassCastException",
+          "shortDescription" : {
+            "text" : "Unexpected ClassCastException detected."
+          },
+          "fullDescription" : {
+            "text" : "Seems like an exception ClassCastException might be thrown."
+          },
+          "help" : {
+            "text" : "https://docs.oracle.com/javase/8/docs/api/java/lang/ClassCastException.html"
+          }
+        }, {
+          "id" : "utbot.exception.AccessControlException",
+          "name" : "AccessControlException",
+          "shortDescription" : {
+            "text" : "Unexpected AccessControlException detected."
+          },
+          "fullDescription" : {
+            "text" : "Seems like an exception AccessControlException might be thrown."
+          },
+          "help" : {
+            "text" : "https://docs.oracle.com/javase/8/docs/api/java/lang/AccessControlException.html"
+          }
+        } ]
+      }
+    },
+    "results" : [ {
+      "ruleId" : "utbot.exception.ClassCastException",
+      "level" : "error",
+      "message" : {
+        "text" : "Unexpected exception: java.lang.ClassCastException: [B cannot be cast to co.gov.mineducacion.seguridad.web.soap.gestionar.IGestionarUsuario.\nTest case: `getBasicHttpBindingIGestionarUsuario()`\n[Generated test for this case](1)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "SeguridadApp/seguridad-web/src/main/java/co/gov/mineducacion/seguridad/web/soap/gestionar/GestionarUsuario.java",
+            "uriBaseId" : "%SRCROOT%"
+          },
+          "region" : {
+            "startLine" : 72,
+            "startColumn" : 9
+          }
+        }
+      }, {
+        "logicalLocations" : [ {
+          "fullyQualifiedName" : "co.gov.mineducacion.seguridad.web.soap.gestionar.GestionarUsuario"
+        } ]
+      } ],
+      "relatedLocations" : [ {
+        "id" : 1,
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "SeguridadApp/seguridad-web/src/test/java/co/gov/mineducacion/seguridad/web/soap/gestionar/GestionarUsuarioTest.java",
+            "uriBaseId" : "%SRCROOT%"
+          },
+          "region" : {
+            "startLine" : 48,
+            "startColumn" : 5
+          }
+        }
+      } ],
+      "codeFlows" : [ {
+        "threadFlows" : [ {
+          "locations" : [ {
+            "location" : {
+              "message" : {
+                "text" : "GestionarUsuarioTest.testGetBasicHttpBindingIGestionarUsuario_ServiceGetPort_1(GestionarUsuarioTest.java:57)"
+              },
+              "physicalLocation" : {
+                "artifactLocation" : {
+                  "uri" : "SeguridadApp/seguridad-web/src/test/java/co/gov/mineducacion/seguridad/web/soap/gestionar/GestionarUsuarioTest.java",
+                  "uriBaseId" : "%SRCROOT%"
+                },
+                "region" : {
+                  "startLine" : 57,
+                  "startColumn" : 9
+                }
+              }
+            }
+          }, {
+            "location" : {
+              "message" : {
+                "text" : "co.gov.mineducacion.seguridad.web.soap.gestionar.GestionarUsuario.getBasicHttpBindingIGestionarUsuario(GestionarUsuario.java:72)"
+              },
+              "physicalLocation" : {
+                "artifactLocation" : {
+                  "uri" : "SeguridadApp/seguridad-web/src/main/java/co/gov/mineducacion/seguridad/web/soap/gestionar/GestionarUsuario.java",
+                  "uriBaseId" : "%SRCROOT%"
+                },
+                "region" : {
+                  "startLine" : 72,
+                  "startColumn" : 9
+                }
+              }
+            }
+          } ]
+        } ]
+      } ]
+    }, {
+      "ruleId" : "utbot.exception.AccessControlException",
+      "level" : "error",
+      "message" : {
+        "text" : "Unexpected exception: java.security.AccessControlException: access denied (\"java.io.FilePermission\" \"C:\\Users\\Administrador\\Desktop\\Hoy\\Proyectos\\WorkSpace\\Seguridad\\seguridad-ejb\\src\\wsdl\\Gestionar\\sia3.wsdl\" \"read\").\nTest case: `getBasicHttpBindingIGestionarUsuario()`\n[Generated test for this case](1)"
+      },
+      "locations" : [ {
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "SeguridadApp/seguridad-web/src/main/java/co/gov/mineducacion/seguridad/web/soap/gestionar/GestionarUsuario.java",
+            "uriBaseId" : "%SRCROOT%"
+          },
+          "region" : {
+            "startLine" : 71,
+            "startColumn" : 5
+          }
+        }
+      }, {
+        "logicalLocations" : [ {
+          "fullyQualifiedName" : "co.gov.mineducacion.seguridad.web.soap.gestionar.GestionarUsuario"
+        } ]
+      } ],
+      "relatedLocations" : [ {
+        "id" : 1,
+        "physicalLocation" : {
+          "artifactLocation" : {
+            "uri" : "SeguridadApp/seguridad-web/src/test/java/co/gov/mineducacion/seguridad/web/soap/gestionar/GestionarUsuarioTest.java",
+            "uriBaseId" : "%SRCROOT%"
+          },
+          "region" : {
+            "startLine" : 69,
+            "startColumn" : 5
+          }
+        }
+      } ],
+      "codeFlows" : [ {
+        "threadFlows" : [ {
+          "locations" : [ {
+            "location" : {
+              "message" : {
+                "text" : "GestionarUsuarioTest.testGetBasicHttpBindingIGestionarUsuario(GestionarUsuarioTest.java:69)"
+              },
+              "physicalLocation" : {
+                "artifactLocation" : {
+                  "uri" : "SeguridadApp/seguridad-web/src/test/java/co/gov/mineducacion/seguridad/web/soap/gestionar/GestionarUsuarioTest.java",
+                  "uriBaseId" : "%SRCROOT%"
+                },
+                "region" : {
+                  "startLine" : 69,
+                  "startColumn" : 5
+                }
+              }
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  } ]
+}

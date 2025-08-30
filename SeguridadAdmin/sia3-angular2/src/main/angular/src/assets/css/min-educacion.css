@@ -1,0 +1,182 @@
+/*!
+ * Proyecto SIGCE Mineducación
+ * Copyright 2016-2017 Heinsohn
+ */
+
+
+/* Global Styles */
+
+body { background-color: #FFF; }
+a, a:hover {color: #3366cc;}
+
+
+#wrapper { padding-left: 0; }
+#page-wrapper { width: 100%; padding: 0; background-color: #fff; }
+.huge { font-size: 50px; line-height: normal; }
+.panel-title {font-weight: 600;}
+.panel-footer .fa {font-size: 18px;}
+.panel-primary a {color: #337ab7;}
+.panel-primary a:hover {color: #23527c;}
+.panel dl {margin-bottom: 0px;}
+.panel dl dt {width: 21%; display: inline-block; margin-bottom: 15px; vertical-align: top;}
+.panel dl dd {width: 27%; display: inline-block; vertical-align: top;}
+.grupo_botones {text-align: right; margin-top: 10px; margin-bottom: 15px; text-transform: uppercase;}
+.grupo_botones a {margin-left: 10px;}
+.grupo_botones a .fa {font-size: 18px;}
+
+/*@media(min-width:768px) {
+#wrapper { padding-left: 225px; }
+#page-wrapper { padding: 10px; }
+}*/
+
+
+/* Encabezado */
+.encabezado {background-color: #f9f9f9; padding-left: 25px; padding-top: 15px; padding-bottom: 15px; font-weight: 700;}
+.encabezado .nombre {color: #3366cc; font-size: 35px; margin-bottom: 0px; margin-top: 5px;}
+.encabezado p {color: #666; font-size: 20px; margin-top: -10px;}
+.encabezado img {position: absolute; right: 25px; top: 33px;}
+.encabezado img:last-child {right: 150px;}
+
+
+/* Top Navigation */
+
+.navbar-inverse {background-color:#3366cc; border: 0px; border-color:transparent; border-radius: 0px;}
+.navbar-inverse .navbar-brand{color:#fff;}
+.top-nav { padding: 0 15px; }
+.top-nav>li { display: inline-block; float: left; }
+.top-nav>li>a { padding-top: 15px; padding-bottom: 15px; line-height: 20px; color: #fff; }
+.top-nav>li>a:hover, .top-nav>li>a:focus, .top-nav>.open>a, .top-nav>.open>a:hover, .top-nav>.open>a:focus { color: #fff; background-color: #7897d5; }
+.top-nav>.open>.dropdown-menu { float: left; position: absolute; margin-top: 0; border: 1px solid rgba(0,0,0,.15); border-top-left-radius: 0; border-top-right-radius: 0; background-color: #fff; -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175); box-shadow: 0 6px 12px rgba(0,0,0,.175); }
+.top-nav>.open>.dropdown-menu.mejora {width: 100%;}
+.top-nav>.open>.dropdown-menu>li>a { white-space: normal; }
+.top-nav .fa.fa-home {font-size: 18px;}
+ul.message-dropdown { padding: 0; max-height: 250px; overflow-x: hidden; overflow-y: auto; }
+li.message-preview { width: 275px; border-bottom: 1px solid rgba(0,0,0,.15); }
+li.message-preview>a { padding-top: 15px; padding-bottom: 15px; }
+li.message-footer { margin: 5px 0; }
+ul.alert-dropdown { width: 200px; }
+.dropdown-menu>li>a {color: #3366cc; padding: 10px;}
+.dropdown-menu>li>a:hover {color: #3366cc;}
+.media-heading {font-size: 16px;}
+
+/* Side Navigation */
+
+@media(min-width:768px) {
+.side-nav { position: fixed; top: 51px; left: 225px; width: 225px; margin-left: -225px; border: none; border-radius: 0; overflow-y: auto; background-color: #222; bottom: 0; overflow-x: hidden; padding-bottom: 40px; }
+.side-nav>li>a { width: 225px; }
+.side-nav li a:hover,  .side-nav li a:focus { outline: none; background-color: #000 !important; }
+}
+.side-nav>li>ul { padding: 0; }
+.side-nav>li>ul>li>a { display: block; padding: 10px 15px 10px 38px; text-decoration: none; color: #999; }
+.side-nav>li>ul>li>a:hover { color: #fff; }
+
+
+/* Breadcrumb */
+
+.breadcrumb {background-color: transparent; margin-bottom: 0px;}
+
+.page-header {margin: 20px 0 20px;}
+
+/* Flot Chart Containers */
+
+.flot-chart { display: block; height: 400px; }
+.flot-chart-content { width: 100%; height: 100%; }
+
+/* Custom Colored Panels */
+
+.huge { font-size: 40px; }
+.panel-green { border-color: #5cb85c; }
+.panel-green > .panel-heading { border-color: #5cb85c; color: #fff; background-color: #5cb85c; }
+.panel-green > a { color: #5cb85c; }
+.panel-green > a:hover { color: #3d8b3d; }
+.panel-red { border-color: #d9534f; }
+.panel-red > .panel-heading { border-color: #d9534f; color: #fff; background-color: #d9534f; }
+.panel-red > a { color: #d9534f; }
+.panel-red > a:hover { color: #b52b27; }
+.panel-yellow { border-color: #f0ad4e; }
+.panel-yellow > .panel-heading { border-color: #f0ad4e; color: #fff; background-color: #f0ad4e; }
+.panel-yellow > a { color: #f0ad4e; }
+.panel-yellow > a:hover { color: #df8a13; }
+
+
+/* Dashboard */
+
+.grafica_dashboard img {width: 100%; height: auto;}
+.dashboard .row {margin-top: 20px;}
+.identicacion_colegio {position: absolute; right: 15px; top: -10px;}
+.identicacion_colegio img, .identicacion_colegio p {float: left;}
+.identicacion_colegio img {margin-right: 10px;}
+.identicacion_colegio .texto_grande {font-size: 17px; font-weight: 700; margin-bottom: 0px;}
+.alert .fa {font-size: 18px;}
+
+
+/* Footer */
+
+.footer {background-color: #5A6C7A; padding: 10px; height: 41px; margin-top: 20px;}
+.footer p {color: #FFF; float: left; padding-left: 7px;}
+.footer p:first-child {border-right: solid 1px #FFF; padding-right: 7px;}
+.footer .texto_desarrollado {float: right; margin-right: 135px;}
+.footer img {position: absolute; right: 10px; top: 0px;}
+
+
+/* Table */
+
+table thead {background-color: #3366cc; color: #FFF;}
+table thead tr th {font-weight: normal; vertical-align: top !important;}
+table thead tr th, table tbody tr td {border-left: 1px solid #ddd; text-align: center;}
+table thead tr th:last-child, table tbody tr td:last-child {border-right: 1px solid #ddd;}
+table thead tr .plan_acciones {width: 86px;}
+table tbody tr:last-child {border-bottom: 1px solid #ddd;}
+table tbody tr .align_left {text-align: left;}
+table tbody tr td .fa {color: #FFFFFF; font-size: 14px; cursor: pointer; margin: 1px;}
+table tbody .inactivo {color: #979797;}
+.pagination {margin: 0px 0px 20px 0px;}
+.pagination>li>a, .pagination>li>a:hover, .pagination>li>span, .pagination>li>span:hover {color: #3366cc;}
+.tabla_navegacion, .tabla_botones {padding: 0px;}
+.tabla_botones {text-align: right;}
+.tabla_botones .btn {margin-right: 10px;}
+.tabla_botones .btn:last-child {margin-right: 0px;}
+.min_iconografia .fa {color: #3366cc;}
+
+
+/* Modal */
+.modal-content {border-radius: 0px; box-shadow: none; border: none;}
+.modal-content .fa {color: #3366cc;}
+.modal-content .close {opacity: 1;}
+.modal-header {border-bottom: none;}
+.modal-body {padding: 0px 15px 15px 15px;}
+.modal-body p {margin: 0 0 20px; line-height: 18px;}
+.modal-footer {border-top: none; background-color: #f5f5f5;}
+.clear {clear: both;}
+
+/* Form */
+.form-control {border-radius: 0px;}
+.form-group .fa {position: absolute; bottom: 9px; right: 25px; font-size: 16px;}
+.form-group .campo_obligatorio span {color: #A22207; font-size: 18px; margin-right: 5px;}
+.form-group .label_checkbox {font-weight: normal; margin-right: 10px;}
+.form-group .mensaje_error {display: none;}
+.form-group.error .form-control {border: 2px solid #d0011a;}
+.form-group.error .mensaje_error {display: block; color: #d0011a; font-size: 13px;}
+.form-group button.multiselect.dropdown-toggle.btn.btn-default {width: 100%; border-radius: 0px; color: #555; font-size: 14px; text-transform: none; height: 34px; border: 1px solid #ccc; line-height: 12px;}
+.form-group label span {font-weight: normal; font-size: 12px;}
+.btn {text-transform: uppercase;}
+.btn-link, .btn-link:hover {color: #3366cc;}
+.btn-primary {background-color: #3366cc; border: none; padding: 10px 20px;}
+.btn-primary:hover {background-color: #3366cc; opacity: 0.8;}
+.panel.boton_absolute .btn-primary {position: absolute; bottom: 30px; right: 14px;}
+.panel.boton_absolute {margin-bottom: 80px;}
+.btn-default {padding: 10px 20px; color: #3366cc; border-color: #3366cc;}
+.btn-default:hover {color: #3366cc;}
+
+
+
+.ui-contextmenu {
+    display: block;
+     visibility: visible;
+      left: 138px;
+      top: 1px !important;
+      opacity: 1.036;
+}
+
+
+

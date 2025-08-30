@@ -1,0 +1,136 @@
+pipeline {
+    agent any 
+	 tools {
+        maven 'maven-3.6.3'
+    }
+	parameters {
+        choice(
+            choices: ['CERTIFICACION' , 'PRODUCCION'],
+            description: 'Seleccione el entorno para compilar',
+            name: 'ENTORNO')
+			
+			
+			// gitParameter branch: '', branchFilter: '.*', defaultValue: '', description: 'Seleccione el branch sobre el que requiere compilar', name: 'BRANCH', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'PT_BRANCH_TAG'
+			gitParameter branch: '', branchFilter: '.*', defaultValue: '', description: 'Seleccione el tag sobre el que requiere compilar', name: 'TAG', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'PT_TAG'
+    }
+    stages {
+	    stage ('Actualizar pom') {
+            when {
+                
+                expression { params.ENTORNO == 'PRODUCCION' }
+            }
+			
+			
+            steps {
+			
+			 script{
+				dir('Fuentes/Aplicacion/SeguridadShare/seguridad-sdk' ){
+			
+			
+				// sh 'git checkout  ${BRANCH#*/}'
+				sh 'git checkout ${params.TAG}'
+				sh 'git pull'
+				sh '''
+				if grep "SNAPSHOT" pom.xml
+					then 
+					sed -i s/-SNAPSHOT//g "pom.xml"
+					
+
+				else
+				
+				echo "No se encuentra SNAPSHOT en el pom.xml"
+				fi'''
+					
+					}
+				}
+			
+			}
+        }
+	
+		 stage('Build') { 
+            steps {
+                 dir('Fuentes/Aplicacion/SeguridadShare/seguridad-sdk' ) {
+              
+              sh 'mvn clean'
+				}
+            }
+        }
+        
+        stage('test') { 
+            steps {
+                 dir('Fuentes/Aplicacion/SeguridadShare/seguridad-sdk' ) {
+              
+              sh 'mvn test'
+				}
+            }
+        }
+		
+		 stage('Package') { 
+            steps {
+                 dir('Fuentes/Aplicacion/SeguridadShare/seguridad-sdk' ) {
+              
+              sh 'mvn package'
+					}
+				}
+            }
+			
+			
+			stage('Nexus'){
+			 
+            steps{
+			
+                script{
+					dir('Fuentes/Aplicacion/SeguridadShare/seguridad-sdk' ) {
+						pom = readMavenPom file: 'pom.xml'
+						
+						def repositorio
+						if (params.ENTORNO == 'PRODUCCION') {
+							
+							repositorio="APP233-releases"
+						}
+						else {
+						
+						repositorio="APP233-snapshots"
+						
+						}
+						
+					sh "tar -cvf SDK-${pom.version}.tar target/SDK-${pom.version}.jar"				
+					
+                    
+                    nexusArtifactUploader (
+					
+					credentialsId: 'nexus',
+                    groupId: 'co.gov.mineducacion.seguridad.sdk', 
+                    nexusUrl: 'nexus.mineducacion.gov.co', 
+                    nexusVersion: 'nexus3', 
+                    protocol: 'https', 
+                    repository: "${repositorio}", 
+                    version: "${pom.version}",
+					
+					
+
+					artifacts: [
+                        
+                            [artifactId: 'SDK', 
+                            classifier: '', 
+                            file: "SDK-${pom.version}.tar",  
+                            type: 'tar']
+                        
+							]	
+						)
+						
+					sh "rm -rf SDK-${pom.version}.tar"
+					def log = sh (script: "grep 'Could not transfer artifact' ${JENKINS_HOME}/jobs/APP233/jobs/${JOB_BASE_NAME}/builds/${BUILD_NUMBER}/log", returnStatus: true)
+					
+					if (log == 0){
+					echo "Revisar que no este cargada la misma version en nexus o errores en el servidor nexus"
+					sh "exit 1"
+					 
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}

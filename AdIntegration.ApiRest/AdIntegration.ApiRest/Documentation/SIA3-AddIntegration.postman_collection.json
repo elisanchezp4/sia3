@@ -1,0 +1,226 @@
+{
+  "info": {
+    "_postman_id": "d03fe2e2-71b2-42fe-86c6-3dcfc38564a0",
+    "name": "SIA3-AddIntegration",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "ListarUsuario",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "Men2022*2022",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://adintegration-apirest.azurewebsites.net/ADIntegation/listarusuarios",
+          "protocol": "https",
+          "host": [
+            "adintegration-apirest",
+            "azurewebsites",
+            "net"
+          ],
+          "path": [
+            "ADIntegation",
+            "listarusuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ValidarExisteUsuario",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "Men2022*2022",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://adintegration-apirest.azurewebsites.net/ADIntegation/validarexisteusuario/fmarcano",
+          "protocol": "https",
+          "host": [
+            "adintegration-apirest",
+            "azurewebsites",
+            "net"
+          ],
+          "path": [
+            "ADIntegation",
+            "validarexisteusuario",
+            "fmarcano"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "BuscarUsuario",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "Men2022*2022",
+            "type": "default"
+          }
+        ],
+        "url": {
+          "raw": "https://adintegration-apirest.azurewebsites.net/ADIntegation/buscarusuario/fmarcano",
+          "protocol": "https",
+          "host": [
+            "adintegration-apirest",
+            "azurewebsites",
+            "net"
+          ],
+          "path": [
+            "ADIntegation",
+            "buscarusuario",
+            "fmarcano"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ValidarUsuario",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "Men2022*2022",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://adintegration-apirest.azurewebsites.net/ADIntegation/validarusuario/fmarcano/Sia3-123456789012",
+          "protocol": "https",
+          "host": [
+            "adintegration-apirest",
+            "azurewebsites",
+            "net"
+          ],
+          "path": [
+            "ADIntegation",
+            "validarusuario",
+            "fmarcano",
+            "Sia3-123456789012"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "EditarUsuario",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "Men2022*2022",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{            \"samAccountName\": \"fmarcano\",\r\n            \"givenName\": \"Marcano\",\r\n            \"surname\": \"Ing.\",\r\n            \"displayName\": \"FTMG\",\r\n            \"mail\": \"a@gmail.com\",\r\n            \"name\": \"Tomasito el bello\",\r\n            \"password\": \"newpassword\",\r\n            \"description\": \"Descripción de FTMG uneva actualizacion\",\r\n            \"enabled\": true,\r\n            \"distinguishedName\": \"CN=Franklin FM. Marcano,OU=Usuarios Externos,DC=tsi,DC=domain,DC=sia3\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://adintegration-apirest.azurewebsites.net/ADIntegation/editarusuario",
+          "protocol": "https",
+          "host": [
+            "adintegration-apirest",
+            "azurewebsites",
+            "net"
+          ],
+          "path": [
+            "ADIntegation",
+            "editarusuario"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "EditarPassword",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "Men2022*2022",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://adintegration-apirest.azurewebsites.net/ADIntegation/editarpassword/fmarcano/Sia3-123456789012",
+          "protocol": "https",
+          "host": [
+            "adintegration-apirest",
+            "azurewebsites",
+            "net"
+          ],
+          "path": [
+            "ADIntegation",
+            "editarpassword",
+            "fmarcano",
+            "Sia3-123456789012"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

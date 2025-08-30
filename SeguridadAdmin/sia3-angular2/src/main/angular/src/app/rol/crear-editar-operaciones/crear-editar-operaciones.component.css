@@ -1,0 +1,11 @@
+.ulLeyenda{
+	list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ulLeyenda li{
+	display: inline;
+	margin-left: 20px;
+}
+ 

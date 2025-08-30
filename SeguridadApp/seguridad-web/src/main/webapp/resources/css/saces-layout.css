@@ -1,0 +1,138 @@
+.contenido-principal {
+	margin: 1%;
+}
+
+.contenido-principal .ui-panel {
+	width: 98%;
+}
+
+.element.style {
+	width: 99%;
+}
+
+.contenido-principal .ui-panel .ui-panel-content {
+	padding: 0 !important;
+}
+
+.contenido-principal .ui-button {
+	border: 1px solid #F8DD2F !important;
+	background: url("#{resource['images/ui-state-default-bg.png']}")
+		repeat-x scroll 50% 50% #EEE !important;
+	color: #000000 !important;
+	padding: 4px 4px 4px 4px !important;
+	font-weight: normal !important;
+	font-size: 0.9em !important;
+	box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
+	margin-left: 2px !important;
+	margin-right: 2px !important;
+}
+
+.ui-panelgrid-cell {
+	border-color: #CCC !important;
+}
+
+.ui-grid-col-12 {
+	width: 99%;
+}
+
+.tablaModificada {
+	font-size: 95% !important;
+}
+
+.tablaprocesarDoc {
+	width: 2000px !important;
+	table-layout: fixed;
+	font-size: 90% !important;
+}
+
+.tablaConstancia {
+	width: 1310px !important;
+	table-layout: fixed;
+	font-size: 90% !important;
+	text-align: center;
+}
+
+.tablagenerarDoc {
+	width: 1480px !important;
+	table-layout: fixed;
+	font-size: 90% !important;
+}
+
+.tablaRegistrarProcedimi {
+	width: 1310px !important;
+	table-layout: fixed;
+	font-size: 90% !important;
+}
+
+.camposTabla {
+	width: 300px;
+	min-width: 65px !important;
+	max-width: 65px !important;
+}
+
+.camposTablaNumero {
+	width: 300px;
+	min-width: 65px !important;
+	max-width: 65px !important;
+}
+
+.camposTablaSINO {
+	width: 300px;
+	min-width: 25px !important;
+	max-width: 25px !important;
+}
+
+.camposTablaPublicar {
+	width: 300px;
+	min-width: 65px !important;
+	max-width: 65px !important;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+	border-style: none !important;
+}
+
+.body {
+	/*font: Verdana, Arial, sans-serif;*/
+	font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+	text-align: left;
+	word-wrap: break-word;
+	text-rendering: optimizelegibility;
+	padding: 0;
+	margin: 0;
+	border: none;
+	border-spacing: 0;
+}
+
+.ui-layout-unit {
+	border: 0 !important;
+}
+
+.ui-wizard-step-title {
+	font-size: 1em;
+	margin: 0px 3px 0px 0px;
+	padding: 0.4em;
+	float: left;
+}
+
+.ui-growl-message p {
+	color: black;
+}
+
+.ui-widget-header {
+	border: 1px solid #b1aeb0;
+	/*background: url("#{resource['images/ui-widget-menu-header.png']}") ;*/
+	background: #ffffff !important;
+	color: #6f1100;
+	font-weight: bold !important;
+	text-align: left;
+}
+
+.ui-tree {
+	width: 100% !important;
+	min-height: 400px !important;
+}
+
+.ui-panel-title {
+	font-size: 1.2em !important;
+}

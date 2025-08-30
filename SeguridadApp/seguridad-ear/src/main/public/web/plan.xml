@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Plan de despliegue usado para reemplazar los valores de las llaves del captcha, este archivo es subido al weblogic junto con el ear solo si se quiere reemplazar los valores del captcha:
+  Si el despliegue ya existe en weblogic, seguir los pasos:
+  1: Ingresar a la consola
+  2: Ir a despliegues
+  3: Seleccionar seguridad-ear o seguridad-ear-pub
+  4: Dar click en la opción actualizar
+  5: En la seguna opción donde dice plan de despliegue seleccionar este archivo y dejar el archivo EAR tal cual.
+  5: Hacer click en finalizar-->
+<wls:deployment-plan xmlns:wls="http://xmlns.oracle.com/weblogic/deployment-plan" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/j2ee_1_4.xsd http://xmlns.oracle.com/weblogic/deployment-plan http://xmlns.oracle.com/weblogic/deployment-plan/1.0/deployment-plan.xsd" global-variables="true">
+    <!--weblogic-version:10.3.6-->
+    <wls:application-name>seguridad-ear_ear</wls:application-name>
+    <wls:variable-definition>
+        <wls:variable>
+            <wls:name>PUBLIC_CAPTCHA_KEY</wls:name>
+            <wls:value xsi:nil="false">6LeXKbkUAAAAAJ0B8lmHA1f4kFfq1d56MxnXaH9_</wls:value>
+        </wls:variable>
+        <wls:variable>
+            <wls:name>PRIVATE_CAPTCHA_KEY</wls:name>
+            <wls:value xsi:nil="false">6LeXKbkUAAAAAOldBf9khhwDybJGSbgihhQD1Cio</wls:value>
+        </wls:variable>
+    </wls:variable-definition>
+    <wls:module-override>
+        <wls:module-name>seguridad-web-1.0-SNAPSHOT.war</wls:module-name>
+        <wls:module-type>war</wls:module-type>
+        <wls:module-descriptor >
+            <wls:root-element>web-app</wls:root-element>
+            <wls:uri>WEB-INF/web.xml</wls:uri>
+            <wls:variable-assignment>
+                <wls:name>PUBLIC_CAPTCHA_KEY</wls:name>
+                <wls:xpath>/web-app/context-param[param-name='primefaces.PUBLIC_CAPTCHA_KEY']/param-value</wls:xpath>
+                <wls:operation>replace</wls:operation>
+            </wls:variable-assignment>
+            <wls:variable-assignment>
+                <wls:name>PRIVATE_CAPTCHA_KEY</wls:name>
+                <wls:xpath>/web-app/context-param[param-name='primefaces.PRIVATE_CAPTCHA_KEY']/param-value</wls:xpath>
+                <wls:operation>replace</wls:operation>
+            </wls:variable-assignment>
+        </wls:module-descriptor>
+    </wls:module-override>
+</wls:deployment-plan>

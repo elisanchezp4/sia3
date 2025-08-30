@@ -1,0 +1,35 @@
+.ui-calendar .ui-inputtext {
+    border-right: 0px;
+    width: 500px;
+}
+
+.modal-datatable {
+  width: 100% !important;
+}
+.disabled-input {
+  background-color: #fff;
+  pointer-events: none;
+}
+.custom-search-button {
+  background-color: rgb(51, 102, 204);
+  color: white; /
+  cursor: pointer;
+}
+
+.custom-search-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-group-btn {
+  position: relative;
+  top: -1px;
+}
+
+.btn-search {
+  height: 35px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  width: 100%;
+  font-size: 10px;
+}

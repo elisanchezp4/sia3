@@ -1,0 +1,259 @@
+.ui-state-disabled {
+	opacity: 0.6 !important;
+}
+
+.container-left-top {
+	background-image: url("#{resource['images/container-left-top.png']}");
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: right !important;
+	width: 15px;
+}
+
+.container-right-top {
+	background-image: url("#{resource['images/container-right-top.png']}");
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: right !important;
+	width: 17px;
+}
+
+.loginFormTable {
+	text-align: center !important;
+}
+
+.loginFormTableColumn {
+	width: 33%;
+}
+
+.loginFormTable td {
+	text-align: center !important;
+}
+
+.loginFormTableLeft fieldset {
+	text-align: left !important;
+	margin-left: 30%;
+	width: 10%;
+}
+
+.container-middle-top {
+	background-image: url("#{resource['images/container-middle-top.png']}");
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: right !important;
+}
+
+.container-middle-middle {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	/* text-align: justify; */
+	min-height: 10px;
+}
+
+.container-middle-right {
+	background-image:
+		url("#{resource['images/container-middle-right.png']}");
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: right !important;
+	width: 17px;
+}
+
+.container-middle-left {
+	background-image: url("#{resource['images/container-middle-left.png']}");
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: right !important;
+	width: 15px;
+}
+
+.container-grid {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	border-spacing: 0;
+}
+
+.container-grid tr, td {
+	border: 0;
+	border-color: white;
+}
+
+.container-left-bottom {
+	background-image: url("#{resource['images/container-left-bottom.png']}");
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: right !important;
+	width: 15px;
+}
+
+.container-right-bottom {
+	background-image:
+		url("#{resource['images/container-right-bottom.png']}");
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: right !important;
+	width: 17px;
+}
+
+.container-middle-bottom {
+	background-image:
+		url("#{resource['images/container-middle-bottom.png']}");
+	border: 0;
+	padding: 0;
+	margin: 0;
+	text-align: right !important;
+}
+
+.txtOupout {
+	font-weight: bold;
+}
+
+.ui-menuitem-text {
+	color: #4f4f4f;
+}
+
+.info, .exito, .alerta, .error {
+	font-size: 13px;
+	border: 1px solid;
+	margin: 10px 0px;
+	padding: 15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+
+.info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('#{resource[' images/ info.png ']}');
+}
+
+.exito {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image: url('#{resource[' images/ exito.png ']}');
+}
+
+.alerta {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('#{resource[' images/ alerta.png ']}');
+}
+
+.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url('#{resource[' images/ error.png ']}');
+}
+
+.ui-growl {
+	top: 140px !important;
+	/* position: absolute !important; */
+	border-radius: 5px !important;
+	width: 380px !important;
+	left: 50% !important;
+	transform: translate(-50%, 0) !important;
+}
+
+.ui-growl-item {
+	background-color: #f8dd2f !important;
+	border-radius: 5px !important;
+}
+
+.ui-growl-item-container {
+	background-color: #f8dd2f !important;
+	border-radius: 5px !important;
+	opacity: 1.0 !important;
+}
+
+.ui-growl-message {
+	width: 300px !important;
+}
+
+.ui-growl-message p {
+	font-weight: bold !important;
+	font-size: 13px !important;
+}
+
+.ui-growl-icon-close {
+	position: absolute !important;
+	cursor: pointer !important;
+}
+
+.nombreArchivo {
+	
+}
+
+/* MODIFICACIONES JEFFERSON */
+.form-comp tr, .form-comp td {
+	border: none;
+}
+
+.ui-widget-header {
+	border: none;
+}
+
+.align-top td {
+	vertical-align: top;
+	width: 360px;
+}
+
+.tabSize {
+	width: 200px;
+	white-space: normal !important;
+	height: 46px;
+}
+
+.tabSizeHigher {
+	width: 200px;
+	white-space: normal !important;
+	height: 60px;
+}
+
+.tabViewComponent {
+	width: 100%;
+}
+
+.tabViewComponent>ul {
+	background: none !important;
+	background-color: #E8EDFF;
+}
+
+.tabViewComponent>ul a {
+	text-align: center;
+}
+
+
+.alinearCentro {
+	text-align: center;
+}
+
+.selectOneMenuFilter {
+	width: 60px !important;
+}
+
+.columnConSaltoLinea {
+	white-space: normal !important;
+}
+
+.cargarArchivoRecepActo {
+	margin-bottom: 25px;
+}
+
+.mensajeError {
+	text-align: justify;
+}
+
+.labelLogin {
+	width: 100px !important;
+	display: block !important;
+	padding: 5px;
+}

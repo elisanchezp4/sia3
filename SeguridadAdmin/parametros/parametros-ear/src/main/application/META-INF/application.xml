@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd" version="6">
+  <display-name>C:\Users\jcardona\Documents\NetBeansProjects\RielSpace\Riel\Riel-ear</display-name>
+  <initialize-in-order>true</initialize-in-order>
+  <module>
+    <ejb>/parametros-ejb-1.jar</ejb>
+  </module>
+  <module>
+    <web>
+      <web-uri>/parametros-apiRest-1.war</web-uri>
+      <context-root>/parametros-apiRest</context-root>
+    </web>
+  </module>
+  <library-directory>lib</library-directory>
+</application>

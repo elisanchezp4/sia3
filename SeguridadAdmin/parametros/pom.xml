@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>SeguridadAdmin</artifactId>
+    <groupId>co.gov.mineducacion.seguridad</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>co.gov.heinsohn.men.parametros</groupId>
+  <artifactId>parametros</artifactId>
+  <version>1</version>
+  <packaging>pom</packaging>
+  <name>parametros</name>
+  <modules>
+    <module>parametros-ear</module>
+    <module>parametros-apiRest</module>
+    <module>parametros-ejb</module>
+    <module>parametros-datamodel</module>
+    <module>parametros-util</module>
+  </modules>
+</project>

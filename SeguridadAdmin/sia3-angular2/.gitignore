@@ -1,0 +1,10 @@
+/.settings/
+/target/
+/.classpath
+/nb-configuration.xml
+/.project
+/bin/
+/.tern-project
+/src/main/webapp
+/src/main/angular/node_modules
+/src/main/angular/dist

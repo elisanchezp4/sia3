@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  adintegration.apirest:
+    image: ${DOCKER_REGISTRY-}adintegrationapirest
+    build:
+      context: ../../.
+      dockerfile: AdIntegration.ApiRest/Dockerfile
+    ports:
+        - 49154:80
+        #- 49153:443
+    extra_hosts:
+        - "minedu.gov.co:192.168.208.10"

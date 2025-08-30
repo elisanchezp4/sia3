@@ -1,0 +1,127 @@
+<ol class="breadcrumb">
+	<li><a routerLink="/inicio/home">Inicio</a></li>
+	<li class="active">Consultar Usuarios</li>
+</ol>
+<div class="container dashboard">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Consultar Usuarios
+			</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			<p-confirmDialog header="Confirmar" acceptLabel="Si" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+			<p-messages [value]="msgs"></p-messages>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Consultar usuario</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group col-md-12">
+						<label for="userName">Usuario*</label>
+						<input type="text" class="form-control" [ngClass]="{'campo-requerido': valido == true &&(logonName == null || logonName == vacio)}"
+						 [(ngModel)]="logonName" id="userName" placeholder=" Usuario a consultar" [ngModelOptions]="{standalone: true}">
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-link" (click)="cargarListaLdap()">Lista Usuarios Inactivos Ldap</button>
+				<button *ngIf="usuario.estado == 2" type="submit" class="btn btn-default" (click)="activarUsuario()">Activar</button>
+				<button *ngIf="usuario.estado == 1" type="submit" class="btn btn-default" (click)="inactivarUsuario()">Inactivar</button>
+				<button type="submit" class="btn btn-primary" (click)="consultarUsuario()">Consultar / Vincular</button>
+			</div>
+			<br>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Datos Básicos</h3>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6 col-xs-6 col-sm-6">
+					<div class="col-md-6">
+						<label>Nombre Usuario</label>
+						<p>{{usuario.logonName}}</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-xs-6 col-sm-6">
+					<div class="col-md-6 col-xs-6 col-sm-6">
+						<label>Ubicación Usuario</label>
+						<p>{{usuario.ruta}}</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-xs-6 col-sm-6">
+					<div class="col-md-6 col-xs-6 col-sm-6">
+						<label>Tipo Usuario</label>
+						<p>{{nombreTipoUsuario[usuario.tipo]}}</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-xs-6 col-sm-6">
+					<label>Correo electrónico</label>
+					<p *ngIf="usuario.emailUsuario!=null">{{usuario.emailUsuario}}</p>
+					<p *ngIf="usuario.emailUsuario==null && usuario.logonName!=null">No tiene</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Roles Asociados</h3>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<p-dataTable [value]="listaApp" [rows]="10" [paginator]="true" [responsive]="true" emptyMessage="No se encontraron datos">
+					<p-column field="aplicacion" header="Aplicación"></p-column>
+					<p-column field="rol" header="Roles"></p-column>
+					<p-column header="Fecha vinculación">
+						<template let-val1="rowData" pTemplate type="body">
+							<span>{{val1.fechaVinculacion | date:"dd/MM/yyyy"}}</span>
+						</template>
+					</p-column>
+					<p-column header="Fecha desvinculación">
+						<template let-val2="rowData" pTemplate type="body">
+							<span *ngIf="val2.fechaDesVinculacion != null">{{val2.fechaDesVinculacion | date:"dd/MM/yyyy"}}</span>
+							<span *ngIf="val2.fechaDesVinculacion == null">No tiene</span>
+						</template>
+					</p-column>
+					<p-column field="estadoVinculacion" header="Estado"></p-column>
+				</p-dataTable>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 grupo_botones">
+		<button type="button" class="btn btn-default" (click)="cancelar()">Salir</button>
+	</div>
+
+</div>
+
+<p-dialog id="usrLdap" header="Usuarios LDAP Inactivos" [(visible)]="display" width="950" responsive="true">
+	<p-messages [value]="msgsD"></p-messages>
+	<div class="row">
+		<p-dataTable [value]="listaLdap" [rows]="10" [paginator]="true" [responsive]="true" emptyMessage="No se encontraron datos">
+			<p-column field="name" header="Nombre Usuario"></p-column>
+			<p-column field="sAMAccountName" header="Usuario"></p-column>
+			<p-column field="mail" header="Email"></p-column>
+			<p-column header="Tipo Usuario">
+				<template let-val2="rowData" pTemplate type="body">
+					<span>Extreno</span>
+				</template>
+			</p-column>
+			<p-column header="Acción">
+				<template let-usr="rowData" pTemplate type="body">
+					<button type="submit" class="btn btn-default" (click)="activarUsrLdap(usr)">Activar</button>
+				</template>
+			</p-column>
+		</p-dataTable>
+	</div>
+</p-dialog>

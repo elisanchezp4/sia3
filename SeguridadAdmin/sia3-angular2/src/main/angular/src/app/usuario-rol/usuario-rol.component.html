@@ -1,0 +1,168 @@
+<ol class="breadcrumb">
+	<li><a routerLink="/inicio/home">Inicio</a></li>
+	<li class="active">Asignar Usuarios a Rol</li>
+</ol>
+<div class="container dashboard">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Asignar Usuarios a Rol
+			</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			<p-confirmDialog header="Confirmar" acceptLabel="Si" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+			<p-messages [value]="msgs"></p-messages>
+		</div>
+		<div>
+			<p-messages [value]="msgsCargar"></p-messages>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Filtrar Rol</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group col-md-12">
+						<label for="txNombre">Aplicación*</label>
+						<select class="form-control" name="aplicacion" (change)="msgs=[]" (change)="usuariosPorRol=[]" id="aplicacion" (change)="consultarRoles($event.target.value)"
+						 [ngClass]="{'campo-requerido':campoError == true &&(idAplicacion == 0)}" [(ngModel)]="idAplicacion">
+					 <option value="0">Seleccione Aplicación</option>
+					 <option *ngFor="let aplicacion of aplicaciones" value="{{aplicacion.aplicacionId}}">{{aplicacion.nombre}}</option>
+				</select>
+					</div>
+					<div class="form-group col-md-12">
+						<label for="txNombre">Rol*</label>
+						<select class="form-control" name="rol" id="rol" (change)="msgs=[]" (change)="usuariosPorRol=[]" [ngClass]="{'campo-requerido':campoError == true &&(idRol == 0)}"
+						 [(ngModel)]="idRol">
+					 <option value="0">Seleccione Rol</option>
+					 <option *ngFor="let rol of roles" value="{{rol.rolId}}">{{rol.nombre}}</option>
+				</select>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary" (click)="consultarUsuarios()">Consultar Usuarios</button>
+		</div>
+		<hr>
+		<p-dataTable [value]="usuariosPorRol" [(selection)]="selectedUsuarioRol" [rows]="10" [paginator]="true" [responsive]="true"
+		 emptyMessage="No se encontraron datos" resizableColumns="true">
+			<p-column selectionMode="multiple" [style]="{'width':'20px'}"></p-column>
+			<p-column header="Nombre de usuario" field="logonName" [style]="{'width':'100px'}"></p-column>
+			<p-column header="Nombres" field="nombres" [style]="{'width':'100px'}"></p-column>
+			<p-column header="Apellidos" field="apellidosUsuario" [style]="{'width':'100px'}"></p-column>
+			<p-column header="Correo electrónico" [style]="{'width':'140px'}">
+				<template let-usuario="rowData" pTemplate type="body">
+					<span *ngIf="usuario.emailUsuario!=null">{{usuario.emailUsuario}}</span>
+					<span *ngIf="usuario.emailUsuario==null && usuario.logonName!=null">No tiene</span>
+				</template>
+			</p-column>
+			<p-column header="Tipo de usuario" [style]="{'width':'70px'}">
+				<template let-tipo="rowData" pTemplate type="body">
+					<span>{{nombreTipoUsuario[tipo.tipo]}}</span>
+				</template>
+			</p-column>
+			<p-column header="Fecha Vinculación" [style]="{'width':'70px'}">
+				<template let-val="rowData" pTemplate type="body">
+					<span>{{val.fechaVinculacion | date:"dd/MM/yyyy"}}</span>
+				</template>
+			</p-column>
+			<p-column field="estadoVinculacion" header="Estado Vinculación" [style]="{'width':'70px'}"></p-column>
+		</p-dataTable>
+	</div>
+</div>
+<div class="col-xs-12 grupo_botones">
+	<button type="button" class="btn btn-default" (click)="cancelar()">Salir</button>
+	<button type="button" class="btn btn-primary" (click)="asignarRol()">Asignar Usuario a Rol</button>
+	<button type="button" *ngIf="selectedUsuarioRol!=null && selectedUsuarioRol!=0" class="btn btn-primary" (click)="desvincularUsuarios()">Desvincular usuarios a rol</button>
+</div>
+
+<p-dialog header="Búsqueda de usuarios" (onAfterHide)="cancelarFiltro()" [(visible)]="display" width="1200" responsive="true"
+ class="modal_aplicacion" scrollable="true" scrollHeight="300px">
+	<div class="col-xs-12">
+		<div>
+			<p-messages [value]="msgsDialog"></p-messages>
+		</div>
+
+		<form>
+			<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Datos básicos</h3>
+					</div>
+					<div class="panel-body">
+						<div class="form-group col-xs-6">
+							<p><strong>Aplicación: </strong>{{nombreAplicaciones[idAplicacion]}}</p>
+						</div>
+						<div class="form-group col-xs-6">
+							<p><strong>Rol: </strong> {{nombreRoles[idRol]}}</p>
+						</div>
+						<div class="form-group col-xs-3">
+							<label for="txNombre">Tipo de usuario*</label>
+							<select class="form-control" [(ngModel)]="tipoUsuario" id="txNombre" [ngModelOptions]="{standalone: true}"
+                      [ngClass]="{'campo-requerido':campoError == true && (tipoUsuario == '0' || tipoUsuario == null)}"
+                      (ngModelChange)="formChange()">
+								 <option value="0">Seleccione Tipo</option>
+								 <option *ngFor="let usuario of tipoUsuarioList" value="{{usuario.catalogoId}}">{{usuario.descripcion}}</option>
+						  </select>
+						</div>
+						<div class="form-group col-xs-3">
+							<label for="txNombre">Nombre de usuario*</label>
+							<input type="text" class="form-control" [(ngModel)]="nombreUsuario" id="userName" [ngModelOptions]="{standalone: true}" placeholder=" Usuario a consultar"
+                     [ngClass]="{'campo-requerido':campoError == true && (nombreUsuario == '' || nombreUsuario == null)}"
+                     (ngModelChange)="formChange()">
+						</div>
+						<div class="form-group col-xs-3">
+							<label for="txNombre">Nombres</label>
+							<input type="text" class="form-control" [(ngModel)]="nombres" id="userName" [ngModelOptions]="{standalone: true}" placeholder="Nombres">
+						</div>
+						<div class="form-group col-xs-3">
+							<label for="txNombre">Apellidos</label>
+							<input type="text" class="form-control" [(ngModel)]="apellidos" id="userName" [ngModelOptions]="{standalone: true}" placeholder="Apellidos">
+						</div>
+						<div class="form-group col-xs-12">
+							<label for="txNombre">Correo electrónico</label>
+							<input type="email" name="email" required class="form-control" [(ngModel)]="email" maxlength="50" placeholder="Ingrese el correo electrónico">
+						</div>
+
+					</div>
+
+				</div>
+				<div class="form-actions">
+					<button type="button" class="btn btn-default" (click)="limpiar()">Limpiar</button>
+					<button type="button" class="btn btn-primary" (click)="consultarUsuariosPorFiltro()" [disabled]="disableFiltrar">Filtrar</button>
+				</div>
+				<hr>
+				<p-dataTable [value]="usuarios" [rows]="3" [(selection)]="selectedUsuario" [paginator]="false" [responsive]="true" scrollable="true"
+				 scrollHeight="100px" emptyMessage="No se encontraron datos" resizableColumns="true">
+					<p-column selectionMode="multiple" [style]="{'width':'20px'}"></p-column>
+					<p-column field="logonName" header="Nombre de usuario" [style]="{'width':'100px'}"></p-column>
+					<p-column field="nombres" header="Nombres" [style]="{'width':'100px'}"></p-column>
+					<p-column field="apellidosUsuario" header="Apellidos" [style]="{'width':'100px'}"></p-column>
+					<p-column header="Correo electrónico" [style]="{'width':'140px'}">
+						<template let-usuario="rowData" pTemplate type="body">
+							<span *ngIf="usuario.emailUsuario!=null">{{usuario.emailUsuario}}</span>
+							<span *ngIf="usuario.emailUsuario==null && usuario.logonName!=null">No tiene</span>
+						</template>
+					</p-column>
+					<p-column header="Tipo de usuario" [style]="{'width':'70px'}">
+						<template let-tipo="rowData" pTemplate type="body">
+							<span>{{nombreTipoUsuario[tipo.tipo]}}</span>
+						</template>
+					</p-column>
+				</p-dataTable>
+			</div>
+		</form>
+	</div>
+	<p-footer>
+		<div class="col-xs-12 grupo_botones">
+			<button type="button" class="btn btn-default" (click)="cancelarFiltro()">Salir</button>
+			<button type="button" *ngIf="selectedUsuario!=null && selectedUsuario!=0" class="btn btn-primary" (click)="agregarUsuariosARol()">Asignar usuarios seleccionados</button>
+		</div>
+	</p-footer>
+</p-dialog>

@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<head>
+	<title>Start Page</title>
+</head>
+<h:body>
+	<ui:composition template="/template/publicLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="form1">
+				<br />
+				<div class="ui-grid ui-grid-responsive">
+					<div class="ui-grid-row">
+			    		<div class="ui-grid-col-3"></div>
+			    		<div class="ui-grid-col-6" style="padding-top: 80px;">
+							<p:fieldset legend="Cambio de contraseña">
+								<p:inputText value="#{recordarContrasenia.code}" id="code" type="hidden" />
+								<p:inputText value="#{recordarContrasenia.userId}" id="userId" type="hidden" />
+								<div class="ui-grid-row rowFormulario">
+									<div class="ui-grid-col-4">
+										<p:outputLabel for="contraseniaNueva" value="#{etq.label_contraseniaNueva}" />
+									</div>
+									<div class="ui-grid-col-6">
+										<p:password id="contraseniaNueva"
+											value="#{recordarContrasenia.contraseniaNueva}" 
+											maxlength="30" autocomplete="off" required="true" requiredMessage="Campo obligatorio" title="Mínimo 8 caracteres, Debe contener Números y Letras, Solo Se Admiten Los Siguientes Caracteres Especiales $@!#%*-_?" />
+										<p:message for="contraseniaNueva" style="width:130px;" />
+									</div>
+								</div>
+								<br/>
+								<div class="ui-grid-row rowFormulario">
+									<div class="ui-grid-col-4">
+										<p:outputLabel for="contraseniaRepetida" value="#{etq.label_contraseniaRepetida}" />
+									</div>
+									<div class="ui-grid-col-6">
+										<p:password id="contraseniaRepetida"
+											value="#{recordarContrasenia.contraseniaRepetida}"
+											maxlength="30" autocomplete="off" required="true" requiredMessage="Campo obligatorio" title="Mínimo 8 caracteres, Debe contener Números y Letras, Solo Se Admiten Los Siguientes Caracteres Especiales $@!#%*-_?" />
+										<p:message for="contraseniaRepetida" style="width:130px;" />
+									</div>
+								</div>
+								<br/>
+								<h:panelGrid columns="2" width="400px">						 								
+									<p:captcha id="captcha" label="Captcha" tabindex="3" theme="red" language="es" rendered="true" secure="true" required="true" requiredMessage="Por favor ingrese el captcha para cambiar la contraseña." validatorMessage="El valor de la imagen incorrecto" />
+									<p:message for="captcha" style="width:130px" />
+								</h:panelGrid>
+							
+								<br />
+								<div class="ui-grid-row rowFormulario">
+									<div class="ui-grid-col-4"></div>
+									<div class="ui-grid-col-4 centrarContenido">
+										<p:commandButton id="btnGuardar" styleClass="ui-button"
+											value="#{etq.button_enviar}"
+											action="#{recordarContrasenia.cambiarContrasenia}"  ajax="false"
+											update=":#{p:component('form1')}" 
+											title = "#{etq.title_button_cambiar_contrasenia}"
+											disabled="#{recordarContrasenia.inactivoBtnCambio}"/>
+										<p:commandButton id="btnLimpiar" styleClass="ui-button"
+											value="#{etq.button_limpiar}" onclick="limpiarFormularioPass();" 
+											title = "#{etq.title_button_limpiar_camb_constra}"
+											disabled="#{recordarContrasenia.inactivoBtnLimpiar}"/>
+									</div>
+								</div>
+							</p:fieldset>
+						</div>
+    					<div class="ui-grid-col-3"></div>
+    				</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

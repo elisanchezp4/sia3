@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="SeguridadDS" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/SeguridadDS</jta-data-source>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.Aplicaciones</class>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.BitacoraAuditoria</class>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.Operaciones</class>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.OperacionesRol</class>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.Roles</class>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.TokensActivos</class>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.Usuario</class>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRol</class>
+    <!-- Inicio clases HBT -->
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.Mensaje</class>
+    <!-- Fin clases HBT -->
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.PropiedadesAccesibilidad</class>
+    <class>co.gov.mineducacion.seguridad.modelo.entidades.UsuarioAccesibilidad</class>
+    <!--<properties>
+		    <property name="openjpa.ConnectionRetainMode" value="always"/> 
+	       <property name="wsjpa.FastPath" value="true"/> 
+	       <property name="openjpa.RestoreState" value="false"/> 
+	       <property name="openjpa.OptimizeIdCopy" value="true"/> 
+	       <property name="openjpa.ProxyManager" value="delayCollectionLoading=true"/>
+	       <property name="openjpa.Log" value="SQL=TRACE"/> 
+       </properties>-->
+    <!--properties>
+      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+    </properties-->
+    <properties>
+		<property name="eclipselink.cache.shared.default" value="false" />
+	</properties>
+  </persistence-unit>
+</persistence>

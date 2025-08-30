@@ -1,0 +1,69 @@
+<ol class="breadcrumb">
+	<li><a routerLink="/inicio/home">Inicio</a></li>
+	<li><a routerLink="/rol">Administración de Roles</a></li>
+	<li class="active">Crear/Editar Roles</li>
+</ol>
+<div class="container dashboard">
+	<div class="row">
+		<div *ngIf="rol.rolId==null" class="col-lg-12">
+			<h1 class="page-header">
+				Crear Roles
+			</h1>
+		</div>
+		<div *ngIf="rol.rolId" class="col-lg-12">
+			<h1 class="page-header">
+				Editar Roles
+			</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			<p-confirmDialog header="Confirmar" acceptLabel="Si" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+			<p-messages [value]="msgs"></p-messages>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default boton_absolute">
+
+				<div class="panel-body">
+					<form>
+						<div class="form-group col-md-12">
+							<label for="txNombre">Aplicación*</label>
+							<select class="form-control" name="aplicacion" id="aplicacion" [(ngModel)]="rol.aplicacionId" (ngModelChange)="formChange($event)"
+							 [ngClass]="{'campo-requerido':campoError == true &&(rol.aplicacionId == 0)}" title="Seleccione la aplicación a la cual desea crearle los roles.">
+							<option value ="0">Seleccione Aplicación </option>
+							<option *ngFor="let aplicacion of aplicaciones"  value="{{aplicacion.aplicacionId}}">{{aplicacion.nombre}}</option>
+						</select>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="txNombre">Rol*</label>
+							<input type="text" maxlength="100" [ngClass]="{'campo-requerido':campoError == true && validarCampoVacio(rol.nombre)}" [(ngModel)]="rol.nombre"
+							 (ngModelChange)="formChange($event)" name="nombre" class="form-control" id="nombre" required placeholder="Nombre del rol"
+							 title="Escriba el nombre del rol tal y como se maneja en la aplicación seleccionada, tenga en cuenta que si el nombre no corresponde a un rol valido en la aplicación no funcionara la aplicación de manera correcta.">
+						</div>
+						<div class="form-group col-md-12">
+							<label for="path">Ruta directorio Activo*</label>
+							<input type="text" maxlength="150" [ngClass]="{'campo-requerido':campoError == true && validarCampoVacio(rol.path)}" [(ngModel)]="rol.path"
+							 (ngModelChange)="formChange($event)" name="path" class="form-control" id="path" required placeholder="Path del rol"
+							 title="Ingrese la ruta del directorio activo, en caso de ser un rol para usuarios internos del Ministerio por favor coloque la siguiente ruta: DC=minedu,DC=gov,DC=co, en caso de ser un rol usado para los usuarios externos del ministerio por favor coloque la siguiente ruta: OU=Usuarios Externos, DC=minedu,DC=gov,DC=co">
+						</div>
+						<div class="form-group col-md-12">
+							<label for="txNombre">Estado*</label>
+							<select class="form-control" name="estado" id="estado" [(ngModel)]="rol.estado" (ngModelChange)="formChange($event)" [ngClass]="{'campo-requerido':campoError == true &&(rol.estado == 0)}"
+							 title="Seleccione el estado del rol, tenga en cuenta  que si inactiva este rol ningún usuario asociado podrá ingresar a la aplicación.">
+								<option value="0">Seleccione Estado </option>
+								<option *ngFor="let estado of estados" value="{{estado.catalogoId}}">{{estado.descripcion}}</option>
+							</select>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12 grupo_botones">
+			<button type="button" (click)="volver()" class="btn btn-default">Volver</button>
+			<button *ngIf="rol.rolId==null" type="button" (click)="guardar()" class="btn btn-primary" [disabled]="disableGuardar">Guardar</button>
+			<button *ngIf="rol.rolId" type="button" (click)="modificar()" class="btn btn-primary" [disabled]="disableGuardar">Guardar</button>
+		</div>
+	</div>

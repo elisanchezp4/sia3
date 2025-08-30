@@ -1,0 +1,233 @@
+<link href="/src/main/webapp/assets/css/modal.css" rel="stylesheet">
+
+<ol class="breadcrumb">
+    <li><a routerLink="/inicio/home">Inicio</a></li>
+    <li class="active">Administración de Operaciones</li>
+</ol>
+<div class="container dashboard">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                Administración de Operaciones
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <p-confirmDialog header="Confirmar" acceptLabel="Si" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+            <p-messages [value]="msgs"></p-messages>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Filtro Aplicación</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+
+                <div class="form-group col-md-6">
+                    <label for="txNombre">Aplicación*</label>
+                    <select class="form-control" name="aplicacion" id="aplicacion" (change)="msgs=[]" (change)="filtroApi=false" [ngClass]="{'campo-requerido':campoError == true &&(idAplicacion == 0)}" [(ngModel)]="idAplicacion"> 
+					 <option value="0">Seleccione Aplicación</option>
+					 <option *ngFor="let aplicacion of aplicaciones" value="{{aplicacion.aplicacionId}}">{{aplicacion.nombre}}</option>	
+				</select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" (change)="msgs=[]" placeholder="Nombre de la operación" [(ngModel)]="nombreObjeto" (ngModelChange)="operacion.nombreObjeto = $event">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 grupo_botones">
+            <button type="button" class="btn btn-default" (click)="limpiar()">Limpiar</button>
+            <button type="button" class="btn btn-primary" (click)="filtrarOperacion()">Filtrar</button>
+        </div>
+    </div>
+    <div class="row" [hidden]="filtroApi == false">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="ulLeyenda">
+                        <li>
+                            <span class="ui-treenode-label ui-corner-all"><span>Leyenda:</span></span>
+                        </li>
+                        <li>
+                            <span class="ui-treenode-icon fa fa-fw fa-folder"></span>
+                            <span class="ui-treenode-label ui-corner-all"><span>Aplicación</span></span>
+                        </li>
+                        <li>
+                            <span class="ui-treenode-icon fa fa-fw fa fa-caret-square-o-right"></span>
+                            <span class="ui-treenode-label ui-corner-all"><span>Menú</span></span>
+                        </li>
+                        <li>
+                            <span class="ui-treenode-icon fa fa-fw fa fa-chevron-right"></span>
+                            <span class="ui-treenode-label ui-corner-all"><span>Submenú</span></span>
+                        </li>
+                        <li>
+                            <span class="ui-treenode-icon fa fa-fw fa fa-long-arrow-right"></span>
+                            <span class="ui-treenode-label ui-corner-all"><span>Vinculo</span></span>
+                        </li>
+                        <li>
+                            <span class="ui-treenode-icon fa fa-fw fa fa-dot-circle-o"></span>
+                            <span class="ui-treenode-label ui-corner-all"><span>Botón</span></span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Operaciones</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <p-tree [value]="arbolOperaciones" selectionMode="single" [(selection)]="nodoSeleccionado" [contextMenu]="cm"></p-tree>
+                            <p-contextMenu #cm [model]="menu_contextual"></p-contextMenu>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <button type="button" (click)="mostrarMensajeAntesDeImportar()" class="btn btn-primary">Importar</button>
+        <button type="button" (click)="abrirDialogoExportar()" class="btn btn-default">Exportar</button>
+    </div>
+</div>
+
+
+<p-dialog id="modal_aplicacion"  header="Administrar Operación" [(visible)]="display" modal="modal"
+ width="600" responsive="true" class="modal_aplicacion">
+
+    <div>
+        <p-messages [value]="msgsDialog"></p-messages>
+    </div>
+
+    <div class="col-md-12 col-xs-12 col-sm-12">
+        <div class="form-group col-md-12">
+            <label for="txNombre">Aplicación*</label>
+            <select class="form-control" name="aplicacion" id="aplicacion" disabled [ngClass]="{'campo-requerido':campoError == true &&(operacion.aplicacionId == -1)}" [(ngModel)]="operacion.aplicacionId" (ngModelChange)="operacion.aplicacionId = $event"> 
+							<option value="0">Seleccione Aplicación</option>
+							<option *ngFor="let aplicacion of aplicaciones"  [selected]="aplicacion.nombre" value="{{aplicacion.aplicacionId}}">{{aplicacion.nombre}}</option>	
+						</select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="txNombre">Tipo de operación*</label>
+            <select [disabled]="tieneHijos" class="form-control" name="tipo" id="tipo" [(ngModel)]="operacion.tipo" [ngClass]="{'campo-requerido':campoError == true &&(operacion.tipo == 0)}" (ngModelChange)="formChange($event)">
+					<option value="0" selected>Seleccione un tipo</option>
+					<option value="MENU">Menú</option>
+					<option value="SUBMENU">Submenú</option>
+					<option value="VINCULO">Vinculo</option>
+					<option value="BOTON">Botón</option>
+				</select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="nombre">Orden de visualización*</label>
+            <input type="number" class="form-control" maxlength="5" id="nombre" name="nombre" min="1" step="1" max="999" placeholder="Orden de visualización de la operación" [(ngModel)]="operacion.ordenVisualizacion" [ngClass]="{'campo-requerido':(campoError && (operacion.ordenVisualizacion == null||operacion.ordenVisualizacion.length==0 || operacion.ordenVisualizacion<0 ))}"
+                (ngModelChange)="formChange($event)">
+        </div>
+        <div class="form-group col-md-12">
+            <label for="nombre">URL*</label>
+            <input type="text" class="form-control" maxlength="250" id="nombre" name="nombre" placeholder="URL de la operación" [ngClass]="{'campo-requerido':campoError == true &&(operacion.nombreObjeto == null || operacion.nombreObjeto==vacio)}" [(ngModel)]="operacion.nombreObjeto"
+                (ngModelChange)="formChange($event)">
+        </div>
+        <div class="form-group col-md-12">
+            <label for="descripcion">Nombre*</label>
+            <input type="text" class="form-control" maxlength="50" id="descripcion" name="descripcion" placeholder="Nombre de la operación" [ngClass]="{'campo-requerido':campoError == true &&(operacion.descripcion == null || operacion.descripcion==vacio )}" [(ngModel)]="operacion.descripcion"
+                (ngModelChange)="formChange($event)">
+        </div>
+        <div class="form-group col-md-12" *ngIf="activeGif">
+            <label for="nombre">URL Imagen Gif</label>
+            <input type="text" class="form-control" maxlength="250" id="urlGif" name="urlGif" placeholder="URL imagen gif" [(ngModel)]="operacion.urlImgGif" (ngModelChange)="formChange($event)">
+        </div>
+    </div>
+
+    <p-footer>
+        <div class="col-xs-12 grupo_botones">
+            <button type="button" class="btn btn-default" (click)="cancelarDialog()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="guardar()" [disabled]="disableGuardar">Guardar</button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+
+<p-dialog id="modal_aplicacion"  header="Exportar Operaciones" [(visible)]="displayExportar" modal="modal"
+ width="600" responsive="true" class="modal_aplicacion">
+
+	<div class="col-xs-12">
+		<div class="panel">
+			<div class="panel-body">
+				<form [formGroup]="formGroup">
+					<div class="form-group col-md-12">
+						<label>ID aplicación*</label>
+						<input type="number"
+							formControlName="idAplicacion" class="form-control"
+							[ngClass]="{ 'campo-requerido': submitted && controls.idAplicacion.errors }"
+							required placeholder="ID aplicación"
+						 	title="ID aplicación.">
+					</div>
+				</form>
+                <div class="col-xs-12">
+                    <h4>Se exportarán operaciones de esta aplicación</h4>
+                </div>
+			</div>
+		</div>
+	</div>
+    <p-footer>
+        <div class="col-xs-12 grupo_botones">
+            <button type="button" class="btn btn-default" (click)="cancelarDialogoExportar()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="exportar()">Exportar</button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+
+<p-dialog id="modal_aplicacion"  header="Importar Operaciones" [(visible)]="displayImportar" modal="modal"
+ width="600" responsive="true" class="modal_aplicacion">
+ 	<div class="col-xs-12">
+        <div class="panel">
+			<div class="panel-body">
+                <div class="col-xs-12">
+                    <div class="input-group mb-3" style="padding:15px 0px">
+                        <div class="custom-file">
+                        <input type="file" (change)="fileChange($event)" class="custom-file-input" id="inputGroupFile03" accept=".json">
+                        </div>
+                    </div>
+                 </div>
+                <div class="col-xs-12">
+                    <h4>Se importarán operaciones para esta aplicación</h4>
+                </div>
+            </div>
+        </div>
+	</div>
+	<p-footer>
+        <div class="col-xs-12 grupo_botones">
+            <button type="button" class="btn btn-default" (click)="cancelarDialogoImportar()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="importar()">Importar</button> 
+        </div>
+    </p-footer>
+</p-dialog>
+
+
+<p-dialog id="modal_aplicacion"  header="Informacion importante" [(visible)]="displayMensajeValidarImportar" modal="modal"
+ width="600" responsive="true" class="modal_aplicacion">
+ 	<div class="col-xs-12">
+        <div class="panel">
+			<div class="panel-body">
+                <div class="col-xs-12">
+                    <h4>¿Está seguro de continuar, se remplazará las operaciones existentes y se crearan las no existentes?</h4>
+                </div>
+            </div>
+        </div>
+	</div>
+	<p-footer>
+        <div class="col-xs-12 grupo_botones">
+            <button type="button" class="btn btn-default" (click)="cancelarDialogoMensajeImportar()">Cancelar</button>
+            <button type="button" (click)="abrirDialogoImportar()" class="btn btn-primary">Continuar</button>
+        </div>
+    </p-footer>
+</p-dialog>

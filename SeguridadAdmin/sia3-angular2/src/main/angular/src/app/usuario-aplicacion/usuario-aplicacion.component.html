@@ -1,0 +1,56 @@
+<ol class="breadcrumb">
+	<li><a routerLink="/inicio/home">Inicio</a></li>
+	<li class="active">Asignar Usuarios a Aplicación</li>
+</ol>
+<div class="container dashboard">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Asignar Usuarios a Aplicación
+			</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			<p-confirmDialog header="Confirmar" acceptLabel="Si" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+			<p-messages [value]="msgs"></p-messages>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Filtrar Aplicación</h3>
+				</div>
+				<div class="panel-body">
+					<div class="form-group col-md-12">
+						<label for="txNombre">Aplicación*</label>
+						<p-autoComplete [(ngModel)]="nombre" (change)="msgs=[]" emptyMessage="No se encontraron aplicaciones" [suggestions]="aplicacionesSugeridas"
+							(onSelect)="seleccionarAplicacion($event)" (completeMethod)="autocompletarAplicacion($event)"  (ngModelChange)="formChange($event)" field="nombre" placeholder="Aplicación a consultar"
+							[ngClass]="{'campo-requerido':campoError == true &&(nombre == null)}"  required></p-autoComplete>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="button" name="filtrar" class="btn btn-primary"  [disabled] = filtrar (click)="cargarUsuarios()">Filtrar</button>
+		</div>
+		<hr>
+	</div>
+</div>
+<div class="row">
+	<div class="form-group col-md-12">
+		<p-pickList [source]="usuariosList" [target]="usuariosListSelected" sourceHeader="Lista Usuarios" targetHeader="Seleccionados"
+			[responsive]="true" [showSourceControls]="false" [showTargetControls]="false" id="listaUser" [ngClass]="{'campo-requerido':listaError == true &&(usuariosListSelected.length==0)}">
+			<template let-usr pTemplate="item">
+				<div class="ui-helper-clearfix">
+					<div style="font-size:14px;float:right;margin:15px 5px 0 0">{{usr.logonName}}</div>
+				</div>
+			</template>
+		</p-pickList>
+	</div>
+</div>
+<div class="col-xs-12 grupo_botones">
+	<button type="button" class="btn btn-default" (click)="cancelar()">Salir</button>
+	<button type="button" class="btn btn-primary" (click)="asignarUsuarios()">Asignar Usuarios</button>
+</div>

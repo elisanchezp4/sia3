@@ -1,0 +1,125 @@
+.loginFormTable {
+	text-align: center !important;
+}
+
+.loginFormTableMargin {
+	text-align: center !important;
+	margin: 0 auto;
+}
+
+.loginFormTableColumn {
+	width: 33%;
+}
+
+.tituloLogin {
+	background: #f9f9f9 !important;
+	color: #ffffff;
+	background: #3366cc;
+	font-size: 12px !important;
+	font-weight: bold !important;
+}
+
+.ui-fieldset-legend {
+	text-align: left !important;
+	color: #ffffff !important;
+	background: #3366cc !important;
+	font-size: 12px !important;
+	font-weight: bold !important;
+	border-color: #3366cc !important;
+	border: 0px solid #a8a8a8 !important;
+	text-shadow: 0 0px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+.loginFormTable td {
+	text-align: center !important;
+}
+
+.loginFormTableLeft td {
+	text-align: left !important;
+	margin: 0 auto;
+}
+
+.loginFormTableLef td {
+	text-align: left !important;
+}
+
+.headertab {
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: transparent;
+	background-image: linear-gradient(#6D1000, #460B00 100%); :
+	generaltemplate .css.xhtml : 249 . buttonbar linear-gradient( to bottom
+	, #6D1000, #460B00 100%); : generaltemplate .css.xhtml : 249 .
+	buttonbar linear-gradient( to bottom, #5C1000, #460B00 100%);
+	background-origin: padding-box;
+	background-position: 50% 50%;
+	background-repeat: repeat-x;
+	background-size: auto auto;
+	border-bottom-color: #6D1000;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-image-outset: 0 0 0 0;
+	border-image-repeat: stretch stretch;
+	border-image-slice: 100% 100% 100% 100%;
+	border-image-source: none;
+	border-image-width: 1 1 1 1;
+	border-left-color: #6D1000;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #6D1000;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: #6D1000;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-top-style: solid;
+	border-top-width: 1px;
+	box-shadow: rgba(0, 0, 0, 0.5) 3px 3px 4px 0px;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 12px !important;
+	font-weight: bold !important;
+	line-height: 16px;
+	color: #FFFFFF;
+	margin-bottom: -1px;
+	margin-right: 1.26667px;
+	overflow: visible;
+	overflow-x: visible;
+	overflow-y: visible;
+	padding-bottom: 3px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 3px;
+	position: relative;
+	padding-right: 7px;
+	text-align: right !important;
+	generaltemplate .css.jsf: 189.ui-button center; :
+	primefaces .css.jsf: 13.ui-button center; :
+	forms .css: 565 input[type="reset"]   center; :
+	forms .css: 51 input start; :
+	generaltemplate .css.jsf: 1 body left; :
+	html .css: 447 td inherit;
+	text-decoration: none;
+	text-rendering: optimizelegibility;
+	visibility: visible;
+	word-wrap: break-word;
+	z-index: 93;
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	-moz-text-decoration-color: #000;
+	-moz-text-decoration-line: none;
+	-moz-text-decoration-style: solid;
+	background-image: linear-gradient(#6D1000, #460B00 100%); :
+	generaltemplate .css.xhtml: 249.buttonbar
+		linear-gradient(to bottom, #6D1000, #460B00 100%); :
+	generaltemplate .css.xhtml: 249.buttonbar
+		linear-gradient(to bottom, #6D1000, #460B00 100%);
+	background: -ms-linear-gradient(#6D1000, #460B00);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6D1000',
+		endColorstr='#460B00');
+	padding-right: 7px;
+}

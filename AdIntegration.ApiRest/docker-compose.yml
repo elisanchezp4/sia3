@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  adintegration.apirest:
+    image: ${DOCKER_REGISTRY-}adintegrationapirest
+    build:
+      context: .
+      dockerfile: AdIntegration.ApiRest/Dockerfile
+    ports:
+        - 49154:80
+        #- 49153:443

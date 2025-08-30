@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://soap.mineducacion.gov.co/11/seguridad/sia3" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Autenticacion" targetNamespace="http://soap.mineducacion.gov.co/11/seguridad/sia3" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://soap.mineducacion.gov.co/11/seguridad/sia3/Imports">
+      <xsd:import schemaLocation = "sia3.xsd" namespace="http://soap.mineducacion.gov.co/11/seguridad/sia3" />
+      <xsd:import schemaLocation = "service.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation = "Arrays.xsd" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="obtenerTokenRq">
+    <wsdl:part name="parameters" element="tns:obtenerTokenRq" />
+  </wsdl:message>
+  <wsdl:message name="obtenerTokenRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="obtenerTokenRs">
+    <wsdl:part name="parameters" element="tns:obtenerTokenRs" />
+  </wsdl:message>
+  <wsdl:message name="IAutenticacion_obtenerToken_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+  <wsdl:message name="finalizarSesionRq">
+    <wsdl:part name="parameters" element="tns:finalizarSesionRq" />
+  </wsdl:message>
+  <wsdl:message name="finalizarSesionRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="IAutenticacion_finalizarSesion_OutputMessage" />
+  <wsdl:message name="IAutenticacion_finalizarSesion_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+  <wsdl:message name="modificarPasswordRq">
+    <wsdl:part name="parameters" element="tns:modificarPasswordRq" />
+  </wsdl:message>
+  <wsdl:message name="modificarPasswordRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="IAutenticacion_modificarPassword_OutputMessage" />
+  <wsdl:message name="IAutenticacion_modificarPassword_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+
+  <wsdl:message name="obtenerRolesPermisosRq">
+    <wsdl:part name="parameters" element="tns:obtenerRolesPermisosRq" />
+  </wsdl:message>
+  <wsdl:message name="obtenerRolesPermisosRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="obtenerRolesPermisosRs">
+    <wsdl:part name="parameters" element="tns:obtenerRolesPermisosRs" />
+  </wsdl:message>
+  <wsdl:message name="IAutenticacion_obtenerRolesPermisos_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+
+  <wsdl:message name="actualizarFechaVencimientoTokenRq">
+    <wsdl:part name="parameters" element="tns:actualizarFechaVencimientoTokenRq" />
+  </wsdl:message>
+  <wsdl:message name="actualizarFechaVencimientoTokenRq_Headers">
+    <wsdl:part name="aplicacion" element="tns:aplicacion" />
+    <wsdl:part name="encabezadoSeguridadRq" element="tns:encabezadoSeguridadRq" />
+  </wsdl:message>
+  <wsdl:message name="actualizarFechaVencimientoTokenRs">
+    <wsdl:part name="parameters" element="tns:actualizarFechaVencimientoTokenRs" />
+  </wsdl:message>
+  <wsdl:message name="IAutenticacion_actualizarFechaVencimientoToken_mensajeFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:mensajeFault" />
+  </wsdl:message>
+  <wsdl:portType name="IAutenticacion">
+    <wsdl:operation name="obtenerToken">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/obtenerToken" name="obtenerTokenRq" message="tns:obtenerTokenRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/obtenerTokenResponse" name="obtenerTokenRs" message="tns:obtenerTokenRs" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/obtenerTokenmensajeFaultFault" name="mensajeFaultFault" message="tns:IAutenticacion_obtenerToken_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="finalizarSesion">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/finalizarSesion" name="finalizarSesionRq" message="tns:finalizarSesionRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/finalizarSesionResponse" message="tns:IAutenticacion_finalizarSesion_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/finalizarSesionmensajeFaultFault" name="mensajeFaultFault" message="tns:IAutenticacion_finalizarSesion_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="modificarPassword">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/modificarPassword" name="modificarPasswordRq" message="tns:modificarPasswordRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/modificarPasswordResponse" message="tns:IAutenticacion_modificarPassword_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/modificarPasswordmensajeFaultFault" name="mensajeFaultFault" message="tns:IAutenticacion_modificarPassword_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="obtenerRolesPermisos">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/obtenerRolesPermisos" name="obtenerRolesPermisosRq" message="tns:obtenerRolesPermisosRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/obtenerRolesPermisosResponse" name="obtenerRolesPermisosRs" message="tns:obtenerRolesPermisosRs" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/obtenerRolesPermisosmensajeFaultFault" name="mensajeFaultFault" message="tns:IAutenticacion_obtenerRolesPermisos_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="actualizarFechaVencimientoToken">
+      <wsdl:input wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/actualizarFechaVencimientoToken" name="actualizarFechaVencimientoTokenRq" message="tns:actualizarFechaVencimientoTokenRq" />
+      <wsdl:output wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/actualizarFechaVencimientoTokenResponse" name="actualizarFechaVencimientoTokenRs" message="tns:actualizarFechaVencimientoTokenRs" />
+      <wsdl:fault wsaw:Action="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/actualizarFechaVencimientoTokenmensajeFaultFault" name="mensajeFaultFault" message="tns:IAutenticacion_actualizarFechaVencimientoToken_mensajeFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IAutenticacion" type="tns:IAutenticacion">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="obtenerToken">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/obtenerToken" style="document" />
+      <wsdl:input name="obtenerTokenRq">
+        <soap:header message="tns:obtenerTokenRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:obtenerTokenRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="obtenerTokenRs">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="finalizarSesion">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/finalizarSesion" style="document" />
+      <wsdl:input name="finalizarSesionRq">
+        <soap:header message="tns:finalizarSesionRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:finalizarSesionRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="modificarPassword">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/modificarPassword" style="document" />
+      <wsdl:input name="modificarPasswordRq">
+        <soap:header message="tns:modificarPasswordRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:modificarPasswordRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerRolesPermisos">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/obtenerRolesPermisos" style="document" />
+      <wsdl:input name="obtenerRolesPermisosRq">
+        <soap:header message="tns:obtenerRolesPermisosRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:obtenerRolesPermisosRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="obtenerRolesPermisosRs">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="actualizarFechaVencimientoToken">
+      <soap:operation soapAction="http://soap.mineducacion.gov.co/11/seguridad/sia3/IAutenticacion/actualizarFechaVencimientoToken" style="document" />
+      <wsdl:input name="actualizarFechaVencimientoTokenRq">
+        <soap:header message="tns:actualizarFechaVencimientoTokenRq_Headers" part="aplicacion" use="literal" />
+        <soap:header message="tns:actualizarFechaVencimientoTokenRq_Headers" part="encabezadoSeguridadRq" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="actualizarFechaVencimientoTokenRs">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="mensajeFaultFault">
+        <soap:fault use="literal" name="mensajeFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Autenticacion">
+    <wsdl:port name="BasicHttpBinding_IAutenticacion" binding="tns:BasicHttpBinding_IAutenticacion">
+      <soap:address location="http://localhost:8733/WsdlSeguridad/Autenticacion/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

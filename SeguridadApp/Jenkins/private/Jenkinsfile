@@ -1,0 +1,124 @@
+pipeline {
+    agent any 
+    tools {
+        maven 'maven-3.6.3'
+    }
+    parameters {
+        choice(
+            choices: ['CERTIFICACION', 'PRODUCCION'],
+            description: 'Seleccione el entorno para compilar',
+            name: 'ENTORNO')
+        // gitParameter branch: '', branchFilter: '.*', defaultValue: '', description: 'Seleccione el branch sobre el que requiere compilar', name: 'BRANCH', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'PT_BRANCH_TAG'
+        gitParameter branch: '', branchFilter: '.*', defaultValue: '', description: 'Seleccione el tag sobre el que requiere compilar', name: 'TAG', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'PT_TAG'
+    }
+    stages {
+        stage('Actualizar pom') {
+            when {
+                expression { params.ENTORNO == 'PRODUCCION' }
+            }
+            steps {
+                dir('Fuentes/Aplicacion/SeguridadApp') {
+                    sh script: 'mvn versions:set -DremoveSnapshot'
+                }
+            }
+        }
+        stage('Actualizar libreria base') {
+            steps {
+                dir('Fuentes/Aplicacion/SeguridadShare') {
+                    sh script: '''
+                        mvn clean
+                        mvn install
+                    '''
+                }
+            }
+        }
+        stage('Package') { 
+            steps {
+                dir('Fuentes/Aplicacion/SeguridadApp') {
+                    sh script: 'mvn clean install'
+                }
+            }
+        }
+		
+		
+		//Etapa Sonar
+        stage('SonarQube analysis') {
+			environment { 
+				JAVA_HOME = '/opt/jdk-11.0.12' // Especificamos Java 11 solo para esta etapa
+			}
+			steps {
+				script {
+					def sonarCredentialsId = (params.ENTORNO == 'CERTIFICACION') ? 'sonarQ' : 'sonarQprod'
+					def sonarHostUrl = (params.ENTORNO == 'CERTIFICACION') ? 
+										'https://sonarcert.mineducacion.gov.co/' : 
+										'https://sonar.mineducacion.gov.co/'
+					
+					def mvn = tool 'maven-3.6.3'
+					withCredentials([string(credentialsId: sonarCredentialsId, variable: 'SONAR_TOKEN')]) {
+						dir('Fuentes/Aplicacion/SeguridadApp') {
+							sh "${mvn}/bin/mvn sonar:sonar" +
+								" -Dsonar.java.binaries=target/classes" +
+								" -Dsonar.projectKey=SIA3-Code-Analysis-seguridad-ear" +
+								" -Dsonar.projectName=SeguridadEar" +
+								" -Dsonar.host.url=${sonarHostUrl}" +
+								" -Dsonar.login=${SONAR_TOKEN}" + // Utiliza el token de autenticación desde withCredentials
+								" -Dsonar.exclusions=**/*Test.java,**/*Spec.java" // Excluye los archivos de pruebas del análisis
+						}
+					}
+				}
+			}
+		}
+        
+		
+        stage('test') { 
+            steps {
+                dir('Fuentes/Aplicacion/SeguridadApp') {
+                    sh script: 'mvn test'
+                }
+            }
+        }
+        stage('Nexus') {
+            steps {
+                script {
+                    dir('Fuentes/Aplicacion/SeguridadApp/seguridad-ear') {
+                        def pom = readMavenPom file: 'pom.xml'
+                        def repositorio = (params.ENTORNO == 'PRODUCCION') ? "APP233-releases" : "APP233-snapshots"
+						
+                        sh script: "tar -cvf seguridad-ear-${pom.version}.tar target/seguridad-ear-${pom.version}.ear"
+						
+                        nexusArtifactUploader(
+                            credentialsId: 'nexus',
+                            groupId: 'co.gov.mineducacion.seguridad', 
+                            nexusUrl: 'nexus.mineducacion.gov.co', 
+                            nexusVersion: 'nexus3', 
+                            protocol: 'https', 
+                            repository: "${repositorio}", 
+                            version: "${pom.version}",
+                            artifacts: [
+                                [artifactId: 'seguridad-ear', classifier: '', file: "seguridad-ear-${pom.version}.tar", type: 'tar']
+                            ]
+                        )
+                        sh script: "rm -rf seguridad-ear-${pom.version}.tar"                        
+                    }
+                }
+            }
+        }
+		
+		// stage('Tagging') {
+        //     when {
+        //         allOf {
+        //             expression { params.BRANCH == 'origin/desarrollo' }
+        //             expression { params.ENTORNO == 'CERTIFICACION' }
+        //         }
+        //     }
+        //     steps {
+        //         script {
+        //             def pom = readMavenPom file: 'Fuentes/Aplicacion/SeguridadApp/pom.xml'
+        //             def tagVersion = "v${pom.version}"
+        //             sh "git tag -a ${tagVersion} -m 'Release ${tagVersion}'"
+        //             sh "git push origin ${tagVersion}"
+        //         }
+        //     }
+        // }
+    }
+}

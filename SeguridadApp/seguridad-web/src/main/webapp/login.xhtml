@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/template/publicLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="titulo">#{etq.form_title}</ui:define>
+	<ui:define name="content">
+	
+		<h:form id="loginForm" action="?" method="POST">
+			<p:graphicImage height="75px" value="#{resource['images/blank.png']}"></p:graphicImage>
+			<h:panelGrid styleClass="loginFormTableMargin" width="10%"
+				columns="3">
+				<p:graphicImage value="#{resource['images/blank.png']}"></p:graphicImage>
+				<p:fieldset legend="Sistema de seguridad #{loginBean.nombreAplicacion}" toggleable="false" toggleSpeed="500">
+					<h:panelGrid width="100%">
+						<p:inputText value="#{loginBean.clientId}" id="hiddenfield" type="hidden" />
+						<h:panelGrid columns="3" columnClasses="labelLogin, value"
+							id="loginPnl" styleClass="loginFormTableLeft">
+							<p:outputLabel value="#{etq.label_usuario}" />
+							<p:inputText id="usuario" maxlength="50"
+								value="#{loginBean.usuario}" autocomplete="off" required="true" requiredMessage="Campo obligatorio" />
+							<p:message for="usuario" style="width:130px" />
+							<p:outputLabel value="#{etq.label_password}" />
+							<p:password id="contrasenia" maxlength="30"
+								value="#{loginBean.contrasenia}" autocomplete="off" required="true" requiredMessage="Campo obligatorio" />
+							<p:message for="contrasenia" style="width:130px" />
+							<p:outputLabel />
+						</h:panelGrid>
+						<h:panelGrid columns="2" width="400px">
+							<p:captcha id="captcha"  label="Captcha" tabindex="3" theme="red" language="es" rendered="true" secure="true" required="true" requiredMessage="Por favor ingrese el captcha para iniciar sesión." validatorMessage="El valor de la imagen incorrecto" />
+							<p:message for="captcha" style="width:130px" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="2" width="400px" styleClass="loginFormTable">
+							<p:commandButton value="#{etq.button_ingresar}" actionListener="#{loginBean.check}"
+								ajax="false" update="loginPnl" title = "#{etq.title_btn_ingresar_login}"></p:commandButton>
+						</h:panelGrid>
+            
+					</h:panelGrid>
+				</p:fieldset>
+			</h:panelGrid>	
+
+			<div align="center">
+				<h:commandLink value="#{loginBean.labelRegistro}" action="#{loginBean.irUrlRegistro}" rendered = "#{loginBean.esActivoRegistro}" 
+						title = "#{etq.title_lnk_registro}"/> 
+				<p:graphicImage value="#{resource['images/blank.png']}" rendered = "#{loginBean.esActivoRegistro}"></p:graphicImage>
+				<p:graphicImage value="#{resource['images/blank.png']}" rendered = "#{loginBean.esActivoRegistro}"></p:graphicImage>
+				<p:link outcome="nav_olvido_contrasenia"
+					value="#{etq.text_lnk_actualizar_contrasenia}"
+					title = "#{etq.title_lnk_olvido_contrasenia}" >
+				</p:link>			
+			</div>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
