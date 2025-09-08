@@ -1,16 +1,14 @@
 package co.gov.mineducacion.seguridad.modelo.manejadores;
 
+import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
+import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosRolDTO;
+import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
+import co.gov.mineducacion.seguridad.modelo.entidades.Usuario;
+import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRol;
+import co.gov.mineducacion.seguridad.modelo.excepciones.SIA3Exception;
 import co.gov.mineducacion.seguridad.modelo.manejadores.utils.ManejadorCrud;
 import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
 import co.gov.mineducacion.seguridad.modelo.utils.SqlConstants;
-import co.gov.mineducacion.seguridad.modelo.entidades.Usuario;
-import co.gov.mineducacion.seguridad.modelo.excepciones.SIA3Exception;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
@@ -18,11 +16,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
-import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosRolDTO;
-import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRol;
-import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Manejador que define las operaciones CRUD y de negocio a realizar sobre la
@@ -82,6 +79,18 @@ public class ManejadorUsuarios extends ManejadorCrud<Usuario, String> {
 		@SuppressWarnings("unchecked")
 		List<Usuario> resultList = query.getResultList();
 		logger.info("Fin metodo getUsuarioPorNombre en manejador");
+		return resultList.isEmpty() ? null : resultList.get(0);
+	}
+
+	public Usuario buscarUsuarioPorCorreoElectronico(String correoElectronico){
+		logger.info("Inicio metodo buscarUsuarioPorCorreoElectronico con correoElectronico: " + correoElectronico);
+		Query query = em.createNativeQuery(SqlConstants.CONSULTAR_USUARIO_POR_CORREO_ELECTRONICO, Usuario.class);
+		query.setParameter(1, correoElectronico);
+		logger.info(mesagge + query);
+
+		@SuppressWarnings("unchecked")
+		List<Usuario> resultList = query.getResultList();
+		logger.info("Fin metodo buscarUsuarioPorCorreoElectronico en manejador");
 		return resultList.isEmpty() ? null : resultList.get(0);
 	}
 
