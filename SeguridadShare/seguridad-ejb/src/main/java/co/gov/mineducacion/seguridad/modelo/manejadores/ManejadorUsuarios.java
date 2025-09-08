@@ -82,6 +82,11 @@ public class ManejadorUsuarios extends ManejadorCrud<Usuario, String> {
 		return resultList.isEmpty() ? null : resultList.get(0);
 	}
 
+	/**
+	 * Método para ir a la base de datos y hacer la consulta sql por el nombre del usuario
+	 * @param correoElectronico campo en la base de datos por la cual buscar.
+	 * @return Retorna un Usuario.
+	 */
 	public Usuario buscarUsuarioPorCorreoElectronico(String correoElectronico){
 		logger.info("Inicio metodo buscarUsuarioPorCorreoElectronico con correoElectronico: " + correoElectronico);
 		Query query = em.createNativeQuery(SqlConstants.CONSULTAR_USUARIO_POR_CORREO_ELECTRONICO, Usuario.class);

@@ -375,9 +375,6 @@ public class ServiciosRestAutenticacion {
         List<String> msnError = new ArrayList<>();
 
         List<Respuesta> respError = new ArrayList<>();
-        respError.add(validadorCamposNulos(usuarioId, Constantes.ID_ERROR_USER_NULL, Constantes.ERROR_USER_NULL));
-        respError.add(validadorCamposNulos(nombreUsuario, Constantes.ID_ERROR_NOMBRE_USUARIO_NULL, Constantes.ERROR_NOMBRE_USUARIO_NULL));
-        respError.add(validadorCamposNulos(correoElectronico, Constantes.ID_ERROR_CORREO_ELECTRONICO_USUARIO_NULL, Constantes.ERROR_CORREO_ELECTRONICO_USUARIO_NULL));
         respError.add(validadorCamposNulos(aplicacionid, Constantes.ID_ERROR_APLICACION_NULL, Constantes.ERROR_APLICACION_NULL));
         respError.add(validadorCamposNulos(notificarUsuario, Constantes.ID_ERROR_NOTIFICA_USUARIO, Constantes.ERROR_NOTIFICA_USUARIO));
         respError.add(validadorCamposNulos(roles, Constantes.ID_ERROR_ROLES_NULL, Constantes.ERROR_ROLES_NULL));
@@ -449,12 +446,10 @@ public class ServiciosRestAutenticacion {
         logger.info("Inicia comando para desvincular roles: " + roles);
 
         List<Respuesta> msnError = new ArrayList<>();
-        msnError.add(validadorCamposNulos(usuarioId, Constantes.ID_ERROR_USER_NULL, Constantes.ERROR_USER_NULL));
-        msnError.add(validadorCamposNulos(nombreUsuario, Constantes.ID_ERROR_NOMBRE_USUARIO_NULL, Constantes.ERROR_NOMBRE_USUARIO_NULL));
-        msnError.add(validadorCamposNulos(correoElectronico, Constantes.ID_ERROR_CORREO_ELECTRONICO_USUARIO_NULL, Constantes.ERROR_CORREO_ELECTRONICO_USUARIO_NULL));
         msnError.add(validadorCamposNulos(roles, Constantes.ID_ERROR_ROLES_NULL, Constantes.ERROR_ROLES_NULL));
         msnError.add(validadorCamposNulos(aplicacionid, Constantes.ID_ERROR_APLICACION_NULL, Constantes.ERROR_APLICACION_NULL));
         msnError.add(validadorCamposNulos(notificarUsuario, Constantes.ID_ERROR_NOTIFICA_USUARIO, Constantes.ERROR_NOTIFICA_USUARIO));
+
         Respuesta respuestaError = msnError.stream().filter(Objects::nonNull).findFirst().orElse(null);
         if (respuestaError != null){
             return Response.ok(new Respuesta(respuestaError.getCodigo(), respuestaError.getMensaje())).status(422).build();
@@ -709,17 +704,6 @@ public class ServiciosRestAutenticacion {
 
         UsuariosDTO usuariosDTO = null;
 
-        List<Respuesta> errors = new ArrayList<>();
-        errors.add(validadorCamposNulos(usuarioId, Constantes.ID_ERROR_USER_NULL, Constantes.ERROR_USER_NULL));
-        errors.add(validadorCamposNulos(nombreUsuario, Constantes.ID_ERROR_NOMBRE_USUARIO_NULL, Constantes.ERROR_NOMBRE_USUARIO_NULL));
-        errors.add(validadorCamposNulos(correoElectronico, Constantes.ID_ERROR_CORREO_ELECTRONICO_USUARIO_NULL, Constantes.ERROR_CORREO_ELECTRONICO_USUARIO_NULL));
-
-
-        Respuesta respuestaError = errors.stream().filter(Objects::nonNull).findFirst().orElse(null);
-        if (respuestaError != null){
-            return Response.ok(new Respuesta(respuestaError.getCodigo(), respuestaError.getMensaje())).status(422).build();
-        }
-
         if (usuarioId != null && !usuarioId.trim().isEmpty()) {
             usuariosDTO = negocioUsuario.buscarUsuario(usuarioId);
         }
@@ -731,7 +715,6 @@ public class ServiciosRestAutenticacion {
         if (usuariosDTO == null && correoElectronico != null && !correoElectronico.trim().isEmpty()) {
             usuariosDTO = negocioUsuario.buscarUsuarioPorCorreoElectronico(correoElectronico);
         }
-
         return usuariosDTO;
     }
 }

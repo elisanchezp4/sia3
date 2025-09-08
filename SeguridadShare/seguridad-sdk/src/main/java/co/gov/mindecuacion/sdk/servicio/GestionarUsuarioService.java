@@ -1,18 +1,44 @@
 package co.gov.mindecuacion.sdk.servicio;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.TimeZone;
+import co.gov.mineducacion.sdk.web.soap.gestionar.ActualizarDatosBasicosRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.ActualizarEmailRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.ActualizarPasswordRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.Aplicacion;
+import co.gov.mineducacion.sdk.web.soap.gestionar.ArrayOfstring;
+import co.gov.mineducacion.sdk.web.soap.gestionar.ConsultarUsuariosRolRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.ConsultarUsuariosRolRs;
+import co.gov.mineducacion.sdk.web.soap.gestionar.CrearUsuarioExternoRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.CrearUsuarioExternoRs;
+import co.gov.mineducacion.sdk.web.soap.gestionar.DesvincularRolesUsuarioRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.EncabezadoSeguridad;
+import co.gov.mineducacion.sdk.web.soap.gestionar.IdentificadorUsuario;
+import co.gov.mineducacion.sdk.web.soap.gestionar.InactivarUsuarioRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.InformacionRol;
+import co.gov.mineducacion.sdk.web.soap.gestionar.InformacionUsuario;
+import co.gov.mineducacion.sdk.web.soap.gestionar.MensajeFault;
+import co.gov.mineducacion.sdk.web.soap.gestionar.ModificarUsuarioExternoRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.VincularRolesUsuarioRq;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.GestionarUsuariosImplementsService;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuario;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioActualizarDatosBasicosMensajeFaultFaultFaultMessage;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioActualizarEmailMensajeFaultFaultFaultMessage;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioActualizarPasswordMensajeFaultFaultFaultMessage;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioConsultarUsuariosRolMensajeFaultFaultFaultMessage;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioCrearUsuarioExternoMensajeFaultFaultFaultMessage;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioDesvincularRolesUsuarioMensajeFaultFaultFaultMessage;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioInactivarUsuarioMensajeFaultFaultFaultMessage;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioModificarUsuarioExternoMensajeFaultFaultFaultMessage;
+import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.IGestionarUsuarioVincularRolesUsuarioMensajeFaultFaultFaultMessage;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Holder;
-
-import co.gov.mineducacion.sdk.web.soap.gestionar.*;
-import co.gov.mineducacion.sdk.web.soap.gestionar.servicio.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  * SDK que permite la comunicacion con el servicio de gestionar usuarios.
@@ -128,6 +154,7 @@ public class GestionarUsuarioService {
 	 */
 	public static void desvincularRolesUsuario(List<String> roles, String usuarioId, String idAplicacion,
 											   Integer usuarioPeticion, Boolean notificarUsuario) throws SeguridadException {
+
 		DesvincularRolesUsuarioRq parameters = new DesvincularRolesUsuarioRq();
 		GestionarUsuariosImplementsService gServ = new GestionarUsuariosImplementsService();
 		try{

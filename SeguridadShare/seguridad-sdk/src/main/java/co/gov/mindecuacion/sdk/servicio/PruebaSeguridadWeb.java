@@ -5,18 +5,16 @@
  */
 package co.gov.mindecuacion.sdk.servicio;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-
+import co.gov.mineducacion.sdk.web.soap.autenticar.ObtenerRolesPermisosRs;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-
-import co.gov.mineducacion.sdk.web.soap.autenticar.ObtenerRolesPermisosRs;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author hfabra
@@ -76,6 +74,8 @@ public class PruebaSeguridadWeb {
 		String idUsuarioModificacion = "1718";
 		String idAplicacion 		 = "35";
 		boolean notificarUsuario 	 = false;
+		String nombres = "Andres Felipe";
+		String correoElectronico = "test@mail.com";
 
 		if(servicio.equals(DESVINCULAR_ROLES_USUARIO)) {
 			System.out.println("desvincularRolesUsuario");
@@ -94,7 +94,6 @@ public class PruebaSeguridadWeb {
 
 		} else if (servicio.equals(ACTUALIZAR_DATOS_BASICOS)) {
 			System.out.println("actualizarDatosBasicos");
-			String nombres = "Andres Felipe";
 			String apellidos = "Torres Isaza";
 			String numeroDocumento = "12345678";
 			String rutaDirectorio = "DC=tsi,DC=domain,DC=sia3";
