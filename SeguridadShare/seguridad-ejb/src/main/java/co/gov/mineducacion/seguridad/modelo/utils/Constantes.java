@@ -135,6 +135,8 @@ public class Constantes {
 	public static final Integer ID_ERROR_DATOS_NO_VALIDOS = 3;
 	public static final Integer ID_ERROR_USUARIO_NO_VINCULADO = 4;
 	public static final Integer ID_ERROR_USER_NULL = 5;
+	public static final Integer ID_ERROR_NOMBRE_USUARIO_NULL = 13;
+	public static final Integer ID_ERROR_CORREO_ELECTRONICO_USUARIO_NULL = 14;
 	public static final Integer ID_ERROR_CONTRASENA_NO_VALIDA = 6;
 	public static final Integer ID_ERROR_USUARIO_NO_EXTERNO = 7;
 	public static final Integer ID_ERROR_ROLES_NULL = 8;
@@ -157,6 +159,8 @@ public class Constantes {
 	public static final String ERROR_DATOS_NO_VALIDOS = "Datos inválidos";
 	public static final String ERROR_USUARIO_NO_VINCULADO = "Usuario no está vinculado a la aplicación cliente";
 	public static final String ERROR_USER_NULL = "El id usuario no puede se nulo";
+	public static final String ERROR_NOMBRE_USUARIO_NULL = "El nombre del usuario no puede se nulo";
+	public static final String ERROR_CORREO_ELECTRONICO_USUARIO_NULL = "El correo electronico del usuario no puede se nulo";
 	public static final String ERROR_CONTRASENA_NO_VALIDA = "Contraseña inválida o no cumple con el formato";
 	public static final String ERROR_USUARIO_NO_EXTERNO = "Usuario no es externo";
 	public static final String ERROR_ROLES_NULL = "Los roles no pueden ser nulos";
