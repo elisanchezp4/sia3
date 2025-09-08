@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,6 +31,7 @@ import uk.co.jemos.podam.annotations.PodamExclude;
  *
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "USUARIOS")
 @NamedQueries({ @NamedQuery(name = "Usuarios.findAll", query = "SELECT p FROM Usuario p"),
 		@NamedQuery(name = "Usuario.findUsuariosByIdUsuario", query = "SELECT p FROM Usuario p where p.usuarioId =:idUsuario"),

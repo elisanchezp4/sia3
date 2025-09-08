@@ -1,37 +1,13 @@
 package co.gov.mineducacion.seguridad.negocio;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
-import javax.ws.rs.QueryParam;
-
-import co.gov.mineducacion.seguridad.modelo.dtos.RolesDTO;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import org.apache.log4j.Logger;
-
 import co.gov.mineducacion.seguridad.ejb.servicios.ServicioLDAP;
+import co.gov.mineducacion.seguridad.modelo.dtos.RolesDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosRolDTO;
 import co.gov.mineducacion.seguridad.modelo.entidades.OperacionesRol;
 import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
 import co.gov.mineducacion.seguridad.modelo.entidades.Usuario;
+import co.gov.mineducacion.seguridad.modelo.entidades.UsuarioExterno;
 import co.gov.mineducacion.seguridad.modelo.entidades.UsuarioLdap;
 import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRol;
 import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRolPK;
@@ -46,14 +22,37 @@ import co.gov.mineducacion.seguridad.modelo.manejadores.utils.InformacionAgrupam
 import co.gov.mineducacion.seguridad.modelo.manejadores.utils.InformacionFiltro;
 import co.gov.mineducacion.seguridad.modelo.manejadores.utils.InformacionOrdenamiento;
 import co.gov.mineducacion.seguridad.modelo.manejadores.utils.RangoConsulta;
-import co.gov.mineducacion.seguridad.modelo.utils.UtilEmail;
 import co.gov.mineducacion.seguridad.modelo.utils.BuilderDTO;
 import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
 import co.gov.mineducacion.seguridad.modelo.utils.MessagesConstants;
 import co.gov.mineducacion.seguridad.modelo.utils.ParametrosSng;
 import co.gov.mineducacion.seguridad.modelo.utils.TipoExcepcion;
+import co.gov.mineducacion.seguridad.modelo.utils.UtilEmail;
 import co.gov.mineducacion.seguridad.modelo.utils.UtilOperaciones;
 import co.gov.mineducacion.seguridad.modelo.utils.UtilToken;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import org.apache.log4j.Logger;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+import javax.ws.rs.QueryParam;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 // protected region Incluya importaciones adicionales en esta seccion on begin
 
@@ -252,6 +251,11 @@ public class NegocioUsuarios extends NegocioAbstracto<Usuario, UsuariosDTO> {
             logger.error("Error inesperado al tratar de crear Usuario->" + e.getCause());
             throw new SIA3Exception(MessagesConstants.APP000003);
         }
+    }
+
+    public UsuarioExterno createExternalUser(UsuarioExterno usuarioExterno) throws SIA3Exception {
+        //validarUsuarios();
+        return null;
     }
 
     /**
