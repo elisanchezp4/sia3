@@ -43,7 +43,7 @@ public class UsuarioExterno extends Usuario implements Serializable {
     @Column(name = "SEGUNDO_APELLIDO", length = 50)
     private String secondLastName;
 
-    @Column(name = "EMAIL", unique = true, length = 50)
+    @Column(name = "CORRE_ELECTRONICO", unique = true, length = 50)
     private String email;
 
     @Column(name = "CONTRASENA_HASH", length = 2000)
