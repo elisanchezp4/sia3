@@ -49,6 +49,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ERROR_DATOS_NULOS;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ERROR_SOLO_UN_VALOR;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ID_ERROR_DATOS_NULOS;
 import static co.gov.mineducacion.seguridad.modelo.utils.LdapValidacionesUtil.PASSWORD_PATTERN;
 import static co.gov.mineducacion.seguridad.modelo.utils.LdapValidacionesUtil.validarMaximoCampo;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -702,17 +705,35 @@ public class ServiciosRestAutenticacion {
 
     private UsuariosDTO buscarUsuario(String usuarioId, String nombreUsuario, String correoElectronico) {
 
-        UsuariosDTO usuariosDTO = null;
+        int contador = 0;
+
+        if (usuarioId != null && !usuarioId.trim().isEmpty()) {
+            contador++;
+        }
+        if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
+            contador++;
+        }
+        if (correoElectronico != null && !correoElectronico.trim().isEmpty()) {
+            contador++;
+        }
+
+        if (contador == 0) {
+            logger.error(ERROR_DATOS_NULOS);
+            throw new IllegalArgumentException(ID_ERROR_DATOS_NULOS.toString().concat(ERROR_DATOS_NULOS));
+        }
+
+        if (contador > 1) {
+            logger.error(ERROR_SOLO_UN_VALOR);
+            throw new IllegalArgumentException(ERROR_SOLO_UN_VALOR);
+        }
+
+        UsuariosDTO usuariosDTO;
 
         if (usuarioId != null && !usuarioId.trim().isEmpty()) {
             usuariosDTO = negocioUsuario.buscarUsuario(usuarioId);
-        }
-
-        if (usuariosDTO == null && nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
+        } else if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
             usuariosDTO = negocioUsuario.buscarUsuarioPorNombre(nombreUsuario);
-        }
-
-        if (usuariosDTO == null && correoElectronico != null && !correoElectronico.trim().isEmpty()) {
+        } else {
             usuariosDTO = negocioUsuario.buscarUsuarioPorCorreoElectronico(correoElectronico);
         }
         return usuariosDTO;
