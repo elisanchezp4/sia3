@@ -270,7 +270,7 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 				throw new IGestionarUsuarioDesvincularRolesUsuarioMensajeFaultFaultFaultMessage(ERROR, messageFault(mensajeError, "400"));
 			}
 
-			UsuariosDTO usuariosDTO = buscarUsuario(parameters.userId, parameters.nombreUsuario, parameters.correoElectronico);
+			UsuariosDTO usuariosDTO = buscarUsuario(parameters.getUserId(), parameters.getNombreUsuario(), parameters.getCorreoElectronico());
 
 			if (usuariosDTO == null) {
 				logger.error(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + parameters.userId + ", Nombre=" + parameters.nombreUsuario + ", Email=" + parameters.correoElectronico);
@@ -349,7 +349,7 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 				throw new IGestionarUsuarioVincularRolesUsuarioMensajeFaultFaultFaultMessage(ERROR, messageFault(mensajeError, "400"));
 			}
 
-			UsuariosDTO usuariosDTO = buscarUsuario(parameters.usuarioId, parameters.nombreUsuario, parameters.correoElectronico);
+			UsuariosDTO usuariosDTO = buscarUsuario(parameters.getUserId(), parameters.getNombreUsuario(), parameters.getCorreoElectronico());
 
 			if (usuariosDTO == null) {
 				logger.error(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + parameters.usuarioId + ", Nombre=" + parameters.nombreUsuario + ", Email=" + parameters.correoElectronico);
@@ -814,5 +814,4 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 		}
 		return usuariosDTO;
 	}
-
 }

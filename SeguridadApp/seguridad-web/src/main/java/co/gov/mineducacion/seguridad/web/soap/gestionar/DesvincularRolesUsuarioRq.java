@@ -67,7 +67,6 @@ public class DesvincularRolesUsuarioRq {
         this.userId = value;
     }
 
-
     public String getNombreUsuario() {
         return nombreUsuario;
     }
