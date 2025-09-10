@@ -392,7 +392,7 @@ public class ServiciosRestAutenticacion {
         UsuariosDTO usuariosDTO = buscarUsuario(String.valueOf(usuarioId), nombreUsuario, correoElectronico);
 
         if (usuariosDTO == null) {
-            logger.warn(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + usuarioId + ", Nombre=" + nombreUsuario + ", Email=" + correoElectronico);
+            logger.error(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + usuarioId + ", Nombre=" + nombreUsuario + ", Email=" + correoElectronico);
             return Response.ok(new Respuesta(Constantes.ID_ERROR_USER_NO_EXISTS, Constantes.ERROR_USER_NO_EXISTS)).status(422).build();
         }
 
@@ -461,7 +461,7 @@ public class ServiciosRestAutenticacion {
         UsuariosDTO usuariosDTO = buscarUsuario(String.valueOf(usuarioId), nombreUsuario, correoElectronico);
 
         if (usuariosDTO == null) {
-            logger.warn(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + usuarioId + ", Nombre=" + nombreUsuario + ", Email=" + correoElectronico);
+            logger.error(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + usuarioId + ", Nombre=" + nombreUsuario + ", Email=" + correoElectronico);
             return Response.ok(new Respuesta(Constantes.ID_ERROR_USER_NO_EXISTS, Constantes.ERROR_USER_NO_EXISTS)).status(422).build();
         }
 

@@ -1,48 +1,52 @@
 package co.gov.mineducacion.seguridad.web.soap.gestionar;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
-import javax.annotation.Resource;
-import javax.ejb.EJB;
-import javax.jws.WebService;
-import javax.xml.bind.JAXBElement;
-import javax.xml.ws.WebServiceContext;
-
 import co.gov.mineducacion.seguridad.ejb.servicios.IServicioAutenticacion;
+import co.gov.mineducacion.seguridad.ejb.servicios.IUsuarios;
+import co.gov.mineducacion.seguridad.ejb.servicios.ServiciosCommons;
 import co.gov.mineducacion.seguridad.modelo.dtos.AplicacionesDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.RolesDTO;
+import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
 import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
 import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRol;
 import co.gov.mineducacion.seguridad.modelo.enums.CamposLdap;
 import co.gov.mineducacion.seguridad.modelo.excepciones.SIA3Exception;
+import co.gov.mineducacion.seguridad.modelo.excepciones.SeguridadException;
 import co.gov.mineducacion.seguridad.modelo.manejadores.ManejadorUsuariosRol;
+import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
 import co.gov.mineducacion.seguridad.modelo.utils.ParametrosSng;
 import co.gov.mineducacion.seguridad.modelo.utils.UtilEmail;
 import co.gov.mineducacion.seguridad.negocio.NegocioAplicaciones;
 import co.gov.mineducacion.seguridad.negocio.NegocioRoles;
 import co.gov.mineducacion.seguridad.negocio.NegocioUsuarios;
 import co.gov.mineducacion.seguridad.negocio.NegocioUsuariosRol;
+import co.gov.mineducacion.seguridad.web.servicio.utils.ObjectFactoryUtils;
 import org.apache.log4j.Logger;
 
-import co.gov.mineducacion.seguridad.ejb.servicios.IUsuarios;
-import co.gov.mineducacion.seguridad.ejb.servicios.ServiciosCommons;
-import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
-import co.gov.mineducacion.seguridad.modelo.excepciones.SeguridadException;
-import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
-import co.gov.mineducacion.seguridad.web.servicio.utils.ObjectFactoryUtils;
+import javax.annotation.Resource;
+import javax.ejb.EJB;
+import javax.jws.WebService;
+import javax.xml.bind.JAXBElement;
+import javax.xml.ws.WebServiceContext;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static co.gov.mineducacion.seguridad.modelo.utils.LdapValidacionesUtil.*;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ERROR_DATOS_NULOS;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ERROR_SOLO_UN_VALOR;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ID_ERROR_DATOS_NULOS;
+import static co.gov.mineducacion.seguridad.modelo.utils.LdapValidacionesUtil.PASSWORD_PATTERN;
+import static co.gov.mineducacion.seguridad.modelo.utils.LdapValidacionesUtil.validarMaximoCampo;
 
 @WebService(endpointInterface = "co.gov.mineducacion.seguridad.web.soap.gestionar.IGestionarUsuario")
 public class GestionarUsuariosImplements extends ServiciosCommons implements IGestionarUsuario {
 	private static final Logger logger = Logger.getLogger(GestionarUsuariosImplements.class.getName());
 	private static final String ERROR = "Error";
 	private static final String USER_ID = "userId";
+	private static final String NOMBRE_USUARIO = "nombreUsuario";
+	private static final String CORREO_ELECTRONICO_USUARIO = "correoElectronico";
 	private static final String API_KEY = "apiKey";
 	private static final String ROLES = "roles";
 	private static final String NOTIFICAR_USUARIO = "notificarUsuario";
@@ -256,7 +260,7 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 		logger.info("Inicia desvincularRolesUsuario roles");
 		try {
 			List<String> msnError = new ArrayList<>();
-			msnError.add(validadorCamposNulos(USER_ID, parameters.getUserId()));
+
 			msnError.add(validadorCamposNulos(API_KEY, aplicacion.getApiKey().getValue()));
 			msnError.add(validadorCamposNulos(ROLES, parameters.getRoles()));
 			msnError.add(validadorCamposNulos(NOTIFICAR_USUARIO, parameters.getNotificarUsuario()));
@@ -266,9 +270,10 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 				throw new IGestionarUsuarioDesvincularRolesUsuarioMensajeFaultFaultFaultMessage(ERROR, messageFault(mensajeError, "400"));
 			}
 
-			UsuariosDTO usuariosDTO = negocioUsuario.buscarUsuario(parameters.getUserId());
-			if(usuariosDTO == null) {
-				logger.warn(MSG_USUARIO_NO_VALIDO + parameters.getUserId() );
+			UsuariosDTO usuariosDTO = buscarUsuario(parameters.getUserId(), parameters.getNombreUsuario(), parameters.getCorreoElectronico());
+
+			if (usuariosDTO == null) {
+				logger.error(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + parameters.userId + ", Nombre=" + parameters.nombreUsuario + ", Email=" + parameters.correoElectronico);
 				throw new IGestionarUsuarioDesvincularRolesUsuarioMensajeFaultFaultFaultMessage(ERROR, messageFault(MSG_USUARIO_NO_VALIDO, "400"));
 			}
 
@@ -335,7 +340,6 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 
 		try {
 			List<String> msnErrores = new ArrayList<>();
-			msnErrores.add(validadorCamposNulos(USER_ID, parameters.getUserId()));
 			msnErrores.add(validadorCamposNulos(ROLES, parameters.getRoles()));
 			msnErrores.add(validadorCamposNulos(NOTIFICAR_USUARIO, parameters.getNotificarUsuario()));
 			msnErrores.add(validadorCamposNulos(API_KEY, aplicacion.getApiKey().getValue()));
@@ -345,11 +349,13 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 				throw new IGestionarUsuarioVincularRolesUsuarioMensajeFaultFaultFaultMessage(ERROR, messageFault(mensajeError, "400"));
 			}
 
-			UsuariosDTO usuariosDTO = negocioUsuario.buscarUsuario(parameters.getUserId());
+			UsuariosDTO usuariosDTO = buscarUsuario(parameters.getUserId(), parameters.getNombreUsuario(), parameters.getCorreoElectronico());
+
 			if (usuariosDTO == null) {
-				logger.warn("Usuario enviando no existe: " + parameters.getUserId());
-				throw new IGestionarUsuarioVincularRolesUsuarioMensajeFaultFaultFaultMessage(ERROR, messageFault("Usuario no existe o no es valido", "400"));
+				logger.error(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + parameters.usuarioId + ", Nombre=" + parameters.nombreUsuario + ", Email=" + parameters.correoElectronico);
+				throw new IGestionarUsuarioVincularRolesUsuarioMensajeFaultFaultFaultMessage(ERROR, messageFault(MSG_USUARIO_NO_VALIDO, "400"));
 			}
+
 			String apiKeyValue = aplicacion.getApiKey().getValue();
 			BigDecimal aplicacionId = new BigDecimal(apiKeyValue);
 			for (String rol : parameters.getRoles().getString()) {
@@ -773,4 +779,39 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 		return null;
 	}
 
+	private UsuariosDTO buscarUsuario(String usuarioId, String nombreUsuario, String correoElectronico) {
+
+		int contador = 0;
+
+		if (usuarioId != null && !usuarioId.trim().isEmpty()) {
+			contador++;
+		}
+		if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
+			contador++;
+		}
+		if (correoElectronico != null && !correoElectronico.trim().isEmpty()) {
+			contador++;
+		}
+
+		if (contador == 0) {
+			logger.error(ERROR_DATOS_NULOS);
+			throw new IllegalArgumentException(ID_ERROR_DATOS_NULOS.toString().concat(ERROR_DATOS_NULOS));
+		}
+
+		if (contador > 1) {
+			logger.error(ERROR_SOLO_UN_VALOR);
+			throw new IllegalArgumentException(ERROR_SOLO_UN_VALOR);
+		}
+
+		UsuariosDTO usuariosDTO;
+
+		if (usuarioId != null && !usuarioId.trim().isEmpty()) {
+			usuariosDTO = negocioUsuario.buscarUsuario(usuarioId);
+		} else if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
+			usuariosDTO = negocioUsuario.buscarUsuarioPorNombre(nombreUsuario);
+		} else {
+			usuariosDTO = negocioUsuario.buscarUsuarioPorCorreoElectronico(correoElectronico);
+		}
+		return usuariosDTO;
+	}
 }
