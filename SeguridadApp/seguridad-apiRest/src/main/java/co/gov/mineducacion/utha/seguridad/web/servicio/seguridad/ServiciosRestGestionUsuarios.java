@@ -1,8 +1,12 @@
 package co.gov.mineducacion.utha.seguridad.web.servicio.seguridad;
 
 import co.gov.mineducacion.seguridad.ejb.servicios.IUsuarios;
+import co.gov.mineducacion.seguridad.ejb.servicios.strategy.UserCreationStrategy;
+import co.gov.mineducacion.seguridad.ejb.servicios.strategy.impl.ExternalUserCreationStrategy;
+import co.gov.mineducacion.seguridad.ejb.servicios.strategy.impl.InternalUserCreationStrategy;
+import co.gov.mineducacion.seguridad.modelo.dtos.UserDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
-import co.gov.mineducacion.seguridad.modelo.entidades.UsuarioExterno;
+import co.gov.mineducacion.seguridad.modelo.excepciones.SIA3Exception;
 import co.gov.mineducacion.seguridad.modelo.excepciones.SeguridadException;
 import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
 import co.gov.mineducacion.seguridad.negocio.NegocioUsuarios;
@@ -17,7 +21,9 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -35,6 +41,14 @@ public class ServiciosRestGestionUsuarios {
 
 	@EJB
 	private NegocioUsuarios negocioUsuarioBean;
+
+	@EJB
+	private InternalUserCreationStrategy internalUserCreationStrategy;
+
+	@EJB
+	private ExternalUserCreationStrategy externalUserCreationStrategy;
+
+	private Map<BigDecimal, UserCreationStrategy> creationStrategies;
 	
 	
     /**
@@ -64,14 +78,19 @@ public class ServiciosRestGestionUsuarios {
 	@POST
 	@Consumes({APPLICATION_JSON})
 	@Produces({APPLICATION_JSON})
-	@Path("/usuario")
+	@Path("/user")
+	public UserDTO createUser(UserDTO userDTO, @HeaderParam("access_token") String token, @HeaderParam("client_id") String clientId, @HeaderParam("user_id") Integer userId) throws SIA3Exception, SeguridadException {
+		log.info("Petición REST para crear un usuario de tipo: {}", userDTO.getUserType());
 
-	public UsuarioExterno saveExternalUser(UsuarioExterno usuarioExterno, @HeaderParam("access_token") String token, @HeaderParam("client_id") String clientId, @HeaderParam("user_id") Integer userId){
+		if (userDTO == null) {
+			log.warn("Petición de creación de usuario nula.");
+			throw new SIA3Exception("La información del usuario no puede ser nula.");
+		}
 
-		/*negocioUsuarioBean.crear(usuarioExterno);
-		log.info("Usuario externo creado exitosamente.");
-		servicioUsuarios.crearUsuario();*/
-		return null;
+		// Toda la lógica de negocio se delega al EJB NegocioUsuarios
+		UserDTO usuarioCreado = negocioUsuarioBean.userCreate(userDTO);
+
+		log.info("Usuario creado con éxito en la capa de negocio.");
+		return usuarioCreado;
 	}
-
 }

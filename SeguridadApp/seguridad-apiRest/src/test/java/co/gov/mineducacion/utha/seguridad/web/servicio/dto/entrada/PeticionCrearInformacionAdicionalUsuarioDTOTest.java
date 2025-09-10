@@ -5,7 +5,7 @@ import org.mockito.InjectMocks;
 
 import static org.junit.Assert.*;
 
-public class PeticionCrearUsuarioExternoDTOTest {
+public class PeticionCrearInformacionAdicionalUsuarioDTOTest {
 
     @InjectMocks
     private PeticionCrearUsuarioExternoDTO mockPeticionCrearUsuarioExternoDTO = new PeticionCrearUsuarioExternoDTO();

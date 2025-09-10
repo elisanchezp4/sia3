@@ -1,13 +1,17 @@
 package co.gov.mineducacion.seguridad.negocio;
 
 import co.gov.mineducacion.seguridad.ejb.servicios.ServicioLDAP;
+import co.gov.mineducacion.seguridad.ejb.servicios.strategy.UserCreationStrategy;
+import co.gov.mineducacion.seguridad.ejb.servicios.strategy.impl.ExternalUserCreationStrategy;
+import co.gov.mineducacion.seguridad.ejb.servicios.strategy.impl.InternalUserCreationStrategy;
 import co.gov.mineducacion.seguridad.modelo.dtos.RolesDTO;
+import co.gov.mineducacion.seguridad.modelo.dtos.UserDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosRolDTO;
+import co.gov.mineducacion.seguridad.modelo.entidades.InformacionAdicionalUsuario;
 import co.gov.mineducacion.seguridad.modelo.entidades.OperacionesRol;
 import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
 import co.gov.mineducacion.seguridad.modelo.entidades.Usuario;
-import co.gov.mineducacion.seguridad.modelo.entidades.UsuarioExterno;
 import co.gov.mineducacion.seguridad.modelo.entidades.UsuarioLdap;
 import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRol;
 import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRolPK;
@@ -34,6 +38,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -47,7 +52,9 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -93,6 +100,15 @@ public class NegocioUsuarios extends NegocioAbstracto<Usuario, UsuariosDTO> {
     private NegocioUsuariosRol negocioUsuariosRol;
     @EJB
     private ManejadorOperacionesRol manejadorOperacionesRol;
+
+    @EJB
+    private InternalUserCreationStrategy internalUserCreationStrategy;
+
+    @EJB
+    private ExternalUserCreationStrategy externalUserCreationStrategy;
+
+    private Map<BigDecimal, UserCreationStrategy> creationStrategies;
+
     // Fin variables HBT
 
     /**
@@ -143,6 +159,36 @@ public class NegocioUsuarios extends NegocioAbstracto<Usuario, UsuariosDTO> {
      *                                   tenía un error de sintáxis por lo que no pudo ser procesado
      *                                   correctamente
      */
+
+    @PostConstruct
+    public void init() {
+        creationStrategies = new HashMap<>();
+        creationStrategies.put(Constantes.ID_TIPO_USUARIO_INTERNO, internalUserCreationStrategy);
+        creationStrategies.put(Constantes.ID_TIPO_USUARIO_EXTERNO, externalUserCreationStrategy);
+    }
+
+    public UserDTO userCreate(UserDTO userDTO) throws SIA3Exception {
+        logger.info("Iniciando la creacion de usuario en la capa de negocio.");
+
+        if (userDTO == null || userDTO.getUserType() == null) {
+            logger.error("El DTO de usuario o el tipo de usuario son nulos.");
+            throw new SIA3Exception(MessagesConstants.APP100014);
+        }
+
+        UserCreationStrategy strategy = creationStrategies.get(userDTO.getUserType());
+        if (strategy == null) {
+            //logger.error("Tipo de usuario no válido: {}", userDTO.getUserType());
+            throw new SIA3Exception("Tipo de usuario no válido.");
+        }
+
+        Usuario usuarioCreado = strategy.crearUsuario(userDTO);
+
+        userDTO.setUserId(usuarioCreado.getUsuarioId());
+        //logger.info("Usuario creado exitosamente con ID: {}", usuarioCreado.getUsuarioId());
+
+        return userDTO;
+    }
+
     public List<UsuariosDTO> consultar(String filterBy, String orderBy, Integer from, Integer to)
             throws InvalidParameterException {
         // protected region Modifique el metodo consultar on begin
@@ -253,7 +299,7 @@ public class NegocioUsuarios extends NegocioAbstracto<Usuario, UsuariosDTO> {
         }
     }
 
-    public UsuarioExterno createExternalUser(UsuarioExterno usuarioExterno) throws SIA3Exception {
+    public InformacionAdicionalUsuario createExternalUser(InformacionAdicionalUsuario informacionAdicionalUsuario) throws SIA3Exception {
         //validarUsuarios();
         return null;
     }
