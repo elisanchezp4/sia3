@@ -1,15 +1,23 @@
 package co.gov.mineducacion.seguridad.modelo.entidades;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
+import uk.co.jemos.podam.annotations.PodamExclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import uk.co.jemos.podam.annotations.PodamExclude;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -20,6 +28,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import uk.co.jemos.podam.annotations.PodamExclude;
+
 /**
  * The persistent class for the USUARIOS database table.
  *
@@ -29,6 +39,7 @@ import java.util.List;
 @NamedQueries({ @NamedQuery(name = "Usuarios.findAll", query = "SELECT p FROM Usuario p"),
 		@NamedQuery(name = "Usuario.findUsuariosByIdUsuario", query = "SELECT p FROM Usuario p where p.usuarioId =:idUsuario"),
 		@NamedQuery(name = "Usuario.findByNombreUsuario", query = "SELECT p FROM Usuario p where p.logonName = :nombreUsuario and p.estado = 1") })
+@Builder(toBuilder = true)
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -57,6 +68,9 @@ public class Usuario implements Serializable {
 
 	@Column(name = "NUEVO_PASSWORD")
 	private String nuevoPass;
+
+	@Column(name = "CONTRASENA_HASH", length = 2000)
+	private String passwordHash;
 
 	@Column(name = "TIPO")
 	private BigDecimal tipo;
@@ -96,6 +110,10 @@ public class Usuario implements Serializable {
 	@PodamExclude
 	@JsonIgnore
 	private List<UsuariosRol> usuariosRolList;
+
+	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
+	private InformacionAdicionalUsuario informacionAdicional;
 
 	// protected region atributos adicionales on begin
 	// Escriba en esta sección sus modificaciones
@@ -311,6 +329,14 @@ public class Usuario implements Serializable {
 
 	public void setNuevoPass(String nuevoPass) {
 		this.nuevoPass = nuevoPass;
+	}
+
+	public InformacionAdicionalUsuario getInformacionAdicional() {
+		return informacionAdicional;
+	}
+
+	public void setInformacionAdicional(InformacionAdicionalUsuario informacionAdicional) {
+		this.informacionAdicional = informacionAdicional;
 	}
 
 	@Override
