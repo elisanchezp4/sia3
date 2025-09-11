@@ -1,6 +1,7 @@
 package co.gov.mineducacion.seguridad.modelo.entidades;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "INFORMACION_ADICIONAL_USUARIO")
+@Builder(toBuilder = true)
 public class InformacionAdicionalUsuario implements Serializable {
 
 
@@ -44,9 +46,6 @@ public class InformacionAdicionalUsuario implements Serializable {
 
     @Column(name = "CORREO_ELECTRONICO", unique = true, length = 50)
     private String email;
-
-    @Column(name = "CONTRASENA_HASH", length = 2000)
-    private String passwordHash;
 
     @OneToOne
     @MapsId

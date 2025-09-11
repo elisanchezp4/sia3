@@ -8,7 +8,6 @@ import co.gov.mineducacion.seguridad.modelo.dtos.RolesDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.UserDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
 import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosRolDTO;
-import co.gov.mineducacion.seguridad.modelo.entidades.InformacionAdicionalUsuario;
 import co.gov.mineducacion.seguridad.modelo.entidades.OperacionesRol;
 import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
 import co.gov.mineducacion.seguridad.modelo.entidades.Usuario;
@@ -168,23 +167,24 @@ public class NegocioUsuarios extends NegocioAbstracto<Usuario, UsuariosDTO> {
     }
 
     public UserDTO userCreate(UserDTO userDTO) throws SIA3Exception {
+
         logger.info("Iniciando la creacion de usuario en la capa de negocio.");
 
         if (userDTO == null || userDTO.getUserType() == null) {
-            logger.error("El DTO de usuario o el tipo de usuario son nulos.");
+            logger.error("El usuario o el tipo de usuario son nulos.");
             throw new SIA3Exception(MessagesConstants.APP100014);
         }
 
         UserCreationStrategy strategy = creationStrategies.get(userDTO.getUserType());
         if (strategy == null) {
-            //logger.error("Tipo de usuario no válido: {}", userDTO.getUserType());
+            logger.error("Tipo de usuario no válido: {} " + userDTO.getUserType());
             throw new SIA3Exception("Tipo de usuario no válido.");
         }
 
-        Usuario usuarioCreado = strategy.crearUsuario(userDTO);
+        Usuario userCreated = strategy.crearUsuario(userDTO);
 
-        userDTO.setUserId(usuarioCreado.getUsuarioId());
-        //logger.info("Usuario creado exitosamente con ID: {}", usuarioCreado.getUsuarioId());
+        userDTO.setUserId(userCreated.getUsuarioId());
+        logger.info("Usuario creado exitosamente con ID: {} " + userCreated.getUsuarioId());
 
         return userDTO;
     }
@@ -297,11 +297,6 @@ public class NegocioUsuarios extends NegocioAbstracto<Usuario, UsuariosDTO> {
             logger.error("Error inesperado al tratar de crear Usuario->" + e.getCause());
             throw new SIA3Exception(MessagesConstants.APP000003);
         }
-    }
-
-    public InformacionAdicionalUsuario createExternalUser(InformacionAdicionalUsuario informacionAdicionalUsuario) throws SIA3Exception {
-        //validarUsuarios();
-        return null;
     }
 
     /**

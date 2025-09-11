@@ -6,12 +6,16 @@ import co.gov.mineducacion.seguridad.modelo.entidades.InformacionAdicionalUsuari
 import co.gov.mineducacion.seguridad.modelo.entidades.Usuario;
 import co.gov.mineducacion.seguridad.modelo.excepciones.SIA3Exception;
 import co.gov.mineducacion.seguridad.modelo.manejadores.ManejadorUsuarios;
-import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
+import co.gov.mineducacion.seguridad.modelo.utils.ValidatorUser;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ESTADO_ACTIVO_S;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ID_TIPO_USUARIO_EXTERNO;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.SI;
 
 @Stateless
 @Transactional
@@ -23,36 +27,36 @@ public class ExternalUserCreationStrategy implements UserCreationStrategy {
     @Override
     public Usuario crearUsuario(UserDTO userDTO) throws SIA3Exception {
 
-
-        Usuario usuario = new Usuario();
-
-        // Copiar propiedades comunes
-        usuario.setLogonName(userDTO.getLogonName());
-        usuario.setRuta(userDTO.getRoute());
-        usuario.setEstado(Constantes.ESTADO_ACTIVO_S);
-        usuario.setTipo(Constantes.ID_TIPO_USUARIO_EXTERNO);
+        new ValidatorUser().validateCommonFields(userDTO);
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
-        usuario.setFechaCreacion(now);
-        usuario.setUltimaModificacion(now);
 
-        // Crear y vincular la información adicional del usuario
-        InformacionAdicionalUsuario infoAdicional = new InformacionAdicionalUsuario();
-        infoAdicional.setIdentificationNumber(userDTO.getIdentificationNumber());
-        infoAdicional.setFirstName(userDTO.getFirstName());
-        infoAdicional.setLastName(userDTO.getLastName());
-        infoAdicional.setEmail(userDTO.getEmail());
-        // ... setear otras propiedades de InformacionAdicionalUsuario
+        Usuario usuario = Usuario
+                .builder()
+                .ruta(userDTO.getRoute())
+                .nuevoPass(SI)
+                .tipo(ID_TIPO_USUARIO_EXTERNO)
+                .estado(ESTADO_ACTIVO_S)
+                .fechaCreacion(now)
+                .ultimaModificacion(now)
+                .logonName(userDTO.getLogonName())
+                .build();
 
-        // Establecer la relación bidireccional
-        usuario.setInformacionAdicional(infoAdicional);
-        infoAdicional.setUsuario(usuario);
 
-        // Persistir el usuario (debido a CascadeType.ALL, esto también persiste la infoAdicional)
+        InformacionAdicionalUsuario informacionAdicionalUsuario = InformacionAdicionalUsuario
+                .builder()
+                .identificationNumber(userDTO.getIdentificationNumber())
+                .firstName(userDTO.getFirstName())
+                .secondName(userDTO.getSecondName())
+                .lastName(userDTO.getLastName())
+                .secondLastName(userDTO.getSecondLastName())
+                .email(userDTO.getEmail())
+                .usuario(usuario)
+                .build();
+
+        usuario.setInformacionAdicional(informacionAdicionalUsuario);
+
         manejadorUsuarios.crear(usuario);
-
-        // Lógica adicional, como la asignación de roles predeterminados para usuarios externos
-
         return usuario;
     }
 }

@@ -63,6 +63,9 @@ public class Usuario implements Serializable {
 	@Column(name = "NUEVO_PASSWORD")
 	private String nuevoPass;
 
+	@Column(name = "CONTRASENA_HASH", length = 2000)
+	private String passwordHash;
+
 	@Column(name = "TIPO")
 	private BigDecimal tipo;
 

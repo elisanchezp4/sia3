@@ -12,7 +12,7 @@ import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
 import co.gov.mineducacion.seguridad.negocio.NegocioUsuarios;
 import co.gov.mineducacion.utha.seguridad.web.servicio.dto.entrada.PeticionConsultaUsuarioRol;
 import co.gov.mineducacion.utha.seguridad.web.servicio.utils.dto.UtilsDTO;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -33,8 +33,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
  */
 @Stateless
 @Path("servicios/gestionusuarios")
-@Slf4j
 public class ServiciosRestGestionUsuarios {
+
+	private static final Logger LOG = Logger.getLogger(ServiciosRestGestionUsuarios.class.getName());
 	
 	@EJB
 	private IUsuarios servicioUsuarios;
@@ -80,17 +81,8 @@ public class ServiciosRestGestionUsuarios {
 	@Produces({APPLICATION_JSON})
 	@Path("/user")
 	public UserDTO createUser(UserDTO userDTO, @HeaderParam("access_token") String token, @HeaderParam("client_id") String clientId, @HeaderParam("user_id") Integer userId) throws SIA3Exception, SeguridadException {
-		log.info("Petición REST para crear un usuario de tipo: {}", userDTO.getUserType());
 
-		if (userDTO == null) {
-			log.warn("Petición de creación de usuario nula.");
-			throw new SIA3Exception("La información del usuario no puede ser nula.");
-		}
-
-		// Toda la lógica de negocio se delega al EJB NegocioUsuarios
-		UserDTO usuarioCreado = negocioUsuarioBean.userCreate(userDTO);
-
-		log.info("Usuario creado con éxito en la capa de negocio.");
-		return usuarioCreado;
+		LOG.info("Petición REST para crear un usuario de tipo: {} " + userDTO.getUserType());
+		return negocioUsuarioBean.userCreate(userDTO);
 	}
 }
