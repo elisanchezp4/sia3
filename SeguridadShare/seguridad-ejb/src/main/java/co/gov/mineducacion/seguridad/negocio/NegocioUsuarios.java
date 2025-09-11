@@ -649,7 +649,40 @@ public class NegocioUsuarios extends NegocioAbstracto<Usuario, UsuariosDTO> {
             userDTO = null;
         }
         return userDTO;
+    }
 
+    /**
+     * Método para buscar un usuario por su nombre
+     * @param nombreUsuario Parametro para buscar el usuario
+     * @return Retorna un usuarioDTO
+     */
+    public UsuariosDTO buscarUsuarioPorNombre(String nombreUsuario){
+        UsuariosDTO userDTO = instanciarDAO();
+        Usuario usuario = manejadorUsuarios.getUsuarioPorNombre(nombreUsuario);
+
+        if (usuario != null) {
+            copiarPropiedades(userDTO, usuario);
+        } else {
+            userDTO = null;
+        }
+        return userDTO;
+    }
+
+    /**
+     * Método para buscar un usuario por correo electronico
+     * @param correoElectronico Parametro para buscar al usuario
+     * @return Retorna un usuarioDTO.
+     */
+    public UsuariosDTO buscarUsuarioPorCorreoElectronico(String correoElectronico){
+        UsuariosDTO userDTO = instanciarDAO();
+        Usuario usuario = manejadorUsuarios.buscarUsuarioPorCorreoElectronico(correoElectronico);
+
+        if (usuario != null) {
+            copiarPropiedades(userDTO, usuario);
+        } else {
+            userDTO = null;
+        }
+        return userDTO;
     }
 
     /**

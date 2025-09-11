@@ -15,6 +15,8 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="userId" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
+ *         &lt;element name="nombreUsuario" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
+ *  *         &lt;element name="correoElectronico" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
  *         &lt;element name="roles" type="{http://www.w3.org/2001/XMLSchema}ArrayOfstring" minOccurs="0"/>
  *         &lt;element name="notificarUsuario" type="{http://www.w3.org/2001/XMLSchema}Boolean" minOccurs="0"/>
  *       &lt;/sequence>
@@ -29,12 +31,16 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "desvincularRolesUsuarioRq",propOrder = {
         "userId",
+        "nombreUsuario",
+        "correoElectronico",
         "roles",
         "notificarUsuario"
 })
 public class DesvincularRolesUsuarioRq {
 
     protected String userId;
+    protected String nombreUsuario;
+    protected String correoElectronico;
     protected ArrayOfstring roles;
     protected Boolean notificarUsuario;
 
@@ -70,6 +76,23 @@ public class DesvincularRolesUsuarioRq {
      *     {@link ArrayOfstring }
      *
      */
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+
     public ArrayOfstring getRoles() {
         return roles;
     }

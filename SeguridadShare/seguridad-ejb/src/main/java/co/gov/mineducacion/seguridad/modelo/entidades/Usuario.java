@@ -3,6 +3,8 @@ package co.gov.mineducacion.seguridad.modelo.entidades;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import uk.co.jemos.podam.annotations.PodamExclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import uk.co.jemos.podam.annotations.PodamExclude;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +27,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import uk.co.jemos.podam.annotations.PodamExclude;
 
 /**
  * The persistent class for the USUARIOS database table.
@@ -85,6 +91,12 @@ public class Usuario implements Serializable {
 
 	@Column(name = "LOGON_NAME")
 	private String logonName;
+
+	@Column(name = "NOMBRE_USUARIO")
+	private String nombreUsuario;
+
+	@Column(name = "CORREO_ELECTRONICO")
+	private String correoElectronico;
 
 	@OneToMany(mappedBy = "usuarios")
 	@PodamExclude
@@ -211,6 +223,23 @@ public class Usuario implements Serializable {
 
 	public void setUsuariosRolList(List<UsuariosRol> usuariosRolList) {
 		this.usuariosRolList = usuariosRolList;
+	}
+
+
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+
+	public String getCorreoElectronico() {
+		return correoElectronico;
+	}
+
+	public void setCorreoElectronico(String correoElectronico) {
+		this.correoElectronico = correoElectronico;
 	}
 
 	/**

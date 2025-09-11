@@ -1,15 +1,35 @@
 package co.gov.mineducacion.utha.seguridad.web.servicio.seguridad;
 
-import static co.gov.mineducacion.seguridad.modelo.utils.LdapValidacionesUtil.*;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import co.gov.mineducacion.seguridad.ejb.servicios.IServicioAutenticacion;
+import co.gov.mineducacion.seguridad.ejb.servicios.IUsuarios;
+import co.gov.mineducacion.seguridad.modelo.dtos.AplicacionesDTO;
+import co.gov.mineducacion.seguridad.modelo.dtos.MensajeDTO;
+import co.gov.mineducacion.seguridad.modelo.dtos.OperacionesRolDTO;
+import co.gov.mineducacion.seguridad.modelo.dtos.RolesDTO;
+import co.gov.mineducacion.seguridad.modelo.dtos.TokensActivosDTO;
+import co.gov.mineducacion.seguridad.modelo.dtos.UsuariosDTO;
+import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
+import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRol;
+import co.gov.mineducacion.seguridad.modelo.enums.CamposLdap;
+import co.gov.mineducacion.seguridad.modelo.excepciones.SIA3Exception;
+import co.gov.mineducacion.seguridad.modelo.excepciones.SeguridadException;
+import co.gov.mineducacion.seguridad.modelo.manejadores.ManejadorUsuariosRol;
+import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
+import co.gov.mineducacion.seguridad.modelo.utils.MessagesConstants;
+import co.gov.mineducacion.seguridad.modelo.utils.ParametrosSng;
+import co.gov.mineducacion.seguridad.modelo.utils.UtilEmail;
+import co.gov.mineducacion.seguridad.negocio.NegocioAplicaciones;
+import co.gov.mineducacion.seguridad.negocio.NegocioMensaje;
+import co.gov.mineducacion.seguridad.negocio.NegocioRoles;
+import co.gov.mineducacion.seguridad.negocio.NegocioUsuarios;
+import co.gov.mineducacion.seguridad.negocio.NegocioUsuariosRol;
+import co.gov.mineducacion.utha.seguridad.web.servicio.dto.InformacionTokenDTO;
+import co.gov.mineducacion.utha.seguridad.web.servicio.dto.UsuariosRolesDto;
+import co.gov.mineducacion.utha.seguridad.web.servicio.dto.entrada.PeticionAutenticacionDTO;
+import co.gov.mineducacion.utha.seguridad.web.servicio.dto.salida.Respuesta;
+import co.gov.mineducacion.utha.seguridad.web.servicio.utils.dto.UtilsDTO;
+import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -21,30 +41,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import co.gov.mineducacion.seguridad.modelo.dtos.*;
-import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
-import co.gov.mineducacion.seguridad.modelo.entidades.UsuariosRol;
-import co.gov.mineducacion.seguridad.modelo.enums.CamposLdap;
-import co.gov.mineducacion.seguridad.modelo.manejadores.ManejadorUsuariosRol;
-import co.gov.mineducacion.seguridad.modelo.utils.*;
-import co.gov.mineducacion.seguridad.negocio.*;
-import co.gov.mineducacion.utha.seguridad.web.servicio.dto.UsuariosRolesDto;
-import co.gov.mineducacion.utha.seguridad.web.servicio.dto.salida.Respuesta;
-import com.google.gson.Gson;
-import org.apache.log4j.Logger;
-
-import co.gov.mineducacion.seguridad.ejb.servicios.IServicioAutenticacion;
-import co.gov.mineducacion.seguridad.ejb.servicios.IUsuarios;
-import co.gov.mineducacion.seguridad.modelo.excepciones.SIA3Exception;
-import co.gov.mineducacion.seguridad.modelo.excepciones.SeguridadException;
-import co.gov.mineducacion.seguridad.modelo.utils.Constantes;
-import co.gov.mineducacion.seguridad.modelo.utils.MessagesConstants;
-
-
-import co.gov.mineducacion.utha.seguridad.web.servicio.dto.InformacionTokenDTO;
-import co.gov.mineducacion.utha.seguridad.web.servicio.dto.entrada.PeticionAutenticacionDTO;
-import co.gov.mineducacion.utha.seguridad.web.servicio.utils.dto.UtilsDTO;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ERROR_DATOS_NULOS;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ERROR_SOLO_UN_VALOR;
+import static co.gov.mineducacion.seguridad.modelo.utils.Constantes.ID_ERROR_DATOS_NULOS;
+import static co.gov.mineducacion.seguridad.modelo.utils.LdapValidacionesUtil.PASSWORD_PATTERN;
+import static co.gov.mineducacion.seguridad.modelo.utils.LdapValidacionesUtil.validarMaximoCampo;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 
 /**
@@ -360,13 +370,14 @@ public class ServiciosRestAutenticacion {
     @Consumes({APPLICATION_JSON})
     @Produces({APPLICATION_JSON})
     @Path("vincularroles")
-    public Response vincularRoles(@QueryParam("aplicacionid") BigDecimal aplicacionid, @QueryParam("usuarioid") Long usuarioId, @QueryParam("roles") List<String> roles, @QueryParam("notificarUsuario") Boolean notificarUsuario,
+    public Response vincularRoles(@QueryParam("aplicacionid") BigDecimal aplicacionid, @QueryParam("usuarioid") Long usuarioId,
+                                  @QueryParam("nombreUsuario") String nombreUsuario, @QueryParam("correoElectronico") String correoElectronico,
+                                  @QueryParam("roles") List<String> roles, @QueryParam("notificarUsuario") Boolean notificarUsuario,
                                   @HeaderParam("access_token") String token, @HeaderParam("client_id") String clientId, @HeaderParam("user_id") Integer userId) throws SeguridadException {
         logger.info("Inicia vincular roles");
         List<String> msnError = new ArrayList<>();
 
         List<Respuesta> respError = new ArrayList<>();
-        respError.add(validadorCamposNulos(usuarioId, Constantes.ID_ERROR_USER_NULL, Constantes.ERROR_USER_NULL));
         respError.add(validadorCamposNulos(aplicacionid, Constantes.ID_ERROR_APLICACION_NULL, Constantes.ERROR_APLICACION_NULL));
         respError.add(validadorCamposNulos(notificarUsuario, Constantes.ID_ERROR_NOTIFICA_USUARIO, Constantes.ERROR_NOTIFICA_USUARIO));
         respError.add(validadorCamposNulos(roles, Constantes.ID_ERROR_ROLES_NULL, Constantes.ERROR_ROLES_NULL));
@@ -377,11 +388,14 @@ public class ServiciosRestAutenticacion {
         }
 
         servicioAutenticacion.actualizarFechaVencimientoToken(token, userId, clientId);
-        UsuariosDTO usuariosDTO = negocioUsuario.buscarUsuario(usuarioId.toString());
+
+        UsuariosDTO usuariosDTO = buscarUsuario(String.valueOf(usuarioId), nombreUsuario, correoElectronico);
+
         if (usuariosDTO == null) {
-            logger.warn(MSG_USUARIO_NO_VALIDO + usuarioId);
+            logger.error(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + usuarioId + ", Nombre=" + nombreUsuario + ", Email=" + correoElectronico);
             return Response.ok(new Respuesta(Constantes.ID_ERROR_USER_NO_EXISTS, Constantes.ERROR_USER_NO_EXISTS)).status(422).build();
         }
+
         try {
             List<UsuariosRol> usuariosRoles = manejadorUsuariosRol.buscarUsuariosRolXUsuarioApp(usuarioId.toString(), aplicacionid);
             for (String rol : roles) {
@@ -428,23 +442,26 @@ public class ServiciosRestAutenticacion {
     @Consumes({APPLICATION_JSON})
     @Produces({APPLICATION_JSON})
     @Path("desvincularroles")
-    public Response desvincularRoles(@QueryParam("aplicacionid") BigDecimal aplicacionid, @QueryParam("usuarioid") Long usuarioId, @QueryParam("roles") List<String> roles, @QueryParam("notificarUsuario") Boolean notificarUsuario,
+    public Response desvincularRoles(@QueryParam("aplicacionid") BigDecimal aplicacionid, @QueryParam("usuarioid") Long usuarioId,
+                                     @QueryParam("nombreUsuario") String nombreUsuario, @QueryParam("correoElectronico") String correoElectronico,
+                                     @QueryParam("roles") List<String> roles, @QueryParam("notificarUsuario") Boolean notificarUsuario,
                                      @HeaderParam("access_token") String token, @HeaderParam("client_id") String clientId, @HeaderParam("user_id") Integer userId) throws SeguridadException {
         logger.info("Inicia comando para desvincular roles: " + roles);
 
         List<Respuesta> msnError = new ArrayList<>();
-        msnError.add(validadorCamposNulos(usuarioId, Constantes.ID_ERROR_USER_NULL, Constantes.ERROR_USER_NULL));
         msnError.add(validadorCamposNulos(roles, Constantes.ID_ERROR_ROLES_NULL, Constantes.ERROR_ROLES_NULL));
         msnError.add(validadorCamposNulos(aplicacionid, Constantes.ID_ERROR_APLICACION_NULL, Constantes.ERROR_APLICACION_NULL));
         msnError.add(validadorCamposNulos(notificarUsuario, Constantes.ID_ERROR_NOTIFICA_USUARIO, Constantes.ERROR_NOTIFICA_USUARIO));
+
         Respuesta respuestaError = msnError.stream().filter(Objects::nonNull).findFirst().orElse(null);
         if (respuestaError != null){
             return Response.ok(new Respuesta(respuestaError.getCodigo(), respuestaError.getMensaje())).status(422).build();
         }
 
-        UsuariosDTO usuariosDTO = negocioUsuario.buscarUsuario(usuarioId.toString());
+        UsuariosDTO usuariosDTO = buscarUsuario(String.valueOf(usuarioId), nombreUsuario, correoElectronico);
+
         if (usuariosDTO == null) {
-            logger.warn(MSG_USUARIO_NO_VALIDO + usuarioId);
+            logger.error(MSG_USUARIO_NO_VALIDO + " Criterios: ID=" + usuarioId + ", Nombre=" + nombreUsuario + ", Email=" + correoElectronico);
             return Response.ok(new Respuesta(Constantes.ID_ERROR_USER_NO_EXISTS, Constantes.ERROR_USER_NO_EXISTS)).status(422).build();
         }
 
@@ -684,5 +701,41 @@ public class ServiciosRestAutenticacion {
             return "El "+nombreCampo+" ingresado supera el número máximo de caractéres permitidos";
         }
         return null;
+    }
+
+    private UsuariosDTO buscarUsuario(String usuarioId, String nombreUsuario, String correoElectronico) {
+
+        int contador = 0;
+
+        if (usuarioId != null && !usuarioId.trim().isEmpty()) {
+            contador++;
+        }
+        if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
+            contador++;
+        }
+        if (correoElectronico != null && !correoElectronico.trim().isEmpty()) {
+            contador++;
+        }
+
+        if (contador == 0) {
+            logger.error(ERROR_DATOS_NULOS);
+            throw new IllegalArgumentException(ID_ERROR_DATOS_NULOS.toString().concat(ERROR_DATOS_NULOS));
+        }
+
+        if (contador > 1) {
+            logger.error(ERROR_SOLO_UN_VALOR);
+            throw new IllegalArgumentException(ERROR_SOLO_UN_VALOR);
+        }
+
+        UsuariosDTO usuariosDTO;
+
+        if (usuarioId != null && !usuarioId.trim().isEmpty()) {
+            usuariosDTO = negocioUsuario.buscarUsuario(usuarioId);
+        } else if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
+            usuariosDTO = negocioUsuario.buscarUsuarioPorNombre(nombreUsuario);
+        } else {
+            usuariosDTO = negocioUsuario.buscarUsuarioPorCorreoElectronico(correoElectronico);
+        }
+        return usuariosDTO;
     }
 }
