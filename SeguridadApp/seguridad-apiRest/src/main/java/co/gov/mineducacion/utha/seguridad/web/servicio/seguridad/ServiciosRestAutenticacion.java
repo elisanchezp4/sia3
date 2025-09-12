@@ -445,6 +445,7 @@ public class ServiciosRestAutenticacion {
     public Response desvincularRoles(@QueryParam("aplicacionid") BigDecimal aplicacionid, @QueryParam("usuarioid") Long usuarioId,
                                      @QueryParam("nombreUsuario") String nombreUsuario, @QueryParam("correoElectronico") String correoElectronico,
                                      @QueryParam("roles") List<String> roles, @QueryParam("notificarUsuario") Boolean notificarUsuario,
+                                     @QueryParam("motivoDesvinculacion") String motivoDesvinculacion,
                                      @HeaderParam("access_token") String token, @HeaderParam("client_id") String clientId, @HeaderParam("user_id") Integer userId) throws SeguridadException {
         logger.info("Inicia comando para desvincular roles: " + roles);
 
@@ -493,7 +494,7 @@ public class ServiciosRestAutenticacion {
             if (listMsnValidacion.size() == roles.size()) {
                 return Response.ok(new Respuesta(Constantes.ID_ERROR_ROL_INVALIDO, Constantes.ERROR_ROL_INVALIDO + listMsnValidacion)).status(422).build();
             }
-            servicioUsuarios.desvincularRolesUsuario(rolesDesvincular, String.valueOf(usuarioId), String.valueOf(aplicacionid), String.valueOf(userId));
+            servicioUsuarios.desvincularRolesUsuario(rolesDesvincular, String.valueOf(usuarioId), String.valueOf(aplicacionid), String.valueOf(userId), motivoDesvinculacion);
             AplicacionesDTO aplicacionesDTO = negocioAplicacion.buscarAplicacion(aplicacionid != null ? aplicacionid.toString() : null);
             UtilEmail.enviarEmail(Boolean.TRUE.equals(notificarUsuario), usuariosDTO, aplicacionesDTO.getNombre(), parametrosSng.obtenerParametros());
             return Response.ok(new Respuesta(Constantes.ID_OPERACION_EXITOSA, Constantes.OPERACION_EXITOSA)).status(200).build();

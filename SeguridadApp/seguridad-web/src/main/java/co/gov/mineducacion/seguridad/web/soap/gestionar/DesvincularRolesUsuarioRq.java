@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.*;
         "nombreUsuario",
         "correoElectronico",
         "roles",
-        "notificarUsuario"
+        "notificarUsuario",
+        "motivoDesvinculacion"
 })
 public class DesvincularRolesUsuarioRq {
 
@@ -42,6 +43,8 @@ public class DesvincularRolesUsuarioRq {
     protected String correoElectronico;
     protected ArrayOfstring roles;
     protected Boolean notificarUsuario;
+
+    protected String motivoDesvinculacion;
 
     /**
      * Gets the value of the userId property.
@@ -135,4 +138,11 @@ public class DesvincularRolesUsuarioRq {
         this.notificarUsuario = value;
     }
 
+    public String getMotivoDesvinculacion() {
+        return motivoDesvinculacion;
+    }
+
+    public void setMotivoDesvinculacion(String motivoDesvinculacion) {
+        this.motivoDesvinculacion = motivoDesvinculacion;
+    }
 }

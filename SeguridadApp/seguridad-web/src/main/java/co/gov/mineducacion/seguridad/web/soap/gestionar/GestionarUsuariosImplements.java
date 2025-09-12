@@ -319,7 +319,7 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 				throw new IGestionarUsuarioDesvincularRolesUsuarioMensajeFaultFaultFaultMessage(ERROR, messageFault(String.join(", ", listMsnValidacion), "400"));
 			}
 
-			servicioUsuarios.desvincularRolesUsuario(rolesFiltrados, parameters.getUserId(),aplicacion.getApiKey().getValue(), String.valueOf(aplicacion.getUserId().intValue()));
+			servicioUsuarios.desvincularRolesUsuario(rolesFiltrados, parameters.getUserId(),aplicacion.getApiKey().getValue(), String.valueOf(aplicacion.getUserId().intValue()), parameters.getMotivoDesvinculacion());
 
 			AplicacionesDTO aplicacionesDTO = negocioAplicacion.buscarAplicacion(aplicacion.getApiKey().getValue());
 			UtilEmail.enviarEmail(parameters.getNotificarUsuario(), usuariosDTO, aplicacionesDTO.getNombre(), parametrosSng.obtenerParametros());

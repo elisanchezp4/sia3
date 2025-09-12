@@ -48,7 +48,7 @@ public interface IUsuarios {
 
 	void vincularRolesUsuario(List<String> roles,String usuarioId,String aplicacionId) throws SeguridadException, SIA3Exception;
 
-	void desvincularRolesUsuario(List<String> roles,String usuarioId,String aplicacionId, String usuarioPeticion) throws SeguridadException;
+	void desvincularRolesUsuario(List<String> roles,String usuarioId,String aplicacionId, String usuarioPeticion, String motivoDesvinculacion) throws SeguridadException;
 
 	/**
 	 * Inactiva un usuario en el directorio activo y en la base de datos de
