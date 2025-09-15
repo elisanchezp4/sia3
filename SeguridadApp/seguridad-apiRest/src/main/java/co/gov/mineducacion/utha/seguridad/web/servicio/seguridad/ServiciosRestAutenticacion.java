@@ -373,7 +373,6 @@ public class ServiciosRestAutenticacion {
     public Response vincularRoles(@QueryParam("aplicacionid") BigDecimal aplicacionid, @QueryParam("usuarioid") Long usuarioId,
                                   @QueryParam("nombreUsuario") String nombreUsuario, @QueryParam("correoElectronico") String correoElectronico,
                                   @QueryParam("roles") List<String> roles, @QueryParam("notificarUsuario") Boolean notificarUsuario,
-                                  @QueryParam("motivoVinculacion") String motivoVinculacion,
                                   @HeaderParam("access_token") String token, @HeaderParam("client_id") String clientId, @HeaderParam("user_id") Integer userId) throws SeguridadException {
         logger.info("Inicia vincular roles");
         List<String> msnError = new ArrayList<>();
@@ -418,7 +417,7 @@ public class ServiciosRestAutenticacion {
                     List<UsuariosDTO> usuariosDTOS = new ArrayList<>();
                     usuariosDTOS.add(usuariosDTO);
                 logger.info("parametros desde el controlador " + usuariosDTOS + " rol: " + existe.getRolId());
-                    negocioUsuariosRol.agregarUsuariosARol(usuariosDTOS, rolId, String.valueOf(userId), motivoVinculacion);
+                    negocioUsuariosRol.agregarUsuariosARol(usuariosDTOS, rolId, String.valueOf(userId));
                 } else {
                     logger.warn("No se puede vincular por que rol no existe o no esta asociado a la aplicacion rol: " + rol + " aplicacion: " + aplicacionid);
                     msnError.add(rol);

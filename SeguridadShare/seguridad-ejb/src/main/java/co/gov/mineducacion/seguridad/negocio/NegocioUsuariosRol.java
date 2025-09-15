@@ -434,7 +434,7 @@ public class NegocioUsuariosRol extends NegocioAbstracto<UsuariosRol, UsuariosRo
 	 * @throws SIA3Exception
 	 * @throws SeguridadException
 	 */
-	public void agregarUsuariosARol(List<UsuariosDTO> usuariosDTOList, BigDecimal rolId, String usuarioPeticion, String motivoVinculacion)
+	public void agregarUsuariosARol(List<UsuariosDTO> usuariosDTOList, BigDecimal rolId, String usuarioPeticion)
 			throws SIA3Exception, SeguridadException {
 		try {
 			BigDecimal idAplicacion = BigDecimal.valueOf(0);
@@ -460,13 +460,13 @@ public class NegocioUsuariosRol extends NegocioAbstracto<UsuariosRol, UsuariosRo
 				}
 				//Inicio Cambio solicitado despues de certificacion usuario
 				//Fin Cambio solicitado despues de certificacion usuario
-				UsuarioRolEntity usuariorRol = entidadRolAgregar(usuariosDTO, motivoVinculacion);
+				UsuarioRolEntity usuariorRol = entidadRolAgregar(usuariosDTO);
 				logger.info("Crear manual usuariorRol =>" + usuariorRol);
 				// crear la asignacion usuario-rol
 				agregarRolesUsuario(usuariorRol, nombreRol, idAplicacion);
-				usuariorRol = entidadRolAgregar(usuariosDTO, motivoVinculacion);
+				usuariorRol = entidadRolAgregar(usuariosDTO);
 				agregarRolesUsuario(usuariorRol, Constantes.ROL_AUTENTICADOR, Constantes.ID_SIA3);
-				usuariorRol = entidadRolAgregar(usuariosDTO, motivoVinculacion);
+				usuariorRol = entidadRolAgregar(usuariosDTO);
 				agregarRolesUsuario(usuariorRol, Constantes.ROL_GESTIONADOR, Constantes.ID_SIA3);
 				//Registrar en auditoria el evento
 				logger.info("Inicio registro auditoria evento USER_ASSIGNED");
@@ -519,12 +519,11 @@ public class NegocioUsuariosRol extends NegocioAbstracto<UsuariosRol, UsuariosRo
 		return list == null || list.isEmpty();
 	}
 
-	public UsuarioRolEntity entidadRolAgregar(UsuariosDTO usuariosDTO, String motivoVinculacion){
+	public UsuarioRolEntity entidadRolAgregar(UsuariosDTO usuariosDTO){
 		UsuarioRolEntity usuariorRol = new UsuarioRolEntity();
 		usuariorRol.setUsuarioId(new BigDecimal(usuariosDTO.getUsuarioId()));
 		usuariorRol.setEstadoVinculacion(Constantes.ESTADO_VINCULADO);
 		usuariorRol.setFechaVinculacion(new Date());
-		usuariorRol.setMotivoVinculacion(motivoVinculacion);
 		return usuariorRol;
 	}
 
