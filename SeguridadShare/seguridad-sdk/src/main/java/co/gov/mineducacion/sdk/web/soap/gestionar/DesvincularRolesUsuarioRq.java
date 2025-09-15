@@ -16,7 +16,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="userId" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
  *         &lt;element name="nombreUsuario" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
- *  *         &lt;element name="correoElectronico" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
+ *         &lt;element name="correoElectronico" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
+ *         &lt;element name="motivoDesvinculacion" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
  *         &lt;element name="roles" type="{http://www.w3.org/2001/XMLSchema}ArrayOfstring" minOccurs="0"/>
  *         &lt;element name="notificarUsuario" type="{http://www.w3.org/2001/XMLSchema}Boolean" minOccurs="0"/>
  *       &lt;/sequence>
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.XmlType;
         "nombreUsuario",
         "correoElectronico",
         "roles",
-        "notificarUsuario"
+        "notificarUsuario",
+        "motivoDesvinculacion"
 })
 public class DesvincularRolesUsuarioRq {
 
@@ -43,6 +45,7 @@ public class DesvincularRolesUsuarioRq {
     protected String correoElectronico;
     protected ArrayOfstring roles;
     protected Boolean notificarUsuario;
+    protected String motivoDesvinculacion;
 
     /**
      * Gets the value of the userId property.
@@ -131,5 +134,13 @@ public class DesvincularRolesUsuarioRq {
      */
     public void setNotificarUsuario(Boolean value) {
         this.notificarUsuario = value;
+    }
+
+    public String getMotivoDesvinculacion() {
+        return motivoDesvinculacion;
+    }
+
+    public void setMotivoDesvinculacion(String motivoDesvinculacion) {
+        this.motivoDesvinculacion = motivoDesvinculacion;
     }
 }

@@ -207,7 +207,7 @@ public class NegocioUsuariosRol extends NegocioAbstracto<UsuariosRol, UsuariosRo
 		// protected region Modifique el metodo eliminar end
 	}
 
-	public void desvincularUsuarioRol(@QueryParam("rolId") BigDecimal rolId, @QueryParam("usuarioId") String usuarioId, @QueryParam("aplicacionId") String aplicacionId){
+	public void desvincularUsuarioRol(@QueryParam("rolId") BigDecimal rolId, @QueryParam("usuarioId") String usuarioId, @QueryParam("aplicacionId") String aplicacionId, @QueryParam("motivoDesvinculacion") String motivoDesvinculacion){
 		logService(this.getClass().getName(), mesagge, rolId, usuarioId);
 		BigDecimal aplicacionIdDecimal = new BigDecimal(aplicacionId);
 		// Buscar el UsuariosRol correspondiente a los parámetros de desvinculación
@@ -220,6 +220,7 @@ public class NegocioUsuariosRol extends NegocioAbstracto<UsuariosRol, UsuariosRo
 				// Realizar la desvinculación
 				usuariosRol.setEstadoVinculacion(Constantes.ESTADO_DESVINCULADO);
 				usuariosRol.setFechaDesvinculacion(new Date());
+				usuariosRol.setMotivoDesvinculacion(motivoDesvinculacion);
 				manejadorUsuariosRol.actualizar(usuariosRol);
 				break;
 			}

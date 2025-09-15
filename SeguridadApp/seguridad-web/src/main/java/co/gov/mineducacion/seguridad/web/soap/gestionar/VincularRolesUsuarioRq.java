@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="usuarioId" type="{http://www.w3.org/2001/XMLSchema}String" minOccurs="0"/>
  *         &lt;element name="nombreUsuario" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="correoElectronico" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="motivoVinculacion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="roles" type="{http://www.w3.org/2001/XMLSchema}ArrayOfstring" minOccurs="0"/>
  *         &lt;element name="notificarUsuario" type="{http://www.w3.org/2001/XMLSchema}Boolean" minOccurs="0"/>
  *       &lt;/sequence>
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.XmlType;
         "nombreUsuario",
         "correoElectronico",
         "roles",
-        "notificarUsuario"
+        "notificarUsuario",
+        "motivoVinculacion"
 })
 public class VincularRolesUsuarioRq {
     protected String usuarioId;
@@ -40,6 +42,8 @@ public class VincularRolesUsuarioRq {
     protected String correoElectronico;
     protected ArrayOfstring roles;
     protected Boolean notificarUsuario;
+
+    protected String motivoVinculacion;
 
     /**
      * Gets the value of the userId property.
@@ -128,5 +132,13 @@ public class VincularRolesUsuarioRq {
      */
     public void setNotificarUsuario(Boolean value) {
         this.notificarUsuario = value;
+    }
+
+    public String getMotivoVinculacion() {
+        return motivoVinculacion;
+    }
+
+    public void setMotivoVinculacion(String motivoVinculacion) {
+        this.motivoVinculacion = motivoVinculacion;
     }
 }

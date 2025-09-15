@@ -268,7 +268,7 @@ public class UsuariosImpl extends ServiciosCommons implements IUsuarios {
 
 
 	@Override
-	public void vincularRolesUsuario(List<String> roles, String usuarioId, String aplicacionId) throws SeguridadException, SIA3Exception {
+	public void vincularRolesUsuario(List<String> roles, String usuarioId, String aplicacionId, String motivoVinculacion) throws SeguridadException, SIA3Exception {
 		UsuariosDTO usuarioBD = obtenerUsuarioExistente(usuarioId);
 		List<UsuariosDTO> listUsuario = new ArrayList<>();
 		listUsuario.add(usuarioBD);
@@ -279,13 +279,13 @@ public class UsuariosImpl extends ServiciosCommons implements IUsuarios {
 		}
 
 		for (String rol : roles) {
-			negocioUsuariosRol.agregarUsuariosARol(listUsuario, new BigDecimal(String.valueOf(rol)), usuarioId);
+			negocioUsuariosRol.agregarUsuariosARol(listUsuario, new BigDecimal(String.valueOf(rol)), usuarioId, motivoVinculacion);
 		}
 
 	}
 
     @Override
-    public void desvincularRolesUsuario(List<String> roles, String usuarioId, String aplicacionId, String usuarioPeticion) throws SeguridadException {
+    public void desvincularRolesUsuario(List<String> roles, String usuarioId, String aplicacionId, String usuarioPeticion, String motivoDesvinculacion) throws SeguridadException {
         logger.info("Inicia proceso desvincular roles usuario: " + usuarioId + " , roles: " + new Gson().toJson(roles) + "Aplicacion" + aplicacionId);
         UsuariosDTO usuarioBD = obtenerUsuarioExistente(usuarioId);
 
@@ -305,7 +305,7 @@ public class UsuariosImpl extends ServiciosCommons implements IUsuarios {
                     .filter(dato -> dato.getRoles().getNombre().equals(rol) && dato.getRoles().getEstado().equals(new BigDecimal(1)) && dato.getRoles().getAplicacionId().equals(new BigDecimal(aplicacionId)))
                     .forEach(usuariosRol -> {
                         logger.info("Inicia proceso negocio eliminar rolId: " + usuariosRol.getRoles().getRolId() + " , nombre: " + usuariosRol.getRoles().getNombre());
-                        negocioUsuariosRol.desvincularUsuarioRol(usuariosRol.getRoles().getRolId(), usuarioId, aplicacionId);
+                        negocioUsuariosRol.desvincularUsuarioRol(usuariosRol.getRoles().getRolId(), usuarioId, aplicacionId, motivoDesvinculacion);
 
                         JsonObject detalle = new JsonObject();
                         detalle.addProperty("descripcion", "Elimina rol");

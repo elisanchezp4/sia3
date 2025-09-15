@@ -70,6 +70,11 @@ public class UsuariosRol implements Serializable {
 	
 	@Column(name = "ESTADO_VINCULACION")
 	private String estadoVinculacion;
+
+	@Column(name = "MOTIVO_DESVINCULACION")
+	private String motivoDesvinculacion;
+
+
 	// protected region atributos adicionales on begin
 	// Escriba en esta sección sus modificaciones
 
@@ -108,7 +113,13 @@ public class UsuariosRol implements Serializable {
 		this.usuarios = usuarios;
 	}
 
-	
+	public String getMotivoDesvinculacion() {
+		return motivoDesvinculacion;
+	}
+
+	public void setMotivoDesvinculacion(String motivoDesvinculacion) {
+		this.motivoDesvinculacion = motivoDesvinculacion;
+	}
 	
 	/**
 	 * @return the fechaVinculacion
