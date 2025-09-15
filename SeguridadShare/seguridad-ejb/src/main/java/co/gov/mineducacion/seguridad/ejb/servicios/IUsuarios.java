@@ -46,7 +46,7 @@ public interface IUsuarios {
 
 	void actualizarDatosBasicos(UsuariosDTO usuario,String aplicacionId,String usuarioMod, String usuarioPeticion)  throws SeguridadException;
 
-	void vincularRolesUsuario(List<String> roles,String usuarioId,String aplicacionId, String motivoVinculacion) throws SeguridadException, SIA3Exception;
+	void vincularRolesUsuario(List<String> roles,String usuarioId,String aplicacionId) throws SeguridadException, SIA3Exception;
 
 	void desvincularRolesUsuario(List<String> roles,String usuarioId,String aplicacionId, String usuarioPeticion, String motivoDesvinculacion) throws SeguridadException;
 
