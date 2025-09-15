@@ -220,7 +220,7 @@ public class NegocioUsuariosRol extends NegocioAbstracto<UsuariosRol, UsuariosRo
 				// Realizar la desvinculación
 				usuariosRol.setEstadoVinculacion(Constantes.ESTADO_DESVINCULADO);
 				usuariosRol.setFechaDesvinculacion(new Date());
-				usuariosRol.setMotivoDesvinculacion(motivoDesvinculacion);
+				usuariosRol.setMotivoDesvinculacion(motivoDesvinculacion != null ? motivoDesvinculacion : "");
 				manejadorUsuariosRol.actualizar(usuariosRol);
 				break;
 			}

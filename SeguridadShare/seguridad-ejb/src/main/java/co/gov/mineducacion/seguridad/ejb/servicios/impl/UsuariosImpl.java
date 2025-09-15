@@ -268,7 +268,7 @@ public class UsuariosImpl extends ServiciosCommons implements IUsuarios {
 
 
 	@Override
-	public void vincularRolesUsuario(List<String> roles, String usuarioId, String aplicacionId, String motivoVinculacion) throws SeguridadException, SIA3Exception {
+	public void vincularRolesUsuario(List<String> roles, String usuarioId, String aplicacionId) throws SeguridadException, SIA3Exception {
 		UsuariosDTO usuarioBD = obtenerUsuarioExistente(usuarioId);
 		List<UsuariosDTO> listUsuario = new ArrayList<>();
 		listUsuario.add(usuarioBD);
@@ -279,7 +279,7 @@ public class UsuariosImpl extends ServiciosCommons implements IUsuarios {
 		}
 
 		for (String rol : roles) {
-			negocioUsuariosRol.agregarUsuariosARol(listUsuario, new BigDecimal(String.valueOf(rol)), usuarioId, motivoVinculacion);
+			negocioUsuariosRol.agregarUsuariosARol(listUsuario, new BigDecimal(String.valueOf(rol)), usuarioId);
 		}
 
 	}
