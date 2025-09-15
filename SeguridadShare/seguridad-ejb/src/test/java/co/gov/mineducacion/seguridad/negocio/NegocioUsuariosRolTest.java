@@ -50,9 +50,10 @@ public class NegocioUsuariosRolTest {
         // Arrange
         UsuariosDTO usuariosDTO = new UsuariosDTO();
         usuariosDTO.setUsuarioId("1");
+        String motivoVinculacion = "Usuario nuevo";
 
         // Act
-        UsuarioRolEntity result = negocioUsuariosRol.entidadRolAgregar(usuariosDTO);
+        UsuarioRolEntity result = negocioUsuariosRol.entidadRolAgregar(usuariosDTO, motivoVinculacion);
 
         // Assert
         Assert.assertNotNull(result);

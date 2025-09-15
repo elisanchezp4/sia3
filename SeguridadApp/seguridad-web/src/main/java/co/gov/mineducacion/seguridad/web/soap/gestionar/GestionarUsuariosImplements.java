@@ -378,7 +378,7 @@ public class GestionarUsuariosImplements extends ServiciosCommons implements IGe
 					// Obtener el rolid correcto de la variable "existe"
 					BigDecimal rolId = existe.getRolId();
 
-					negocioUsuariosRol.agregarUsuariosARol(usuariosDTOS, rolId, aplicacionId.toString());
+					negocioUsuariosRol.agregarUsuariosARol(usuariosDTOS, rolId, aplicacionId.toString(), parameters.getMotivoVinculacion());
 				} else {
 					logger.warn("No se puede vincular por que rol no existe: " + rol);
 					msnError.add("No se puede vincular por que rol no existe: " + rol);

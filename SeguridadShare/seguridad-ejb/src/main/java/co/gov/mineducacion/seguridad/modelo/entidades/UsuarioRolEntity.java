@@ -43,6 +43,9 @@ public class UsuarioRolEntity {
 	@Column(name = "ESTADO_VINCULACION")
 	private String estadoVinculacion;
 
+	@Column(name = "MOTIVO_VINCULACION")
+	private String motivoVinculacion;
+
 	public BigDecimal getRolId() {
 		return rolId;
 	}
@@ -99,6 +102,14 @@ public class UsuarioRolEntity {
 	 */
 	public void setEstadoVinculacion(String estadoVinculacion) {
 		this.estadoVinculacion = estadoVinculacion;
+	}
+
+	public String getMotivoVinculacion() {
+		return motivoVinculacion;
+	}
+
+	public void setMotivoVinculacion(String motivoVinculacion) {
+		this.motivoVinculacion = motivoVinculacion;
 	}
 
 	/* (non-Javadoc)
