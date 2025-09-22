@@ -1,13 +1,13 @@
 package co.gov.mineducacion.seguridad.modelo.dtos;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import java.io.Serializable;
-import java.util.List;
-
 import co.gov.mineducacion.seguridad.modelo.entidades.Operaciones;
 import co.gov.mineducacion.seguridad.modelo.entidades.OperacionesRolPK;
 import co.gov.mineducacion.seguridad.modelo.entidades.Roles;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * DAO que contiene la información de la entidad OperacionesRolDTO que se transmite
@@ -30,6 +30,11 @@ public class OperacionesRolDTO implements Serializable {
 	private List<String> rolesList;
 	private List<OperacionesDTO> operacionesList;
 	private UsuariosDTO usuario;
+
+	private Date fechaValidacionRnec;
+	private Date fechaExpedicionDocumento;
+	private String estadoValidacion;
+	private String motivoValidacion;
 
 	// protected region atributos adicionales on begin
 	// Escriba en esta sección sus modificaciones
@@ -91,6 +96,38 @@ public class OperacionesRolDTO implements Serializable {
 	 */
 	public List<OperacionesDTO> getOperacionesList() {
 		return operacionesList;
+	}
+
+	public Date getFechaValidacionRnec() {
+		return fechaValidacionRnec;
+	}
+
+	public void setFechaValidacionRnec(Date fechaValidacionRnec) {
+		this.fechaValidacionRnec = fechaValidacionRnec;
+	}
+
+	public Date getFechaExpedicionDocumento() {
+		return fechaExpedicionDocumento;
+	}
+
+	public void setFechaExpedicionDocumento(Date fechaExpedicionDocumento) {
+		this.fechaExpedicionDocumento = fechaExpedicionDocumento;
+	}
+
+	public String getEstadoValidacion() {
+		return estadoValidacion;
+	}
+
+	public void setEstadoValidacion(String estadoValidacion) {
+		this.estadoValidacion = estadoValidacion;
+	}
+
+	public String getMotivoValidacion() {
+		return motivoValidacion;
+	}
+
+	public void setMotivoValidacion(String motivoValidacion) {
+		this.motivoValidacion = motivoValidacion;
 	}
 
 	/**

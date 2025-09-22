@@ -23,12 +23,14 @@ import co.gov.mineducacion.seguridad.negocio.NegocioMensaje;
 import co.gov.mineducacion.seguridad.negocio.NegocioRoles;
 import co.gov.mineducacion.seguridad.negocio.NegocioUsuarios;
 import co.gov.mineducacion.seguridad.negocio.NegocioUsuariosRol;
+import co.gov.mineducacion.utha.seguridad.web.servicio.cliente.ClientRNEC;
 import co.gov.mineducacion.utha.seguridad.web.servicio.dto.InformacionTokenDTO;
 import co.gov.mineducacion.utha.seguridad.web.servicio.dto.UsuariosRolesDto;
 import co.gov.mineducacion.utha.seguridad.web.servicio.dto.entrada.PeticionAutenticacionDTO;
 import co.gov.mineducacion.utha.seguridad.web.servicio.dto.salida.Respuesta;
 import co.gov.mineducacion.utha.seguridad.web.servicio.utils.dto.UtilsDTO;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
@@ -42,6 +44,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -521,7 +524,7 @@ public class ServiciosRestAutenticacion {
     @Consumes({APPLICATION_JSON})
     @Produces({APPLICATION_JSON})
     @Path("obtenerrolespermisos")
-    public Response obtenerRolesPermisos(PeticionAutenticacionDTO peticion) {
+    public Response obtenerRolesPermisos(PeticionAutenticacionDTO peticion) throws Exception {
         if (peticion.getHeader().getUserId() == null) {
             return Response.ok(new Respuesta(400, "UsuarioId no puede ser nulo")).status(400).build();
         }
@@ -543,6 +546,21 @@ public class ServiciosRestAutenticacion {
             servicioUsuarios.verificarUsuarioAdministrador(peticion.getHeader().getUserId(), Constantes.ROL_AUTENTICADOR);
 
             OperacionesRolDTO rolesPermisosWS = servicioAutenticacion.obtenerRolesYPermisos(peticion.getHeader().getUserId(), peticion.getHeader().getApiKey(), peticion.getTokenAcceso());
+
+            //TODO Aqui se consumio el servicio RNEC
+            //TODO De donde obtengo la informacion de numeroDocumento y tipoDocumento
+            JsonObject dataRnec = ClientRNEC.getDocumentInfo("1111", "CC");
+            String fechaValidacionRnec = dataRnec.get("fechaValidacion").getAsString();
+            String fechaExpedicionDocumento = dataRnec.get("fechaExpedicion").getAsString();
+            String estadoValidacion = dataRnec.get("estadoValidacion").getAsString();
+            String motivoValidacion = dataRnec.get("motivoValidacion").getAsString();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+            rolesPermisosWS.setFechaValidacionRnec(formatter.parse(fechaValidacionRnec));
+            rolesPermisosWS.setFechaExpedicionDocumento(formatter.parse(fechaExpedicionDocumento));
+            rolesPermisosWS.setEstadoValidacion(estadoValidacion);
+            rolesPermisosWS.setMotivoValidacion(motivoValidacion);
 
             return Response.ok(UtilsDTO.obtenerDTO(rolesPermisosWS, peticion.getTokenAcceso())).build();
         } catch (SeguridadException e) {
@@ -608,6 +626,22 @@ public class ServiciosRestAutenticacion {
                 List<RolesDTO> roles = negocioRoles.getRolesPorAplicacion(idAplicacion.longValue());
                 usuariosRolesDto.setRoles(roles);
             }
+            //TODO Aqui se consumio el servicio RNEC
+            //TODO De donde obtengo la informacion de numeroDocumento y tipoDocumento
+            JsonObject dataRnec = ClientRNEC.getDocumentInfo("1111", "CC");
+            String fechaValidacionRnec = dataRnec.get("fechaValidacion").getAsString();
+            String fechaExpedicionDocumento = dataRnec.get("fechaExpedicion").getAsString();
+            String estadoValidacion = dataRnec.get("estadoValidacion").getAsString();
+            String motivoValidacion = dataRnec.get("motivoValidacion").getAsString();
+
+            // Formateador para convertir las fechas de String a Date
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+            usuariosRolesDto.setFechaValidacionRnec(formatter.parse(fechaValidacionRnec));
+            usuariosRolesDto.setFechaExpedicionDocumento(formatter.parse(fechaExpedicionDocumento));
+            usuariosRolesDto.setEstadoValidacion(estadoValidacion);
+            usuariosRolesDto.setMotivoValidacion(motivoValidacion);
+
             return Response.ok(usuariosRolesDto).build();
         } catch (Exception e) {
             logger.error("Error consultando usuarios y roles por app: " + e.getMessage());
